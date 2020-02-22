@@ -1,5 +1,7 @@
 package report.it;
 
+import report.it.models.User;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -12,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -64,7 +68,8 @@ public class Administration extends ServletBase {
             response.sendRedirect("LogIn");
         }
         else if (myName.equals("admin")) {
-            out.println("<h1>Administration page " + "</h1>");
+
+            request.getRequestDispatcher("administration.jsp").include(request, response);
 
             // check if the administrator wants to add a new user in the form
             String newName = request.getParameter("addname");
@@ -89,25 +94,30 @@ public class Administration extends ServletBase {
             try {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery("select * from Users order by username asc");
-                out.println("<p>Registered users:</p>");
-                out.println("<table border=" + formElement("1") + ">");
-                out.println("<tr><td>NAME</td><td>PASSWORD</td><td></td></tr>");
+                List<User> users = new ArrayList<>();
                 while (rs.next()) {
                     String name = rs.getString("username");
-                    String pw = rs.getString("password");
-                    String deleteURL = "Administration?deletename=" + name;
+                    String password = rs.getString("password");
+                    users.add(
+                            new User(name, password)
+                    );
+                    /*String deleteURL = "Administration?deletename=" + name;
                     String deleteCode = "<a href=" + formElement(deleteURL) +
                             " onclick=" + formElement("return confirm('Are you sure you want to delete " + name + "?')") +
                             "> delete </a>";
                     if (name.equals("admin"))
                         deleteCode = "";
+
                     out.println("<tr>");
                     out.println("<td>" + name + "</td>");
-                    out.println("<td>" + pw + "</td>");
+                    out.println("<td>" + password + "</td>");
                     out.println("<td>" + deleteCode + "</td>");
                     out.println("</tr>");
+                    */
                 }
-                out.println("</table>");
+                request.setAttribute("users", users);
+                request.getRequestDispatcher("all-users-table.jsp").include(request, response);
+//                out.println("</table>");
                 stmt.close();
             } catch (SQLException ex) {
                 System.out.println("SQLException: " + ex.getMessage());
@@ -116,8 +126,8 @@ public class Administration extends ServletBase {
             }
             out.println(addUserForm());
 
-            out.println("<p><a href =" + formElement("functionality.html") + "> Functionality selection page </p>");
             out.println("<p><a href =" + formElement("LogIn") + "> Log out </p>");
+            out.println("</div>");
             out.println("</body></html>");
         } else  // name not admin
             response.sendRedirect("functionality.html");

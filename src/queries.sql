@@ -57,5 +57,8 @@ from Projects;
 insert into Users(username, name, password, email, role, project)
 VALUES ('abdo', 'abdo', '1234', 'abdo@pusb.se', 2, 'stora projekt');
 
+insert into Users(username, name, password, email, role, project)
+VALUES ('hadi', 'hadi', '1234', 'hadi@pusb.se', 2, 'stora projekt');
+
 select *
 from Users;

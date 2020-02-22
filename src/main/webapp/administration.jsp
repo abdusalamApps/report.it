@@ -9,8 +9,10 @@
 <html>
 <head>
     <title>Administration Page</title>
+    <link rel='stylesheet' type='text/css' href='main.css'>
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap" rel="stylesheet">
 </head>
 <body>
+<div class="container">
+<h1> Administration page </h1>
 
-</body>
-</html>

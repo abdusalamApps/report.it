@@ -79,7 +79,7 @@ public class LogIn extends ServletBase {
 				state = LOGIN_TRUE;
 				session.setAttribute("state", state);  // save the state in the session
 				session.setAttribute("name", name);  // save the name in the session
-				response.sendRedirect("administration.jsp");
+				response.sendRedirect("Administration");
 			} else {
                 out.println("<p>That was not a valid user name / password. </p>");
                 out.println(loginRequestForm());
