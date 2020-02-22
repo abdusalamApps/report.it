@@ -81,6 +81,7 @@ public class Administration extends ServletBase {
                 } else
                     out.println("<p>Error: Suggesten name not allowed</p>");
             }
+/*
 
             // check if the administrator wants to delete a user by clicking the URL in the list
             String deleteName = request.getParameter("deletename");
@@ -91,25 +92,37 @@ public class Administration extends ServletBase {
                     out.println("<p>Error: URL wrong</p>");
             }
 
+*/
             try {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery("select * from Users order by username asc");
                 List<User> users = new ArrayList<>();
                 while (rs.next()) {
-                    String name = rs.getString("username");
+                    String username = rs.getString("username");
+                    String name = rs.getString("name");
                     String password = rs.getString("password");
+                    String email = rs.getString("email");
+                    String role = rs.getString("role");
+                    String project = rs.getString("project");
                     users.add(
-                            new User(name, password)
+                            new User(
+                                    username,
+                                    name,
+                                    password,
+                                    email,
+                                    Integer.parseInt(role),
+                                    project
+                            )
                     );
-                    /*String deleteURL = "Administration?deletename=" + name;
+                    /*String deleteURL = "Administration?deletename=" + username;
                     String deleteCode = "<a href=" + formElement(deleteURL) +
-                            " onclick=" + formElement("return confirm('Are you sure you want to delete " + name + "?')") +
+                            " onclick=" + formElement("return confirm('Are you sure you want to delete " + username + "?')") +
                             "> delete </a>";
-                    if (name.equals("admin"))
+                    if (username.equals("admin"))
                         deleteCode = "";
 
                     out.println("<tr>");
-                    out.println("<td>" + name + "</td>");
+                    out.println("<td>" + username + "</td>");
                     out.println("<td>" + password + "</td>");
                     out.println("<td>" + deleteCode + "</td>");
                     out.println("</tr>");
@@ -137,9 +150,14 @@ public class Administration extends ServletBase {
      *
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        String username = request.getParameter("username");
+        System.out.println(username);
     }
 
+
+    public static void deleteMember(String username) {
+        System.out.println(username);
+    }
 
     /**
      * generates a form for adding new users
