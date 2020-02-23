@@ -93,6 +93,7 @@ public class Administration extends ServletBase {
             }
 
 */
+/*
             try {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery("select * from Users order by username asc");
@@ -114,7 +115,8 @@ public class Administration extends ServletBase {
                                     project
                             )
                     );
-                    /*String deleteURL = "Administration?deletename=" + username;
+                    */
+/*String deleteURL = "Administration?deletename=" + username;
                     String deleteCode = "<a href=" + formElement(deleteURL) +
                             " onclick=" + formElement("return confirm('Are you sure you want to delete " + username + "?')") +
                             "> delete </a>";
@@ -126,7 +128,8 @@ public class Administration extends ServletBase {
                     out.println("<td>" + password + "</td>");
                     out.println("<td>" + deleteCode + "</td>");
                     out.println("</tr>");
-                    */
+                    *//*
+
                 }
                 request.setAttribute("users", users);
                 request.getRequestDispatcher("all-users-table.jsp").include(request, response);
@@ -137,6 +140,13 @@ public class Administration extends ServletBase {
                 System.out.println("SQLState: " + ex.getSQLState());
                 System.out.println("VendorError: " + ex.getErrorCode());
             }
+*/
+
+            List<User> users = getUsersByAdmin(myName);
+            System.out.println("Users list size = " + users.size());
+            request.setAttribute("users", users);
+            request.getRequestDispatcher("all-users-table.jsp").include(request, response);
+
             out.println(addUserForm());
 
             out.println("<p><a href =" + formElement("LogIn") + "> Log out </p>");
@@ -151,6 +161,7 @@ public class Administration extends ServletBase {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
+
         System.out.println(username);
     }
 
