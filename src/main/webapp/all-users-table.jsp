@@ -21,33 +21,33 @@
         <th>project</th>
     </tr>
     <c:forEach items="${users}" var="user">
-    <tr>
-        <td>
-                ${user.getUsername()}
-        </td>
-        <td>
-                ${user.getName()}
-        </td>
-        <td>
-                ${user.getPassword()}
-        </td>
-        <td>
-                ${user.getEmail()}
-        </td>
-        <td>
-                ${user.getRole()}
-        </td>
-        <td>
-                ${user.getProject()}
-        </td>
-        <td>
-            <form action="Administration" method="post">
-                <input type="hidden" name="username" value="${user.getUsername()}"/>
-
-                <button>Delete</button>
-            </form>
-        </td>
-    </tr>
+        <tr>
+            <td>
+                    ${user.getUsername()}
+            </td>
+            <td>
+                    ${user.getName()}
+            </td>
+            <td>
+                    ${user.getPassword()}
+            </td>
+            <td>
+                    ${user.getEmail()}
+            </td>
+            <td>
+                    ${user.getRole()}
+            </td>
+            <td>
+                    ${user.getProject()}
+            </td>
+            <td>
+                <form action="Administration" method="post">
+                    <input type="hidden" name="username" value="${user.getUsername()}"/>
+                    <input type="hidden" name="action" value="delete">
+                    <button>Delete</button>
+                </form>
+            </td>
+        </tr>
     </c:forEach>
 </table>
 

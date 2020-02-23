@@ -67,10 +67,10 @@ public class Administration extends ServletBase {
         // check that the user is logged in
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
-        }
-        else if (myName.equals("admin")) {
+        } else {
 
             request.getRequestDispatcher("administration.jsp").include(request, response);
+/*
 
             // check if the administrator wants to add a new user in the form
             String newName = request.getParameter("addname");
@@ -80,29 +80,44 @@ public class Administration extends ServletBase {
                     if (!addPossible)
                         out.println("<p>Error: Suggested user name not possible to add</p>");
                 } else
-                    out.println("<p>Error: Suggesten name not allowed</p>");
+                    out.println("<p>Error: Suggested name not allowed</p>");
             }
 
+*/
             List<User> users = getUsers();
             request.setAttribute("users", users);
             request.getRequestDispatcher("all-users-table.jsp").include(request, response);
+            request.getRequestDispatcher("add-user-form.jsp").include(request, response);
 
-            out.println(addUserForm());
-
-            out.println("<p><a href =" + formElement("LogIn") + "> Log out </p>");
             out.println("</div>");
             out.println("</body></html>");
-        } else  // name not admin
-            response.sendRedirect("functionality.html");
+
+        }
     }
 
     /**
      *
      */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        System.out.println("User to delete: " + username);
-        deleteUser(username);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
+        switch (request.getParameter("action")) {
+            case "delete":
+                String username = request.getParameter("username");
+                System.out.println("User to delete: " + username);
+                deleteUser(username);
+                break;
+            case "add":
+                System.out.println("action add");
+                System.out.println("User to add: " + request.getParameter("username"));
+                User user = new User(
+                        request.getParameter("username"),
+                        request.getParameter("name")
+                );
+                break;
+            default:
+                System.out.println("no action selected");
+                break;
+        }
         doGet(request, response);
     }
 
@@ -248,7 +263,6 @@ public class Administration extends ServletBase {
             e.printStackTrace();
         }
     }
-
 
 
     /**
