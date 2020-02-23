@@ -43,6 +43,7 @@
         <td>
             <form action="Administration" method="post">
                 <input type="hidden" name="username" value="${user.getUsername()}"/>
+
                 <button>Delete</button>
             </form>
         </td>

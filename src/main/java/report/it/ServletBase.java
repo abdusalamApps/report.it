@@ -113,58 +113,5 @@ public class ServletBase extends HttpServlet {
         return intro;
     }
 
-    protected List<User> getUsersByAdmin(String admin) {
-        List<User> users = new ArrayList<>();
-        try {
-            String query = "SELECT * FROM Users\n" +
-                    "JOIN Projects P on Users.project = P.name\n" +
-                    "JOIN Administrators A on P.administrator = A.username\n" +
-                    "WHERE A.username = ?";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, admin);
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                String username = rs.getString("username");
-                String name = rs.getString("name");
-                String password = rs.getString("password");
-                String email = rs.getString("email");
-                String role = rs.getString("role");
-                String project = rs.getString("project");
-                users.add(
-                        new User(
-                                username,
-                                name,
-                                password,
-                                email,
-                                Integer.parseInt(role),
-                                project
-                        )
-                );
-                    /*String deleteURL = "Administration?deletename=" + username;
-                    String deleteCode = "<a href=" + formElement(deleteURL) +
-                            " onclick=" + formElement("return confirm('Are you sure you want to delete " + username + "?')") +
-                            "> delete </a>";
-                    if (username.equals("admin"))
-                        deleteCode = "";
-
-                    out.println("<tr>");
-                    out.println("<td>" + username + "</td>");
-                    out.println("<td>" + password + "</td>");
-                    out.println("<td>" + deleteCode + "</td>");
-                    out.println("</tr>");
-                    */
-            }
-//                out.println("</table>");
-            stmt.close();
-        } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
-
-        return users;
-    }
 
 }

@@ -4,6 +4,7 @@ import report.it.models.User;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -81,69 +82,8 @@ public class Administration extends ServletBase {
                 } else
                     out.println("<p>Error: Suggesten name not allowed</p>");
             }
-/*
 
-            // check if the administrator wants to delete a user by clicking the URL in the list
-            String deleteName = request.getParameter("deletename");
-            if (deleteName != null) {
-                if (checkNewName(deleteName)) {
-                    deleteUser(deleteName);
-                } else
-                    out.println("<p>Error: URL wrong</p>");
-            }
-
-*/
-/*
-            try {
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("select * from Users order by username asc");
-                List<User> users = new ArrayList<>();
-                while (rs.next()) {
-                    String username = rs.getString("username");
-                    String name = rs.getString("name");
-                    String password = rs.getString("password");
-                    String email = rs.getString("email");
-                    String role = rs.getString("role");
-                    String project = rs.getString("project");
-                    users.add(
-                            new User(
-                                    username,
-                                    name,
-                                    password,
-                                    email,
-                                    Integer.parseInt(role),
-                                    project
-                            )
-                    );
-                    */
-/*String deleteURL = "Administration?deletename=" + username;
-                    String deleteCode = "<a href=" + formElement(deleteURL) +
-                            " onclick=" + formElement("return confirm('Are you sure you want to delete " + username + "?')") +
-                            "> delete </a>";
-                    if (username.equals("admin"))
-                        deleteCode = "";
-
-                    out.println("<tr>");
-                    out.println("<td>" + username + "</td>");
-                    out.println("<td>" + password + "</td>");
-                    out.println("<td>" + deleteCode + "</td>");
-                    out.println("</tr>");
-                    *//*
-
-                }
-                request.setAttribute("users", users);
-                request.getRequestDispatcher("all-users-table.jsp").include(request, response);
-//                out.println("</table>");
-                stmt.close();
-            } catch (SQLException ex) {
-                System.out.println("SQLException: " + ex.getMessage());
-                System.out.println("SQLState: " + ex.getSQLState());
-                System.out.println("VendorError: " + ex.getErrorCode());
-            }
-*/
-
-            List<User> users = getUsersByAdmin(myName);
-            System.out.println("Users list size = " + users.size());
+            List<User> users = getUsers();
             request.setAttribute("users", users);
             request.getRequestDispatcher("all-users-table.jsp").include(request, response);
 
@@ -161,13 +101,9 @@ public class Administration extends ServletBase {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
-
-        System.out.println(username);
-    }
-
-
-    public static void deleteMember(String username) {
-        System.out.println(username);
+        System.out.println("User to delete: " + username);
+        deleteUser(username);
+        doGet(request, response);
     }
 
     /**
@@ -247,12 +183,81 @@ public class Administration extends ServletBase {
         return resultOk;
     }
 
+
+    private List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+        try {
+            String query = "select * \n" +
+                    "from Users\n" +
+                    "         left join ProjectMembers PM on Users.username = PM.username;\n";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String username = rs.getString("username");
+                String name = rs.getString("name");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String role = rs.getString("role");
+                String project = rs.getString("project_name");
+                if (project == null) project = "Not associated";
+                users.add(new User(
+                        username,
+                        name,
+                        password,
+                        email,
+                        Integer.parseInt(role),
+                        project
+                ));
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return users;
+    }
+
+    private void deleteUser(String username) {
+        deleteAssociation(username);
+        try {
+            String query = "delete from Users where username = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // User's association with any projects has to be deleted as well
+    private void deleteAssociation(String username) {
+        try {
+            String query = "delete from ProjectMembers where username = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     /**
      * Deletes a user from the database.
      * If the user does not exist in the database nothing happens.
      *
      * @param name name of user to be deleted.
      */
+    /*
     private void deleteUser(String name) {
         try {
             Statement stmt = conn.createStatement();
@@ -267,5 +272,5 @@ public class Administration extends ServletBase {
             System.out.println("VendorError: " + ex.getErrorCode());
         }
     }
-
+*/
 }

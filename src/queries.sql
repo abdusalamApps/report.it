@@ -31,8 +31,8 @@ create table ProjectMembers
     username     varchar(30),
     project_name varchar(30),
     primary key (username, project_name),
-    foreign key (username) references Users(username),
-    foreign key (project_name) references Projects(name)
+    foreign key (username) references Users (username),
+    foreign key (project_name) references Projects (name)
 );
 
 create table TimeReports
@@ -65,20 +65,18 @@ values ('stora projekt', 'admin');
 select *
 from Projects;
 
-insert into Users(username, name, password, email, role, project)
-VALUES ('abdo', 'abdo', '1234', 'abdo@pusb.se', 2, 'stora projekt');
+insert into Users(username, name, password, email, role)
+VALUES ('abdo', 'abdo', '1234', 'abdo@pusb.se', 2);
 
-insert into Users(username, name, password, email, role, project)
-VALUES ('hadi', 'hadi', '1234', 'hadi@pusb.se', 2, 'stora projekt');
+insert into Users(username, name, password, email, role)
+VALUES ('hadi', 'hadi', '1234', 'hadi@pusb.se', 2);
 
 select *
 from Users;
 
-SELECT *
-FROM Users
-         JOIN Projects P on Users.project = P.name
-         JOIN Administrators A on P.administrator = A.username
-WHERE A.username = 'admin';
+select *
+from Users
+         left join ProjectMembers PM on Users.username = PM.username;
 
 
 INSERT INTO Projects (name, administrator)
