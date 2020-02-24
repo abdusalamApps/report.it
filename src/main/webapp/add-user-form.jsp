@@ -10,7 +10,6 @@
 <form action="Administration" method="post">
     <input type="text" name="username" placeholder="username"/>
     <input type="text" name="name" placeholder="name"/>
-    <input type="text" name="password" placeholder="password"/>
     <input type="text" name="email" placeholder="email"/>
     <input type="text" name="role" placeholder="role"/>
 

@@ -70,20 +70,6 @@ public class Administration extends ServletBase {
         } else {
 
             request.getRequestDispatcher("administration.jsp").include(request, response);
-/*
-
-            // check if the administrator wants to add a new user in the form
-            String newName = request.getParameter("addname");
-            if (newName != null) {
-                if (checkNewName(newName)) {
-                    boolean addPossible = addUser(newName);
-                    if (!addPossible)
-                        out.println("<p>Error: Suggested user name not possible to add</p>");
-                } else
-                    out.println("<p>Error: Suggested name not allowed</p>");
-            }
-
-*/
             List<User> users = getUsers();
             request.setAttribute("users", users);
             request.getRequestDispatcher("all-users-table.jsp").include(request, response);
@@ -121,11 +107,11 @@ public class Administration extends ServletBase {
         doGet(request, response);
     }
 
-    /**
+ /*   *//**
      * generates a form for adding new users
      *
      * @return HTML code for the form
-     */
+     *//*
     private String addUserForm() {
         String html;
         html = "<p> <form name=" + formElement("input");
@@ -134,7 +120,7 @@ public class Administration extends ServletBase {
         html += "<input type=" + formElement("submit") + "value=" + formElement("Add user") + '>';
         html += "</form>";
         return html;
-    }
+    }*/
 
     /**
      * Checks if a username corresponds to the requirements for user names.
@@ -168,9 +154,13 @@ public class Administration extends ServletBase {
         Random r = new Random();
         for (int i = 0; i < PASSWORD_LENGTH; i++)
             result += (char) (r.nextInt(26) + 97); // 122-97+1=26
+        // TODO: encrypt password after creation
         return result;
     }
 
+    private String encryptPassword(String password) {
+        return "";
+    }
 
     /**
      * Adds a user and a randomly generated password to the database.
@@ -182,7 +172,7 @@ public class Administration extends ServletBase {
     private boolean addUser(String name) {
         boolean resultOk = true;
         try {
-            Statement stmt = conn.createStatement();
+            Statement stmt = connection.createStatement();
             String statement = "insert into Users (username, password) values('" + name + "', '" +
                     createPassword() + "')";
             System.out.println(statement);
@@ -205,7 +195,7 @@ public class Administration extends ServletBase {
             String query = "select * \n" +
                     "from Users\n" +
                     "         left join ProjectMembers PM on Users.username = PM.username;\n";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -235,18 +225,21 @@ public class Administration extends ServletBase {
         return users;
     }
 
-    private void deleteUser(String username) {
+    private boolean deleteUser(String username) {
+        boolean ok = true;
         deleteAssociation(username);
         try {
             String query = "delete from Users where username = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
 
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
+            ok = false;
             e.printStackTrace();
         }
+        return ok;
     }
 
 
@@ -254,7 +247,7 @@ public class Administration extends ServletBase {
     private void deleteAssociation(String username) {
         try {
             String query = "delete from ProjectMembers where username = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
 
             preparedStatement.executeUpdate();
@@ -264,6 +257,9 @@ public class Administration extends ServletBase {
         }
     }
 
+    private boolean deleteAssociation(String username, String project) {
+        return false;
+    }
 
     /**
      * Deletes a user from the database.

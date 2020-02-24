@@ -11,7 +11,8 @@ import java.io.IOException;
 public class TimeReporting extends ServletBase {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+       /* if (role == leader);
+        if (role == member);*/
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

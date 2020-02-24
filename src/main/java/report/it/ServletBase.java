@@ -1,11 +1,6 @@
 package report.it;
 
-import report.it.models.User;
-
 import java.sql.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,41 +33,16 @@ public class ServletBase extends HttpServlet {
     protected static final int LOGIN_FALSE = 0;
     protected static final int LOGIN_TRUE = 1;
 
-    protected Connection conn = null;
+    protected Connection connection = null;
 
-    private static String databaseServerAddress = "35.228.254.209";
-    private static String databaseUser = "abdo"; // database login user
-    private static String databasePassword = ""; // database login password
-    private static String database = "reportit"; // the database to use, i.e.
 
     /**
      * Constructs a servlet and makes a connection to the database.
      * It also writes all user names on the console for test purpose.
      */
     public ServletBase() {
-        try {
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://" + databaseServerAddress + "/" + database,
-                    databaseUser,
-                    databasePassword);
-
-
-            // Display the contents of the database in the console.
-            // This should be removed in the final version
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from Users, Administrators");
-            while (rs.next()) {
-                String name = rs.getString("name");
-                System.out.println("base " + name);
-            }
-
-            stmt.close();
-
-        } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
+        Database database = new Database();
+        connection = database.getConnection();
     }
 
     /**

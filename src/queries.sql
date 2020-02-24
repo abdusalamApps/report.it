@@ -1,14 +1,18 @@
+-- SHA2 has to be used to encrypt passwords, 6 -> 12 characters
+-- username 5 -> 10 characters
+--
 create table Administrators
 (
     username varchar(30) primary key,
     name     varchar(30),
-    password varchar(30),
+    password varchar(12),
     email    varchar(100)
 );
 
 create table Projects
 (
-    name          varchar(30) primary key,
+    id            integer primary key auto_increment,
+    name          varchar(30),
     administrator varchar(30),
     foreign key (administrator) references Administrators (username)
 );
@@ -18,8 +22,7 @@ create table Users
     username varchar(30) primary key,
     name     varchar(30),
     password varchar(30),
-    email    varchar(100),
-    role     integer
+    email    varchar(100)
 );
 
 -- Association table is used to enable users to be associated with projects
@@ -30,6 +33,7 @@ create table ProjectMembers
 (
     username     varchar(30),
     project_name varchar(30),
+    role         integer,
     primary key (username, project_name),
     foreign key (username) references Users (username),
     foreign key (project_name) references Projects (name)
@@ -37,8 +41,10 @@ create table ProjectMembers
 
 create table TimeReports
 (
+    id           varchar(50) primary key auto_increment,
     submitted    DATE,
     minutes_sum  integer,
+    signed       bool,
     project_name varchar(30),
     username     varchar(30),
     foreign key (project_name) references Projects (name),

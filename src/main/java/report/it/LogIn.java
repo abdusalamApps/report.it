@@ -57,7 +57,6 @@ public class LogIn extends ServletBase {
         int state;
 
         PrintWriter out = response.getWriter();
-        out.println(getPageIntro());
 
         if (loggedIn(request)) {
             session.setAttribute("state", LOGIN_FALSE);
@@ -115,7 +114,6 @@ public class LogIn extends ServletBase {
 		return html;
 	}
 
-
 	/**
 	 * Checks with the database if the user should be accepted
 	 *
@@ -129,7 +127,7 @@ public class LogIn extends ServletBase {
 		boolean userChecked = false;
 
 		try {
-			Statement stmt = conn.createStatement();
+			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from Users");
 			while (rs.next() && !userChecked) {
 				String nameSaved = rs.getString("username");
@@ -153,7 +151,7 @@ public class LogIn extends ServletBase {
 		boolean passCorrect = false;
 
 		try {
-			PreparedStatement preparedStatement = conn.prepareStatement("select * from Administrators where username = ?");
+			PreparedStatement preparedStatement = connection.prepareStatement("select * from Administrators where username = ?");
 			preparedStatement.setString(1, username);
 			ResultSet set = preparedStatement.executeQuery();
 			while (set.next() && !usernameExists) {
@@ -174,5 +172,10 @@ public class LogIn extends ServletBase {
 	}
 
 
+	private int checkLoginAttempts() {
+		int fails = 0;
+
+		return fails;
+	}
 
 }
