@@ -11,6 +11,6 @@
     <title>Time Reporting</title>
 </head>
 <body>
-<h1>Time Reporting Page</h1>
+<h1 style="color: aquamarine">Time Reporting Page</h1>
 </body>
 </html>

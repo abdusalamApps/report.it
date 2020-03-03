@@ -51,3 +51,7 @@ tr:nth-child(odd) {
 .mdc-button {
     --mdc-theme-primary: #F5DEB3;
 }
+
+#p1 {
+    background: hsl(15, 100, 60);
+}

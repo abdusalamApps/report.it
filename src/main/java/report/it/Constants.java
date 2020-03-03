@@ -5,11 +5,17 @@ import java.util.Map;
 
 public class Constants {
 
-    public static enum Roles {
+    public static final String PG = "Project Leader";
+    public static final String SG = "System Group";
+    public static final String UG = "Development Group";
+    public static final String TG = "Testing Group";
 
-    }
 
-    public static final String pg = "project leader";
-
+    public static final Map<Integer, String> groupsMap = Map.of(
+            1, PG,
+            2, SG,
+            3, UG,
+            4, TG
+    );
 
 }
