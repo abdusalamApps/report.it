@@ -11,7 +11,6 @@
     <input type="text" name="username" placeholder="username"/>
     <input type="text" name="name" placeholder="name"/>
     <input type="text" name="email" placeholder="email"/>
-    <input type="text" name="role" placeholder="role"/>
 
     <input type="hidden" name="action" value="add">
     <button>Add</button>
