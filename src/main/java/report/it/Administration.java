@@ -99,11 +99,14 @@ public class Administration extends ServletBase {
                         request.getParameter("username"),
                         request.getParameter("name"),
                         createPassword(),
-                        request.getParameter("email"),
-                        request.getParameter("role"),
-                        request.getParameter()
+                        request.getParameter("email")
                 );
-                addUser(user);
+                if(checkNewName(user.getName())){
+                    addUser(user);
+                     }
+                else{
+                    System.out.println("invalied name");
+                }
                 break;
             default:
                 System.out.println("no action selected");
@@ -170,7 +173,7 @@ public class Administration extends ServletBase {
     /**
      * Adds a user and a randomly generated password to the database.
      *
-     * @param name Name to be added
+     * @param user User to be added
      * @return true if it was possible to add the name. False if it was not, e.g.
      * because the name already exist in the database.
      */
@@ -178,8 +181,8 @@ public class Administration extends ServletBase {
         boolean resultOk = true;
         try {
             Statement stmt = connection.createStatement();
-            String statement = "insert into Users (username, password) values('" + name + "', '" +
-                    createPassword() + "')";
+            String statement = "insert into Users (username, name, password,email) values('" + user.getUsername()+ "', '" + user.getName() + "', '" +
+                    createPassword() + "', '" +user.getEmail()+ "')";
             System.out.println(statement);
             stmt.executeUpdate(statement);
             stmt.close();
@@ -208,16 +211,12 @@ public class Administration extends ServletBase {
                 String name = rs.getString("name");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
-                String role = rs.getString("role");
-                String project = rs.getString("project_name");
-                if (project == null) project = "Not associated";
+
                 users.add(new User(
                         username,
                         name,
                         password,
-                        email,
-                        Integer.parseInt(role),
-                        project
+                        email
                 ));
             }
             stmt.close();
