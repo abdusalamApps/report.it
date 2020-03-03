@@ -15,10 +15,7 @@
     <tr>
         <th>username</th>
         <th>name</th>
-        <th>password</th>
         <th>email</th>
-        <th>role</th>
-        <th>project</th>
     </tr>
     <c:forEach items="${users}" var="user">
         <tr>
@@ -29,16 +26,7 @@
                     ${user.getName()}
             </td>
             <td>
-                    ${user.getPassword()}
-            </td>
-            <td>
                     ${user.getEmail()}
-            </td>
-            <td>
-                    ${user.getRole()}
-            </td>
-            <td>
-                    ${user.getProject()}
             </td>
             <td>
                 <form action="Administration" method="post">
