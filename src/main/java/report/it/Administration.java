@@ -97,8 +97,13 @@ public class Administration extends ServletBase {
                 System.out.println("User to add: " + request.getParameter("username"));
                 User user = new User(
                         request.getParameter("username"),
-                        request.getParameter("name")
+                        request.getParameter("name"),
+                        createPassword(),
+                        request.getParameter("email"),
+                        request.getParameter("role"),
+                        request.getParameter()
                 );
+                addUser(user);
                 break;
             default:
                 System.out.println("no action selected");
@@ -169,7 +174,7 @@ public class Administration extends ServletBase {
      * @return true if it was possible to add the name. False if it was not, e.g.
      * because the name already exist in the database.
      */
-    private boolean addUser(String name) {
+    private boolean addUser(User user) {
         boolean resultOk = true;
         try {
             Statement stmt = connection.createStatement();

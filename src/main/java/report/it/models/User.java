@@ -6,8 +6,6 @@ public class User {
     private String name;
     private String password;
     private String email;
-    private int role;
-    private String project;
 
     public User() {
 
@@ -18,13 +16,11 @@ public class User {
         this.password = password;
     }
 
-    public User(String username, String name, String password, String email, int role, String project) {
+    public User(String username, String name, String password, String email) {
         this.username = username;
         this.name = name;
         this.password = password;
         this.email = email;
-        this.role = role;
-        this.project = project;
     }
 
     public String getUsername() {
@@ -43,11 +39,4 @@ public class User {
         return email;
     }
 
-    public int getRole() {
-        return role;
-    }
-
-    public String getProject() {
-        return project;
-    }
 }
