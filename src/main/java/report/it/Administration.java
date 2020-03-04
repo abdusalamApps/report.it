@@ -1,5 +1,6 @@
 package report.it;
 
+import report.it.models.Project;
 import report.it.models.User;
 
 import java.io.IOException;
@@ -108,6 +109,13 @@ public class Administration extends ServletBase {
                     System.out.println("invalied name");
                 }
                 break;
+            case "addProject":
+                System.out.println("action addProject");
+                System.out.println("project to add: " + request.getParameter("projectname"));
+                Project project= new Project(request.getParameter("projectname"));
+                addProject(project);
+                break;
+
             default:
                 System.out.println("no action selected");
                 break;
@@ -163,6 +171,7 @@ public class Administration extends ServletBase {
         for (int i = 0; i < PASSWORD_LENGTH; i++)
             result += (char) (r.nextInt(26) + 97); // 122-97+1=26
         // TODO: encrypt password after creation
+        encryptPassword(result);
         return result;
     }
 
@@ -195,7 +204,23 @@ public class Administration extends ServletBase {
         }
         return resultOk;
     }
+    private boolean addProject(Project project) {
+        boolean resultOk = true;
+        try {
+            Statement stmt = connection.createStatement();
+            String statement = "insert into Projects (name) values('" + project.getName()+ "')";
+            System.out.println(statement);
+            stmt.executeUpdate(statement);
+            stmt.close();
 
+        } catch (SQLException ex) {
+            resultOk = false;
+            // System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return resultOk;
+    }
 
     private List<User> getUsers() {
         List<User> users = new ArrayList<>();
@@ -229,6 +254,28 @@ public class Administration extends ServletBase {
         return users;
     }
 
+    private List<Project> getProjects() {
+        List<Project> projects = new ArrayList<>();
+        try {
+            String query = "select * from Projects";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("name");
+                projects.add(new Project(name));
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return projects;
+    }
+
     private boolean deleteUser(String username) {
         boolean ok = true;
         deleteAssociation(username);
@@ -245,10 +292,26 @@ public class Administration extends ServletBase {
         }
         return ok;
     }
+    private boolean deleteProject(String projectname) {
+        boolean ok = true;
 
+        try {
+            String query = "delete from Projects where name = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, projectname);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            ok = false;
+            e.printStackTrace();
+        }
+        return ok;
+    }
 
     // User's association with any projects has to be deleted as well
-    private void deleteAssociation(String username) {
+    private boolean deleteAssociation(String username) {
+        boolean ok = true;
         try {
             String query = "delete from ProjectMembers where username = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -257,13 +320,12 @@ public class Administration extends ServletBase {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
+            ok = false;
             e.printStackTrace();
         }
+        return ok;
     }
 
-    private boolean deleteAssociation(String username, String project) {
-        return false;
-    }
 
     /**
      * Deletes a user from the database.

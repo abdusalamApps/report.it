@@ -10,8 +10,8 @@ create table Projects
 (
     id            integer primary key auto_increment,
     name          varchar(30),
-    administrator varchar(30),
-    foreign key (administrator) references Administrators (username)
+  --  administrator varchar(30),
+   -- foreign key (administrator) references Administrators (username)
 );
 
 create table Users

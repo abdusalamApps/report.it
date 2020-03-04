@@ -3,22 +3,22 @@ package report.it.models;
 public class Project {
 
     private String name;
-    private String administrator;
+   // private String administrator;
 
     public Project() {
 
     }
 
-    public Project(String name, String administrator) {
+    public Project(String name) {
         this.name = name;
-        this.administrator = administrator;
+      //  this.administrator = administrator;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getAdministrator() {
-        return administrator;
-    }
+  //  public String getAdministrator() {
+   //     return administrator;
+    //}
 }
