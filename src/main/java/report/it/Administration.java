@@ -102,17 +102,16 @@ public class Administration extends ServletBase {
                         createPassword(),
                         request.getParameter("email")
                 );
-                if(checkNewName(user.getName())){
+                if (checkNewName(user.getName())) {
                     addUser(user);
-                     }
-                else{
+                } else {
                     System.out.println("invalied name");
                 }
                 break;
             case "addProject":
                 System.out.println("action addProject");
                 System.out.println("project to add: " + request.getParameter("projectname"));
-                Project project= new Project(request.getParameter("projectname"));
+                Project project = new Project(request.getParameter("projectname"));
                 addProject(project);
                 break;
 
@@ -123,7 +122,7 @@ public class Administration extends ServletBase {
         doGet(request, response);
     }
 
- /*   *//**
+    /*   *//**
      * generates a form for adding new users
      *
      * @return HTML code for the form
@@ -179,6 +178,7 @@ public class Administration extends ServletBase {
         return "";
     }
 
+
     /**
      * Adds a user and a randomly generated password to the database.
      *
@@ -190,8 +190,8 @@ public class Administration extends ServletBase {
         boolean resultOk = true;
         try {
             Statement stmt = connection.createStatement();
-            String statement = "insert into Users (username, name, password,email) values('" + user.getUsername()+ "', '" + user.getName() + "', '" +
-                    createPassword() + "', '" +user.getEmail()+ "')";
+            String statement = "insert into Users (username, name, password,email) values('" + user.getUsername() + "', '" + user.getName() + "', '" +
+                    createPassword() + "', '" + user.getEmail() + "')";
             System.out.println(statement);
             stmt.executeUpdate(statement);
             stmt.close();
@@ -204,11 +204,12 @@ public class Administration extends ServletBase {
         }
         return resultOk;
     }
+
     private boolean addProject(Project project) {
         boolean resultOk = true;
         try {
             Statement stmt = connection.createStatement();
-            String statement = "insert into Projects (name) values('" + project.getName()+ "')";
+            String statement = "insert into Projects (name) values('" + project.getName() + "')";
             System.out.println(statement);
             stmt.executeUpdate(statement);
             stmt.close();
@@ -292,6 +293,7 @@ public class Administration extends ServletBase {
         }
         return ok;
     }
+
     private boolean deleteProject(String projectname) {
         boolean ok = true;
 
