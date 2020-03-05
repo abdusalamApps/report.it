@@ -46,3 +46,22 @@
         </tr>
     </c:forEach>
 </table>
+
+<h1 style="color: aquamarine">New Report</h1>
+<form action="TimeReporting" method="post">
+    <input type="text" name="Week Number" placeholder="week"/>
+    <input type="text" name="Toatal Minutes" placeholder="time"/>
+    <form>
+        <select>
+            <c:forEach items="${projects}" var="project">
+                <option value="${project}">${project}</option>
+            </c:forEach>
+
+
+        </select>
+    </form>
+
+
+    <input type="hidden" name="action" value="submit">
+    <button>Submit Report</button>
+</form>
