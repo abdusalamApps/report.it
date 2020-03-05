@@ -18,4 +18,10 @@ public class TimeReporting extends ServletBase {
 
     }
 
+    /*
+     * Submits a report to the database
+     */
+    public boolean submitReport()  {
+        return false;
+    }
 }
