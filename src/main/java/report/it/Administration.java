@@ -115,7 +115,11 @@ public class Administration extends ServletBase {
                 Project project= new Project(request.getParameter("projectname"));
                 addProject(project);
                 break;
-
+            case "editProject":
+                System.out.println("action editProject");
+                System.out.println("project to add: " + request.getParameter("projectname"));
+                response.sendRedirect("modify-project.jsp");
+                break;
             default:
                 System.out.println("no action selected");
                 break;
@@ -262,7 +266,6 @@ public class Administration extends ServletBase {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String id = rs.getString("id");
                 String name = rs.getString("name");
                 projects.add(new Project(name));
             }
