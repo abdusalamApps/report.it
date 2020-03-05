@@ -49,14 +49,13 @@
 
 <h1 style="color: aquamarine">New Report</h1>
 <form action="TimeReporting" method="post">
-    <input type="text" name="Week Number" placeholder="week"/>
-    <input type="text" name="Toatal Minutes" placeholder="time"/>
+    <input type="text" name="week" placeholder="Week Number"/>
+    <input type="text" name="time" placeholder="Total Minutes"/>
     <form>
         <select>
             <c:forEach items="${projects}" var="project">
-                <option value="${project}">${project}</option>
+                <option name="projectName" value="${project}">${project}</option>
             </c:forEach>
-
 
         </select>
     </form>
