@@ -24,5 +24,23 @@ public class GroupModifier extends ServletBase {
         return false;
     }
 
+    // removes a member from a certain project
+
+    public boolean removeUserFromProject(String username, String project) {
+
+        return false;
+    }
+
+    public boolean addMemberToProject(String username, String project, String role) {
+        return false;
+    }
+
+    public boolean changeMemberRole(String username, String role) {
+        return false;
+    }
+
+    public boolean changeProjectName(String newName, int id) {
+        return false;
+    }
 
 }

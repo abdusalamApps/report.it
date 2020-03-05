@@ -5,8 +5,6 @@ import report.it.models.User;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,8 +19,6 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static java.security.MessageDigest.getInstance;
 
 /**
  * Servlet implementation class Administration.
@@ -100,17 +96,12 @@ public class Administration extends ServletBase {
             case "add":
                 System.out.println("action add");
                 System.out.println("User to add: " + request.getParameter("username"));
-                User user = null;
-                try {
-                    user = new User(
-                            request.getParameter("username"),
-                            request.getParameter("name"),
-                            createPassword(),
-                            request.getParameter("email")
-                    );
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
+                User user = new User(
+                        request.getParameter("username"),
+                        request.getParameter("name"),
+                        createPassword(),
+                        request.getParameter("email")
+                );
                 if(checkNewName(user.getName())){
                     addUser(user);
                      }
@@ -123,9 +114,6 @@ public class Administration extends ServletBase {
                 System.out.println("project to add: " + request.getParameter("projectname"));
                 Project project= new Project(request.getParameter("projectname"));
                 addProject(project);
-                break;
-            case "editProject":
-                response.sendRedirect("modify-project.jsp");
                 break;
 
             default:
@@ -177,32 +165,18 @@ public class Administration extends ServletBase {
      *
      * @return a randomly chosen password
      */
-    private String createPassword() throws NoSuchAlgorithmException {
+    private String createPassword() {
         String result = "";
         Random r = new Random();
         for (int i = 0; i < PASSWORD_LENGTH; i++)
             result += (char) (r.nextInt(26) + 97); // 122-97+1=26
         // TODO: encrypt password after creation
-
-        return encryptPassword(result, "SHA-256");
+        encryptPassword(result);
+        return result;
     }
 
-    private String encryptPassword(String password, String algoritm) throws NoSuchAlgorithmException {
-        MessageDigest digest= getInstance(algoritm);
-        digest.reset();
-        byte[] hash = digest.digest(password.getBytes());
-
-        return bytesToStringHex(hash);
-    }
-    private final char[] hexArray="0123456789ABCDEF".toCharArray();
-    private String bytesToStringHex(byte[] bytes){
-    char [] hexChar= new char[bytes.length*2];
-    for (int i=0; i<bytes.length;i++){
-    int v= bytes[i]& 0xFF;
-    hexChar[i*2]= hexArray[v>>>4];
-    hexChar[i*2+1]= hexArray[v&0x0F];
-    }
-    return new String(hexChar);
+    private String encryptPassword(String password) {
+        return "";
     }
 
     /**
@@ -222,9 +196,11 @@ public class Administration extends ServletBase {
             stmt.executeUpdate(statement);
             stmt.close();
 
-        } catch (SQLException | NoSuchAlgorithmException ex) {
+        } catch (SQLException ex) {
             resultOk = false;
-            System.out.println("SQLException: " + ex.getMessage());
+            // System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
         }
         return resultOk;
     }
@@ -316,7 +292,22 @@ public class Administration extends ServletBase {
         }
         return ok;
     }
+    private boolean deleteProject(String projectname) {
+        boolean ok = true;
 
+        try {
+            String query = "delete from Projects where name = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, projectname);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            ok = false;
+            e.printStackTrace();
+        }
+        return ok;
+    }
 
     // User's association with any projects has to be deleted as well
     private boolean deleteAssociation(String username) {
