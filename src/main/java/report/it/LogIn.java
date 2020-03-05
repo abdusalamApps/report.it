@@ -73,7 +73,7 @@ public class LogIn extends ServletBase {
                 state = LOGIN_TRUE;
                 session.setAttribute("state", state);  // save the state in the session
                 session.setAttribute("name", name);  // save the name in the session
-                response.sendRedirect("time-reporting.jsp");
+                response.sendRedirect("TimeReporting");
             } else if (checkAdmin(name, password)) {
 				state = LOGIN_TRUE;
 				session.setAttribute("state", state);  // save the state in the session

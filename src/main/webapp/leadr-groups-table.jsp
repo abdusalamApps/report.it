@@ -1,16 +1,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: abdusalamyabrak
-  Date: 2020-02-22
-  Time: 09:04
+  Date: 2020-03-05
+  Time: 10:43
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Time Reporting</title>
-</head>
-<body>
-<h1 style="color: aquamarine">Time Reporting Page</h1>
-</body>
-</html>
+<table>
+    <tr>
+        <th>Leader Tables</th>
+    </tr>
+
+</table>
