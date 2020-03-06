@@ -77,13 +77,6 @@ public class Administration extends ServletBase {
 
             request.setAttribute("users", users);
 
-            System.out.println("list size: " + users.size());
-
-            for (User user :
-                    users) {
-                System.out.println(user.getName());
-            }
-
             request.getRequestDispatcher("all-users-table.jsp").include(request, response);
             request.getRequestDispatcher("add-user-form.jsp").include(request, response);
             request.getRequestDispatcher("add-project-form.jsp").include(request, response);
