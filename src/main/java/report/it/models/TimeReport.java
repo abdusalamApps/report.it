@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class TimeReport {
 
     private int id;
-    private Timestamp submitted;
+    private String submitted;
     private int minutes_sum;
     private boolean signed;
     private String projectName;
@@ -16,7 +16,7 @@ public class TimeReport {
 
     }
 
-    public TimeReport(int id, Timestamp submitted, int minutes_sum, boolean signed, String projectName, String username,int week) {
+    public TimeReport(int id, String submitted, int minutes_sum, boolean signed, String projectName, String username,int week) {
         this.id = id;
         this.submitted = submitted;
         this.minutes_sum = minutes_sum;
@@ -29,7 +29,7 @@ public class TimeReport {
     public int getId(){
         return id;
     };
-    public Timestamp getSubmitted(){
+    public String getSubmitted(){
         return submitted;
     };
     public int getMinutes_sum(){

@@ -51,8 +51,6 @@
 <h2 style="color: aquamarine">New Report</h2>
 
 
-
-
 <form action="TimeReporting" method="post">
     <input type="text" name="week" placeholder="Week Number"/>
     <input type="text" name="time" placeholder="Total Minutes"/>
