@@ -12,6 +12,7 @@ public class TimeReport {
     private String username;
     private int week;
 
+
     public TimeReport() {
 
     }
@@ -45,9 +46,6 @@ public class TimeReport {
         return username;
     }
 
-    public int getWeek(){
-
-        return week;
-    }
+    public int getWeek(){ return week; }
 
 }

@@ -43,7 +43,6 @@ public class TimeReporting extends ServletBase {
             myName = (String) nameObj;  // if the name exists typecast the name to a string
             request.setAttribute("user",myName);
         }
-
         // check that the user is logged in
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
@@ -60,7 +59,6 @@ public class TimeReporting extends ServletBase {
             if (isLeader(myName)) {
                 request.getRequestDispatcher("leadr-groups-table.jsp").include(request, response);
             }
-
             out.println("</body></html>");
 
         }
@@ -123,7 +121,6 @@ public class TimeReporting extends ServletBase {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
-
         return role == 1;
     }
 
@@ -155,7 +152,6 @@ public class TimeReporting extends ServletBase {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
-
         return timeReports;
     }
 
