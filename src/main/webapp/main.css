@@ -1,57 +1,10 @@
 @charset "UTF-8";
 
-Body {
+Body, html {
     width: 100%;
     font-family: ABeeZee, sans-serif;
-    background: darkcyan;
 }
-
-h1 {
-    color: white;
-}
-
-h2 {
-    color: white;
-}
-
-h3 {
-    color: white;
-}
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-    align-content: center;
-}
-
-tr:nth-child(even) {
-    background-color: darkslategray;
-    color: white;
-    align-content: center;
-
-}
-
-tr:nth-child(odd) {
-    background-color: white;
-    align-content: center;
-    color: darkslategray;
-}
-
 
 .container {
     padding: 5em;
-}
-
-.mdc-button {
-    --mdc-theme-primary: #F5DEB3;
-}
-
-#p1 {
-    background: hsl(15, 100, 60);
 }

@@ -78,14 +78,16 @@ public class LogIn extends ServletBase {
 				state = LOGIN_TRUE;
 				session.setAttribute("state", state);  // save the state in the session
 				session.setAttribute("name", name);  // save the name in the session
-				response.sendRedirect("administration.jsp");
+				response.sendRedirect("Administration");
 			} else {
                 out.println("<p>That was not a valid user name / password. </p>");
-                out.println(loginRequestForm());
+//                out.println(loginRequestForm());
+				request.getRequestDispatcher("index.jsp").forward(request, response);
             }
         } else { // name was null, probably because no form has been filled out yet. Display form.
-            out.println(loginRequestForm());
-        }
+//            out.println(loginRequestForm());
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
 
         out.println("</body></html>");
     }
@@ -104,6 +106,7 @@ public class LogIn extends ServletBase {
 	 *
 	 * @return HTML code for the form
 	 */
+/*
 	protected String loginRequestForm() {
 		String html = "<p>Please enter your name and password in order to log in:</p>";
 		html += "<p> <form name=" + formElement("input");
@@ -113,6 +116,7 @@ public class LogIn extends ServletBase {
 		html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Submit") + '>';
 		return html;
 	}
+*/
 
 	/**
 	 * Checks with the database if the user should be accepted
