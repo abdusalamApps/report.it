@@ -19,7 +19,7 @@ public class ProjectMember {
         return username;
     }
 
-    public String getProjectId(){
+    public String getProjectName(){
         return projectName;
     }
 
