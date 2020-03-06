@@ -33,7 +33,7 @@
                     ${timeReport.getMinutes_sum()}
             </td>
             <td>
-                    ${timeReport.getProjectId()}
+                    ${timeReport.getProjectName()}
             </td>
 
             <td>
@@ -59,7 +59,6 @@
 
         </select>
     </form>
-
 
     <input type="hidden" name="action" value="submit">
     <button>Submit Report</button>
