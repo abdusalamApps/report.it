@@ -8,10 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Home Page</title>
+    <title>Report It</title>
 </head>
 <body>
-<h1>Home Page</h1>
-<a href="LogIn">Log in</a>
+<h1>Report It</h1>
+<form action="LogIn" method="post">
+    <input type="text" name="user">
+    <input type="password" name="password">
+
+    <input type="submit" name="Submit">
+</form>
 </body>
 </html>

@@ -74,10 +74,12 @@ public class Administration extends ServletBase {
 
             request.getRequestDispatcher("administration.jsp").include(request, response);
             List<User> users = getUsers();
+
             request.setAttribute("users", users);
+
             request.getRequestDispatcher("all-users-table.jsp").include(request, response);
             request.getRequestDispatcher("add-user-form.jsp").include(request, response);
-            request.getRequestDispatcher("add-projext-form.jsp").include(request, response);
+            request.getRequestDispatcher("add-project-form.jsp").include(request, response);
             request.getRequestDispatcher("all-projects-table.jsp").include(request, response);
 
             out.println("</div>");
@@ -111,17 +113,16 @@ public class Administration extends ServletBase {
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
-                if(checkNewName(user.getName())){
+                if (checkNewName(user.getName())) {
                     addUser(user);
-                     }
-                else{
+                } else {
                     System.out.println("invalied name");
                 }
                 break;
             case "addProject":
                 System.out.println("action addProject");
                 System.out.println("project to add: " + request.getParameter("projectname"));
-                Project project= new Project(request.getParameter("projectname"));
+                Project project = new Project(request.getParameter("projectname"));
                 addProject(project);
                 break;
             case "editProject":
@@ -136,7 +137,7 @@ public class Administration extends ServletBase {
         doGet(request, response);
     }
 
- /*   *//**
+    /*   *//**
      * generates a form for adding new users
      *
      * @return HTML code for the form
@@ -188,19 +189,21 @@ public class Administration extends ServletBase {
         return encryptPassword(result, "SHA-256");
     }
 
-    private String encryptPassword(String password, String algoritm) throws NoSuchAlgorithmException {
-        MessageDigest digest= MessageDigest.getInstance(algoritm);
+    private String encryptPassword(String password, String algorithm) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance(algorithm);
         digest.reset();
-        byte[] hash= digest.digest(password.getBytes());
+        byte[] hash = digest.digest(password.getBytes());
         return bytesToStringHex(hash);
     }
-    private final char[] hexArray= "0123456789ABCDEF".toCharArray();
-    private String bytesToStringHex(byte [] bytes){
-        char[] hexChar= new char[bytes.length*2];
+
+    private final char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+    private String bytesToStringHex(byte[] bytes) {
+        char[] hexChar = new char[bytes.length * 2];
         for (int i = 0; i < bytes.length; i++) {
-        int v= bytes[i] & 0xFF;
-        hexChar[i*2]= hexArray[v>>>4];
-        hexChar[i*2+1]= hexArray[v&0x0F];
+            int v = bytes[i] & 0xFF;
+            hexChar[i * 2] = hexArray[v >>> 4];
+            hexChar[i * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChar);
     }
@@ -216,24 +219,25 @@ public class Administration extends ServletBase {
         boolean resultOk = true;
         try {
             Statement stmt = connection.createStatement();
-            String statement = "insert into Users (username, name, password,email) values('" + user.getUsername()+ "', '" + user.getName() + "', '" +
-                    createPassword() + "', '" +user.getEmail()+ "')";
+            String statement = "insert into Users (username, name, password,email) values('" + user.getUsername() + "', '" + user.getName() + "', '" +
+                    createPassword() + "', '" + user.getEmail() + "')";
             System.out.println(statement);
             stmt.executeUpdate(statement);
             stmt.close();
 
         } catch (SQLException | NoSuchAlgorithmException ex) {
             resultOk = false;
-             System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLException: " + ex.getMessage());
 
         }
         return resultOk;
     }
+
     private boolean addProject(Project project) {
         boolean resultOk = true;
         try {
             Statement stmt = connection.createStatement();
-            String statement = "insert into Projects (name) values('" + project.getName()+ "')";
+            String statement = "insert into Projects (name) values('" + project.getName() + "')";
             System.out.println(statement);
             stmt.executeUpdate(statement);
             stmt.close();
@@ -316,6 +320,7 @@ public class Administration extends ServletBase {
         }
         return ok;
     }
+
     private boolean deleteProject(String projectname) {
         boolean ok = true;
 
