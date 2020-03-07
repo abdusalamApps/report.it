@@ -8,6 +8,7 @@ public class TimeReport {
     private String submitted;
     private int minutes_sum;
     private boolean signed;
+    private int projectID;
     private String projectName;
     private String username;
     private int week;
@@ -17,11 +18,12 @@ public class TimeReport {
 
     }
 
-    public TimeReport(int id, String submitted, int minutes_sum, boolean signed, String projectName, String username,int week) {
+    public TimeReport(int id, String submitted, int minutes_sum, boolean signed,int projectID, String projectName, String username,int week) {
         this.id = id;
         this.submitted = submitted;
         this.minutes_sum = minutes_sum;
         this.signed = signed;
+        this.projectID=projectID;
         this.projectName = projectName;
         this.username = username;
         this.week = week;
@@ -45,6 +47,7 @@ public class TimeReport {
     public String getUsername(){
         return username;
     }
+    public int getProjectID(){return projectID;}
 
     public int getWeek(){ return week; }
 

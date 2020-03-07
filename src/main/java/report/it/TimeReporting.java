@@ -38,11 +38,12 @@ public class TimeReporting extends ServletBase {
 
         String myName = "";
         HttpSession session = request.getSession(true);
-        Object nameObj = session.getAttribute("name");
+        Object nameObj = session.getAttribute("username");
         if (nameObj != null) {
             myName = (String) nameObj;  // if the name exists typecast the name to a string
             request.setAttribute("user",myName);
         }
+
         // check that the user is logged in
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
@@ -57,28 +58,35 @@ public class TimeReporting extends ServletBase {
             request.getRequestDispatcher("timereports-table.jsp").include(request, response);
 
             if (isLeader(myName)) {
+                List<TimeReport> groupReports= getGroupTimeReport(myName);
+                request.setAttribute("groupReports",groupReports);
+
+                List<Project> myGroups=getProject(myName);
+                request.setAttribute("myGroups",myGroups);
                 request.getRequestDispatcher("leadr-groups-table.jsp").include(request, response);
             }
             out.println("</body></html>");
-
         }
-
-
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        PrintWriter out = response.getWriter();
         String myName = "";
         HttpSession session = request.getSession(true);
-        Object nameObj = session.getAttribute("name");
+        Object nameObj = session.getAttribute("username");
         if (nameObj != null) {
             myName = (String) nameObj;  // if the name exists typecast the name to a string
-            //request.setAttribute("user",myName);
+            request.setAttribute("user",myName);
         }
-        PrintWriter out = response.getWriter();
+
 
         switch (request.getParameter("action")) {
-            case "edit":
+            case "editTimeReport":
                 System.out.println("action edit");
+                break;
+            case "editProject":
+
                 break;
             case "sign":
 
@@ -124,6 +132,72 @@ public class TimeReporting extends ServletBase {
         return role == 1;
     }
 
+    private List<Project> getProject(String user){
+        List<Project> projects= new ArrayList<>();
+        PreparedStatement ps =null;
+        try {
+            String query = "select * from Projects inner join ProjectMembers on Projects.id= ProjectMembers.projectId where username=?";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, user);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int id=rs.getInt("Projects.id");
+                String name=rs.getString("Projects.name");
+                String administrator=rs.getString("Projects.administrator");
+                projects.add(new Project(id,name,administrator));
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return projects;
+    }
+    /**
+     * get all members time reports in grouperLeaders group
+     * @param groupLeader
+     * @return list of all members time reports
+     */
+    private List<TimeReport> getGroupTimeReport(String groupLeader){
+        List<TimeReport> groupReports = new ArrayList<>();
+        PreparedStatement ps =null;
+        try {
+            //String query = "select distinct p1.username AS member from ProjectMembers p1, ProjectMembers p2 where p1.projectId=p2.projectId " +
+            //        "and p2.username = ? and p2.role = 1";
+            String query = "select distinct p1.username, p2.projectId from ProjectMembers p1 inner join ProjectMembers p2 on p1.projectId=p2.projectId " +
+                    "where p2.username = ? and p2.role = '1'";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, groupLeader);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int projectID=rs.getInt("p2.projectId");
+                String groupMember= rs.getString("p1.username");
+                List<TimeReport> memberReports=getTimeReports(groupMember);
+                for (TimeReport t:memberReports) {
+                    // add time report only with projectID of groupLeader as leader
+                    if(t.getProjectID()==projectID)
+                        groupReports.add(t);}
+               // if(!groupMember.equals(groupLeader)){
+                  // groupReports.addAll(getTimeReports(groupMember));
+                   /* // add only unsigned time reports
+                   List<TimeReport> memberReports=getTimeReports(groupMember);
+                    for (TimeReport t:memberReports) {
+                        // add unsigned time report only
+                        if(!t.getSigned())
+                            groupReports.add(t);
+                    }*/
+              //  }
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return groupReports;
+    }
+
     /**
      * get current users all time reports
      * @param user current users username
@@ -133,7 +207,8 @@ public class TimeReporting extends ServletBase {
         List<TimeReport> timeReports = new ArrayList<>();
         PreparedStatement ps =null;
         try {
-            String query = "select * from TimeReports inner join Projects on Projects.id=TimeReports.projectId where username = ?";
+            String query = "select * from TimeReports inner join Projects on Projects.id=TimeReports.projectId where username = ?" +
+                    "order by week DESC";
             ps = connection.prepareStatement(query);
             ps.setString(1, user);
             ResultSet rs = ps.executeQuery();
@@ -142,9 +217,10 @@ public class TimeReporting extends ServletBase {
                 String submitted=rs.getString("submitted");
                 int minutes_sum= rs.getInt("minutes_sum");
                 boolean signed=rs.getBoolean("signed");
+                int projectId=rs.getInt("projectId");
                 String projectName=rs.getString("Projects.name");
                 int week=rs.getInt("week");
-                timeReports.add(new TimeReport(id, submitted,minutes_sum, signed,  projectName, user, week));
+                timeReports.add(new TimeReport(id, submitted,minutes_sum, signed, projectId, projectName, user, week));
             }
             ps.close();
         } catch (SQLException ex) {

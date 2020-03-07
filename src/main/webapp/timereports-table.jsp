@@ -39,7 +39,7 @@
             <td>
                 <form action="TimeReporting" method="post">
                     <input type="hidden" name="timeReportId" value="${timeReport.getId()}"/>
-                    <input type="hidden" name="action" value="edit">
+                    <input type="hidden" name="action" value="editTimeReport">
                     <button>Edit</button>
                 </form>
             </td>
