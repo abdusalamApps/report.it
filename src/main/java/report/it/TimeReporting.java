@@ -38,7 +38,7 @@ public class TimeReporting extends ServletBase {
 
         String myName = "";
         HttpSession session = request.getSession(true);
-        Object nameObj = session.getAttribute("name");
+        Object nameObj = session.getAttribute("username");
         if (nameObj != null) {
             myName = (String) nameObj;  // if the name exists typecast the name to a string
             request.setAttribute("user",myName);
@@ -72,10 +72,9 @@ public class TimeReporting extends ServletBase {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         PrintWriter out = response.getWriter();
-        //String myName = (String)request.getAttribute("user");
         String myName = "";
         HttpSession session = request.getSession(true);
-        Object nameObj = session.getAttribute("name");
+        Object nameObj = session.getAttribute("username");
         if (nameObj != null) {
             myName = (String) nameObj;  // if the name exists typecast the name to a string
             request.setAttribute("user",myName);
