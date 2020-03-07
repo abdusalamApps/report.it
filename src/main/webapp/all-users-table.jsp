@@ -13,9 +13,9 @@
 <h3>Registered users</h3>
 <table>
     <tr>
-        <th>username</th>
-        <th>name</th>
-        <th>email</th>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Email</th>
     </tr>
     <c:forEach items="${users}" var="user">
         <tr>
@@ -28,7 +28,7 @@
             <td>
                     ${user.getEmail()}
             </td>
-            <td>
+            <td class="table-button-column">
                 <form action="Administration" method="post">
                     <input type="hidden" name="username" value="${user.getUsername()}"/>
                     <input type="hidden" name="action" value="delete">

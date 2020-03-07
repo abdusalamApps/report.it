@@ -1,0 +1,31 @@
+Body, html {
+    width: 100%;
+    height: 100%;
+    font-family: ABeeZee, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    margin-left: 24px;
+    margin-right: 24px;
+    background-color: #f6f6f6;
+    display: grid;
+}
+
+table {
+    width: 100%;
+    margin: auto;
+}
+
+th {
+    text-align: start;
+    padding-bottom: 5%;
+}
+
+.table-button-column {
+    text-align: center;
+}
+
+
+

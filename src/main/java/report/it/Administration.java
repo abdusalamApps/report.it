@@ -38,6 +38,7 @@ public class Administration extends ServletBase {
     private static final long serialVersionUID = 1L;
     private static final int PASSWORD_LENGTH = 6;
 
+
     /**
      * @see ServletBase#ServletBase()
      */
@@ -61,18 +62,24 @@ public class Administration extends ServletBase {
         PrintWriter out = response.getWriter();
         out.println(getPageIntro());
 
-        String myName = "";
+        String currentUsername = "";
+
         HttpSession session = request.getSession(true);
-        Object nameObj = session.getAttribute("name");
+        Object nameObj = session.getAttribute("username");
         if (nameObj != null)
-            myName = (String) nameObj;  // if the name exists typecast the name to a string
+            currentUsername = (String) nameObj;  // if the name exists typecast the name to a string
+
+
 
         // check that the user is logged in
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            request.setAttribute("fullName", getFullName(currentUsername));
 
             request.getRequestDispatcher("administration.jsp").include(request, response);
+
+
             List<User> users = getUsers();
 
             request.setAttribute("users", users);
@@ -378,4 +385,20 @@ public class Administration extends ServletBase {
         }
     }
 */
+    private String getFullName(String username) {
+        String fullName = "";
+        try {
+            PreparedStatement statement = connection.prepareStatement("select * from Administrators where username = ?");
+            statement.setString(1, username);
+            ResultSet set = statement.executeQuery();
+
+            while (set.next()) {
+                fullName = set.getString("name");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fullName;
+    }
 }
