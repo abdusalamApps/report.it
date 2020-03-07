@@ -10,7 +10,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<h1 style="color: aquamarine">Your Time Reports</h1>
+<h2 style="color: aquamarine">Your Time Reports</h2>
 
 <table>
     <tr>
@@ -46,20 +46,24 @@
         </tr>
     </c:forEach>
 </table>
+<br>
 
-<h1 style="color: aquamarine">New Report</h1>
+<h2 style="color: aquamarine">New Report</h2>
+
+
 <form action="TimeReporting" method="post">
     <input type="text" name="week" placeholder="Week Number"/>
     <input type="text" name="time" placeholder="Total Minutes"/>
-    <form>
-        <select>
-            <c:forEach items="${projects}" var="project">
-                <option name="projectName" value="${project}">${project}</option>
-            </c:forEach>
 
-        </select>
-    </form>
-
+    <select name="projectName">
+        <c:forEach items="${projects}" var="project">
+            <option  value="${project}">${project}</option>
+        </c:forEach>
+    </select>
     <input type="hidden" name="action" value="submit">
     <button>Submit Report</button>
 </form>
+
+
+<br>
+<br>
