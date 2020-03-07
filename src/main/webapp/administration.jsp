@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Administration Page</title>
-    <link rel='stylesheet' type='text/css' href='main.css'>
+    <link rel='stylesheet' type='text/css' href='administration.css'>
     <link href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap" rel="stylesheet">
 </head>
 <body>

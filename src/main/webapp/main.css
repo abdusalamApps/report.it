@@ -2,9 +2,59 @@
 
 Body, html {
     width: 100%;
+    height: 100%;
     font-family: ABeeZee, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: grid;
 }
 
 .container {
-    padding: 5em;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: auto;
+}
+
+
+input[type = text], select {
+    width: 100%;
+    margin-bottom: 2%;
+    padding: 16px;
+    font-size: large;
+    border: 0.5px solid #707070;
+    border-radius: 5px;
+    font-family: ABeeZee, sans-serif;
+    display: inline-block;
+}
+
+input[type = password] {
+    width: 100%;
+    margin-bottom: 2%;
+    padding: 16px;
+    font-size: large;
+    border: 0.5px solid #707070;
+    border-radius: 5px;
+    font-family: ABeeZee, sans-serif;
+    display: inline-block;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #535353;
+    color: white;
+    font-size: large;
+    font-family: ABeeZee, sans-serif;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #464646;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10%;
 }
