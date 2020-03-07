@@ -11,6 +11,8 @@
     <title>Administration </title>
     <link rel='stylesheet' type='text/css' href='administration.css'>
     <link href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 <body>
 <div class="container">
