@@ -8,11 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Administration Page</title>
-    <link rel='stylesheet' type='text/css' href='main.css'>
+    <title>Administration </title>
+    <link rel='stylesheet' type='text/css' href='administration.css'>
     <link href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 <body>
 <div class="container">
-<h1> Administration page </h1>
+<h1> Welcome ${fullName} </h1>
 

@@ -8,15 +8,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel='stylesheet' type='text/css' href='main.css'>
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap" rel="stylesheet">
+
     <title>Report It</title>
 </head>
 <body>
-<h1>Report It</h1>
-<form action="LogIn" method="post">
-    <input type="text" name="user">
-    <input type="password" name="password">
+<div class="container">
+    <h1>Report It</h1>
+    <form action="LogIn" method="post">
+        <input placeholder="Username" type="text" name="user">
+        <input placeholder="Password" type="password" name="password">
 
-    <input type="submit" name="Submit">
-</form>
+        <button>Log In</button>
+    </form>
+
+</div>
 </body>
 </html>

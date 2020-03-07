@@ -1,5 +1,3 @@
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="report.it.models.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   Created by IntelliJ IDEA.
@@ -10,29 +8,32 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<h3>Registered users</h3>
+<h3>Users</h3>
 <table>
     <tr>
-        <th>username</th>
-        <th>name</th>
-        <th>email</th>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th></th>
     </tr>
     <c:forEach items="${users}" var="user">
         <tr>
-            <td>
+            <td class="info-col">
                     ${user.getUsername()}
             </td>
-            <td>
+            <td class="info-col">
                     ${user.getName()}
             </td>
-            <td>
+            <td class="info-col">
                     ${user.getEmail()}
             </td>
-            <td>
+            <td class="button-col">
                 <form action="Administration" method="post">
                     <input type="hidden" name="username" value="${user.getUsername()}"/>
                     <input type="hidden" name="action" value="delete">
-                    <button>Delete</button>
+                    <button id="delete-button">
+                        <i class="material-icons">delete</i>
+                    </button>
                 </form>
             </td>
         </tr>

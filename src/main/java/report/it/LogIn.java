@@ -63,31 +63,32 @@ public class LogIn extends ServletBase {
             out.println("<p>You are now logged out</p>");
         }
 
-        String name;
+        String username;
         String password;
 
-        name = request.getParameter("user"); // get the string that the user entered in the form
+        username = request.getParameter("user"); // get the string that the user entered in the form
         password = request.getParameter("password"); // get the entered password
-        if (name != null && password != null) {
-            if (checkUser(name, password)) {
+
+        if (username != null && password != null) {
+            if (checkUser(username, password)) {
                 state = LOGIN_TRUE;
                 session.setAttribute("state", state);  // save the state in the session
-                session.setAttribute("name", name);  // save the name in the session
+                session.setAttribute("username", username);  // save the username in the session
                 response.sendRedirect("TimeReporting");
-            } else if (checkAdmin(name, password)) {
-				state = LOGIN_TRUE;
-				session.setAttribute("state", state);  // save the state in the session
-				session.setAttribute("name", name);  // save the name in the session
+            } else if (checkAdmin(username, password)) {
+                state = LOGIN_TRUE;
+                session.setAttribute("state", state);  // save the state in the session
+                session.setAttribute("username", username);  // save the username in the session
 				response.sendRedirect("Administration");
-			} else {
-                out.println("<p>That was not a valid user name / password. </p>");
+            } else {
+                out.println("<p>That was not a valid user username / password. </p>");
 //                out.println(loginRequestForm());
-				request.getRequestDispatcher("index.jsp").forward(request, response);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
             }
-        } else { // name was null, probably because no form has been filled out yet. Display form.
+        } else { // username was null, probably because no form has been filled out yet. Display form.
 //            out.println(loginRequestForm());
-			request.getRequestDispatcher("index.jsp").forward(request, response);
-		}
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
 
         out.println("</body></html>");
     }
@@ -101,11 +102,11 @@ public class LogIn extends ServletBase {
         doGet(request, response);
     }
 
-	/**
-	 * Generates a form for login.
-	 *
-	 * @return HTML code for the form
-	 */
+    /**
+     * Generates a form for login.
+     *
+     * @return HTML code for the form
+     */
 /*
 	protected String loginRequestForm() {
 		String html = "<p>Please enter your name and password in order to log in:</p>";
@@ -118,68 +119,68 @@ public class LogIn extends ServletBase {
 	}
 */
 
-	/**
-	 * Checks with the database if the user should be accepted
-	 *
-	 * @param name     The name of the user
-	 * @param password The password of the user
-	 * @return true if the user should be accepted
-	 */
-	private boolean checkUser(String name, String password) {
+    /**
+     * Checks with the database if the user should be accepted
+     *
+     * @param name     The name of the user
+     * @param password The password of the user
+     * @return true if the user should be accepted
+     */
+    private boolean checkUser(String name, String password) {
 
-		boolean userOk = false;
-		boolean userChecked = false;
+        boolean userOk = false;
+        boolean userChecked = false;
 
-		try {
-			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from Users");
-			while (rs.next() && !userChecked) {
-				String nameSaved = rs.getString("username");
-				String passwordSaved = rs.getString("password");
-				if (name.equals(nameSaved)) {
-					userChecked = true;
-					userOk = password.equals(passwordSaved);
-				}
-			}
-			stmt.close();
-		} catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		}
-		return userOk;
-	}
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from Users");
+            while (rs.next() && !userChecked) {
+                String nameSaved = rs.getString("username");
+                String passwordSaved = rs.getString("password");
+                if (name.equals(nameSaved)) {
+                    userChecked = true;
+                    userOk = password.equals(passwordSaved);
+                }
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return userOk;
+    }
 
-	private boolean checkAdmin(String username, String password) {
-		boolean usernameExists = false;
-		boolean passCorrect = false;
+    private boolean checkAdmin(String username, String password) {
+        boolean usernameExists = false;
+        boolean passCorrect = false;
 
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement("select * from Administrators where username = ?");
-			preparedStatement.setString(1, username);
-			ResultSet set = preparedStatement.executeQuery();
-			while (set.next() && !usernameExists) {
-				if (username.equals(set.getString("username"))) {
-					usernameExists = true;
-					passCorrect = set.getString("password").equals(password);
-				}
-			}
-			preparedStatement.close();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from Administrators where username = ?");
+            preparedStatement.setString(1, username);
+            ResultSet set = preparedStatement.executeQuery();
+            while (set.next() && !usernameExists) {
+                if (username.equals(set.getString("username"))) {
+                    usernameExists = true;
+                    passCorrect = set.getString("password").equals(password);
+                }
+            }
+            preparedStatement.close();
 
-		} catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		}
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
 
-		return passCorrect;
-	}
+        return passCorrect;
+    }
 
 
-	private int checkLoginAttempts() {
-		int fails = 0;
+    private int checkLoginAttempts() {
+        int fails = 0;
 
-		return fails;
-	}
+        return fails;
+    }
 
 }
