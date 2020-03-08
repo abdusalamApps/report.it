@@ -17,7 +17,7 @@ public class GroupModifier extends ServletBase {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.doGet(request, response);
+       // super.doGet(request, response);
         PrintWriter out = response.getWriter();
         out.println(getPageIntro());
 
@@ -40,6 +40,7 @@ public class GroupModifier extends ServletBase {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.doPost(request, response);
+
     }
 
     public boolean addUserToGroup(String username, String project) {
@@ -139,20 +140,4 @@ public class GroupModifier extends ServletBase {
 
         return changed;
     }
-    private String getFullName(String username) {
-        String fullName = "";
-        try {
-        PreparedStatement statement = connection.prepareStatement("select * from Administrators where username = ?");
-        statement.setString(1, username);
-        ResultSet set = statement.executeQuery();
-
-        while (set.next()) {
-            fullName = set.getString("name");
-
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-        return fullName;
-}
 }
