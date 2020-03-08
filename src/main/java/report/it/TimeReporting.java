@@ -88,8 +88,10 @@ public class TimeReporting extends ServletBase {
             case "editProject":
 
                 break;
-            case "sign":
 
+            case "sign":
+                int groupReportId=Integer.parseInt(request.getParameter("groupReportId"));
+                signReport(groupReportId);
                 break;
             case "submit":
                 System.out.println("action submit time report");
@@ -99,6 +101,7 @@ public class TimeReporting extends ServletBase {
                     out.print("Please check if you choose a project or input invalid text");
                 }
                 break;
+
             case "update":
 
                 break;
@@ -154,6 +157,26 @@ public class TimeReporting extends ServletBase {
         }
         return projects;
     }
+
+    private boolean signReport(int reportID){
+        boolean isSigned=true;
+        PreparedStatement ps =null;
+        try {
+
+            String query = "update TimeReports set signed=true where id=?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, reportID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            isSigned=false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return isSigned;
+    }
+
     /**
      * get all members time reports in grouperLeaders group
      * @param groupLeader
