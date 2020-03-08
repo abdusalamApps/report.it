@@ -39,11 +39,14 @@
             </td>
 
             <td>
+                <c:set var = "isSigned" scope = "session" value = "${groupReport.getSigned()}"/>
+                <c:if test = "${!isSigned}">
                 <form action="TimeReporting" method="post">
                     <input type="hidden" name="groupReportId" value="${groupReport.getId()}"/>
                     <input type="hidden" name="action" value="sign">
                     <button>Sign</button>
                 </form>
+                </c:if>
             </td>
         </tr>
     </c:forEach>
