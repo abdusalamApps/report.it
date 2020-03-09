@@ -37,11 +37,16 @@
             </td>
 
             <td>
-                <form action="TimeReporting" method="post">
-                    <input type="hidden" name="timeReportId" value="${timeReport.getId()}"/>
-                    <input type="hidden" name="action" value="edit">
-                    <button>Edit</button>
-                </form>
+
+
+                <c:set var = "signed" scope = "session" value = "${timeReport.getSigned()}"/>
+                <c:if test = "${!signed}">
+                    <form action="TimeReporting" method="post">
+                        <input type="hidden" name="timeReportId" value="${timeReport.getId()}"/>
+                        <input type="hidden" name="action" value="editTimeReport">
+                        <button>Edit</button>
+                    </form>
+                </c:if>
             </td>
         </tr>
     </c:forEach>
