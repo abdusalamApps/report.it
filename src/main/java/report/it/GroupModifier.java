@@ -105,7 +105,7 @@ public class GroupModifier extends ServletBase {
     public boolean changeProjectName(String newName, int id) {
         boolean changed = true;
         try {
-            String query = "ALTER TABLE Projects WHWRE name=? and id=?";
+            String query = "ALTER TABLE Projects WHERE name=? and id=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, newName);
             preparedStatement.setInt(2, id);
