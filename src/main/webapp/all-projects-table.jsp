@@ -11,26 +11,44 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<h3>Registered Projects</h3>
-<table>
-    <tr>
-        <th>Project Name</th>
-    </tr>
-    <c:forEach items="${projects}" var="project">
+
+<div class="projHeader">
+      <h3>Projects</h3>
+          <form action="Administration" method="post">
+                  <input type="text" name="projectname" placeholder="Project name"/>
+
+
+                  <input type="hidden" name="action" value="addProject">
+                  <button>Create project</button>
+          </form>
+</div>
+
+<div class="Project">
+
+    <h4>Registered Projects</h4>
+    <table>
         <tr>
-
-            <td>
-                    ${project.getName()}
-
-            </td>
-
-            <td>
-                <form action="Administration" method="post">
-                    <input type="hidden" name="projectname" value="${project.getName()}"/>
-                    <input type="hidden" name="action" value="editProject">
-                    <button>Delete</button>
-                </form>
-            </td>
+            <th>Project Name</th>
+            <th></th>
         </tr>
-    </c:forEach>
-</table>
+        <c:forEach items="${projects}" var="project">
+            <tr>
+
+                <td class="info-col">
+                        ${project.getName()}
+
+                </td>
+
+                 <td class="button-col">
+                    <form action="Administration" method="post">
+                        <input type="hidden" name="projectname" value="$project.getName()}"/>
+                        <input type="hidden" name="action" value="edit">
+                        <button id="edit-button">
+                            <i class="material-icons">edit</i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
