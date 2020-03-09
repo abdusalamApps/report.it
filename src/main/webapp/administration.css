@@ -1,17 +1,103 @@
-Body, html {
+body, html {
     width: 100%;
     height: 100%;
     font-family: ABeeZee, sans-serif;
     margin: 0;
     padding: 0;
+    display: block;
+}
+h3{
+  font-size: 2vw;
+}
+.projheader {
+float:left;
+width:100%;
+    height:14vh;
+    display:flex;
+        align-items: center;
+
+}
+.projheader h3{
+float:left;
+}
+.projheader form {
+    float: right;
+    margin: 0;
+    width: 55%;
+    margin-inline-start: auto;
+
+}
+.projheader form input[type = text]{
+  width:65%;
+      margin-bottom:0;
+
+}
+.projheader form button{
+     width: 14vw;
+    margin-right: 0;
+    text-align: center;
+    float: right;
 }
 
+
+
+.Project{
+width:100%;
+
+height:auto;
+
+
+}
 .container {
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left:12.5%;
+    margin-top: 0;
+    width:75%;
+
+
+}
+.navbar{
+  width: 100%;
+  height:10vh;
+  background-color: #535353;
+  margin-top:0;
+  color: white;
+  display: inline-table;
+
+
+}
+.navbar ul{
+ float:right;
+ display:flex;
+ list-style: none;
+ margin:0;
+ padding:0;
+ height:100%;
+align-items: center;
+}
+.navbar li {
+    width: 10vw;
+    text-align: center;
+    height: 100%;
+    align-items: center;
     display: grid;
 }
-
+.navbar h1{
+  text-align: left;
+  float:left;
+  margin-left:1em;
+}
+.navbar a {
+    text-decoration: none;
+    color: white;
+    align-items: center;
+    display: inline-grid;
+    height: 100%;
+}
+.navbar a:hover{
+  transition-duration: 0.5s;
+  background-color:white;
+  color:#535353;
+}
 table {
     width: 100%;
     margin: auto;
@@ -51,3 +137,217 @@ th {
     padding: 4px;
 }
 
+
+
+
+
+
+
+
+
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: ABeeZee, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+h3{
+  font-size: 2vw;
+}
+.projheader {
+float:left;
+width:100%;
+    height:14vh;
+    display:flex;
+        align-items: center;
+
+}
+.projheader h3{
+float:left;
+}
+.projheader form {
+    float: right;
+    margin: 0;
+    width: 55%;
+    margin-inline-start: auto;
+
+}
+.projheader form input[type = text]{
+  width:65%;
+      margin-bottom:0;
+
+}
+.projheader form button{
+     width: 14vw;
+    margin-right: 0;
+    text-align: center;
+    float: right;
+}
+
+
+
+.Project{
+width:100%;
+
+height:auto;
+
+
+}
+.Project button{
+width:auto;
+background-color:white;
+margin-top: 15px;
+    background: transparent;
+    border-radius: 4px;
+    padding: 4px;
+
+}
+.Project button:hover{
+  background-color:white;
+}
+.container {
+    margin-left:12.5%;
+    margin-top: 0;
+    width:75%;
+
+
+}
+.navbar{
+  width: 100%;
+  height:10vh;
+  background-color: #535353;
+  margin-top:0;
+  color: white;
+  display: inline-table;
+
+
+}
+.navbar ul{
+ float:right;
+ display:flex;
+ list-style: none;
+ margin:0;
+ padding:0;
+ height:100%;
+align-items: center;
+}
+.navbar li {
+    width: 10vw;
+    text-align: center;
+    height: 100%;
+    align-items: center;
+    display: grid;
+}
+.navbar h1{
+  text-align: left;
+  float:left;
+  margin-left:1em;
+}
+.navbar a {
+    text-decoration: none;
+    color: white;
+    align-items: center;
+    display: inline-grid;
+    height: 100%;
+}
+.navbar a:hover{
+  transition-duration: 0.5s;
+  background-color:white;
+  color:#535353;
+}
+table {
+    width: 100%;
+    margin: auto;
+    border: 0.5px solid #c2c2c2;
+    border-spacing: 0;
+    border-radius: 4px;
+}
+
+th {
+    text-align: start;
+}
+
+th {
+    border-bottom: 0.5px solid #c2c2c2;
+    padding: 16px;
+}
+
+.info-col {
+    color: #444444;
+    padding-left: 16px;
+    text-align: start;
+
+}
+
+.button-col {
+    text-align: center;
+    width:15vh;
+
+}
+
+#delete-button{
+    margin-top: 15px;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    font-family: ABeeZee, sans-serif;
+    cursor: pointer;
+    padding: 4px;
+}
+
+
+
+
+
+
+
+
+
+
+input[type = text], select {
+    width: 100%;
+    margin-bottom: 2%;
+    padding: 16px;
+    font-size: large;
+    border: 0.5px solid #707070;
+    border-radius: 5px;
+    font-family: ABeeZee, sans-serif;
+    display: inline-block;
+}
+
+input[type = password] {
+    width: 100%;
+    margin-bottom: 2%;
+    padding: 16px;
+    font-size: large;
+    border: 0.5px solid #707070;
+    border-radius: 5px;
+    font-family: ABeeZee, sans-serif;
+    display: inline-block;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #535353;
+    color: white;
+    font-size: large;
+    font-family: ABeeZee, sans-serif;
+    cursor: pointer;
+}
+button i{
+  color:black; /*papperskorgen (icon)*/
+}
+
+button:hover {
+    background-color: #464646;
+}
+
+h1 {
+    text-align: center;
+}
