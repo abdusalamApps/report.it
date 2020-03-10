@@ -57,7 +57,6 @@ public class GroupModifier extends ServletBase {
             added = false;
             e.printStackTrace();
         }
-
         return added;
     }
 
@@ -78,7 +77,6 @@ public class GroupModifier extends ServletBase {
             ok = false;
             e.printStackTrace();
         }
-
         return ok;
     }
 
@@ -98,7 +96,6 @@ public class GroupModifier extends ServletBase {
             added = false;
             e.printStackTrace();
         }
-
         return added;
     }
 
@@ -137,7 +134,6 @@ public class GroupModifier extends ServletBase {
             changed = false;
             e.printStackTrace();
         }
-
         return changed;
     }
 }

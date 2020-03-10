@@ -33,7 +33,7 @@
              </td>
 
                  <td>
-                     <form action="GroupModifier" method="post">
+                     <form action="GroupModifier" method="get">
                          --
                          --
                         <button>Role</button>
@@ -48,7 +48,7 @@
 <h2 style="color: aquamarine">New Member</h2>
 
 
-<form action="GroupModifier" method="post">
+<form action="GroupModifier" method="get">
     <input type="text" name="member" placeholder="Member Name"/>
     <input type="text" name="role" placeholder="Role"/>
 
