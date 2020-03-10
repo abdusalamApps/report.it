@@ -117,7 +117,9 @@ public class GroupModifier extends ServletBase {
     public boolean addMemberToProject(String username, String project, String role) {
         boolean added = true;
         try {
-            String query = "SELECT * FROM ProjectMembers WHERE username = ? and  project_name=? and role=?";
+            String query = "SELECT * FROM Users JOIN ProjectMembers ON \n" +
+                          "Users.username = ProjectMembers.username JOIN Projects\n" +
+                         " ON Users.name WHERE Users.name=? AND Projects.name=? AND role=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, project);
@@ -159,7 +161,8 @@ public class GroupModifier extends ServletBase {
     public boolean changeProjectName(String newName, int id) {
         boolean changed = true;
         try {
-            String query = "ALTER TABLE Projects WHERE name=? and id=?";
+            String query = "SELECT * FROM Projects JOIN ProjectMembers ON " +
+                         " ProjectMembers.projectId=projects.id\nWHERE name=? AND id=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, newName);
             preparedStatement.setInt(2, id);
