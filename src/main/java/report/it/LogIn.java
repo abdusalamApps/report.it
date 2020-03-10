@@ -193,4 +193,13 @@ public class LogIn extends ServletBase {
         return fails;
     }
 
+    private void autoLogOut(){
+
+    }
+
+    private boolean logOut(){
+
+        return false;
+    }
+
 }

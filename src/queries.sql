@@ -1,3 +1,4 @@
+USE hbg20;
 create table Administrators
 (
     username varchar(30) primary key,
