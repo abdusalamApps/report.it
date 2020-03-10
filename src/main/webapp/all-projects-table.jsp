@@ -31,7 +31,7 @@
 
                  <td class="button-col">
                     <form action="Administration" method="post">
-                        <input type="hidden" name="projectname" value="$project.getName()}"/>
+                        <input type="hidden" name="projectname" value="${project.getName()}"/>
                         <input type="hidden" name="action" value="editProject">
                         <button id="edit-button">
                             <i class="material-icons">edit</i>
