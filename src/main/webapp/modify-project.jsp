@@ -33,11 +33,15 @@
              </td>
 
                  <td>
-                     <form action="GroupModifier" method="get">
-                         --
-                         --
-                        <button>Role</button>
-                     </form>
+            <td class="button-col">
+                <form action="GroupModifier" method="post">
+                    <input type="hidden" name="Member" value="${Member.getUsername()}"/>
+                    <input type="hidden" name="action" value="--">
+                    <button id="delete-button">
+                        <i class="material-icons">--</i>
+                    </button>
+                </form>
+            </td>
             </td>
         </tr>
     </c:forEach>
@@ -45,13 +49,27 @@
 <br>
 
 
+<h2 style="color: aquamarine">Edit Member</h2>
+
+
+<form action="editMember" method="post">
+    <input type="text" name="Member" placeholder="Member Name"/>
+    <input type="text" name="role" placeholder="Role"/>
+    <input type="hidden" name="action" value="update">
+    <button>Add</button>
+    <input type="hidden" name="action" value="delete">
+    <button>Delete</button>
+
+</form>
+
 <h2 style="color: aquamarine">New Member</h2>
 
 
-<form action="GroupModifier" method="get">
-    <input type="text" name="member" placeholder="Member Name"/>
+<form action="addMember" method="post">
+    <input type="text" name="Member" placeholder="Member Name"/>
     <input type="text" name="role" placeholder="Role"/>
-
+    <input type="hidden" name="action" value="addMember">
+    <button>Add</button>
 
 </form>
 <br>

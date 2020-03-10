@@ -39,8 +39,30 @@ public class GroupModifier extends ServletBase {
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.doPost(request, response);
 
+        switch (request.getParameter("action")) {
+            case "update":
+                String username = request.getParameter("Member");
+                String role = request.getParameter("role");
+                System.out.println("User to update: " + username);
+                changeMemberRole(username,"1" ,role);
+                break;
+            case "delete":
+                username = request.getParameter("Member");
+                System.out.println("User to delete: " + username);
+                removeUserFromProject(username,"1" );
+                break;
+            case "addMember":
+                username = request.getParameter("Member");
+                role = request.getParameter("role");
+                System.out.println("User to add: " + username);
+                changeMemberRole(username, "1",role);
+                break;
+            default:
+                System.out.println("no action selected");
+                break;
+        }
+        doGet(request, response);
     }
 
     public boolean addUserToGroup(String username, String project) {
