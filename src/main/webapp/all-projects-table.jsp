@@ -19,6 +19,7 @@
     <table>
         <tr>
             <th>Project Name</th>
+            <th>Administrator</th>
             <th></th>
         </tr>
         <c:forEach items="${projects}" var="project">
@@ -27,6 +28,9 @@
                 <td class="info-col">
                         ${project.getName()}
 
+                </td>
+                <td class="info-col">
+                    ${user.getName()}
                 </td>
 
                  <td class="button-col">
