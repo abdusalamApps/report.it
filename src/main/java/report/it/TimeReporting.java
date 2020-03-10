@@ -53,6 +53,7 @@ public class TimeReporting extends ServletBase {
 
             List<TimeReport> timeReports = getTimeReports(myName);
             request.setAttribute("timeReports", timeReports);
+
             List<String> projects= getProjectName(myName);
             request.setAttribute("projects",projects);
             request.getRequestDispatcher("timereports-table.jsp").include(request, response);

@@ -8,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-h3>Users</h3>
+<h3>Users</h3>
 <table>
     <tr>
         <th>Username</th>

@@ -33,7 +33,7 @@ public class ServletBase extends HttpServlet {
     protected static final int LOGIN_FALSE = 0;
     protected static final int LOGIN_TRUE = 1;
 
-    protected Connection connection = null;
+    protected Connection connection;
 
 
     /**

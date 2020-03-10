@@ -9,9 +9,7 @@ create table Administrators
 create table Projects
 (
     id            integer primary key auto_increment,
-    name          varchar(30),
-    administrator varchar(30),
-    foreign key (administrator) references Administrators (username)
+    name          varchar(30)
 );
 
 create table Users
@@ -49,6 +47,18 @@ create table TimeReports
 
 insert into Administrators (username, name, password, email)
 VALUES ('abdo', 'abdo', '123434', 'ab4700ya-s@student.lu.se');
+
+insert into Users (username, name, password, email)
+values ('User One', 'user1', '1234', 'user1@domain.com');
+
+insert into Users (username, name, password, email)
+values ('User Two', 'user2', '1234', 'user2@domain.com');
+
+insert into Users (username, name, password, email)
+values ('User Three', 'user3', '1234', 'user3@domain.com');
+
+insert into Projects (name)
+values ('Report It');
 
 select *
 from Users;
