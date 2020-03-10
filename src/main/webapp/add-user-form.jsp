@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <h3>Add new user</h3>
 <form action="Administration" method="post">
-    <input type="text" name="username" placeholder="username"/>
-    <input type="text" name="name" placeholder="name"/>
-    <input type="text" name="email" placeholder="email"/>
+    <input type="text" name="username" placeholder="username" value="username"/>
+    <input type="text" name="name" placeholder="name" value="name"/>
+    <input type="text" name="email" placeholder="email" value="email"/>
 
     <input type="hidden" name="action" value="add">
     <button>Add</button>
