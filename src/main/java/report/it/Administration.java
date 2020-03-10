@@ -158,20 +158,6 @@ public class Administration extends ServletBase {
         doGet(request, response);
     }
 
-    /*   *//**
-     * generates a form for adding new users
-     *
-     * @return HTML code for the form
-     *//*
-    private String addUserForm() {
-        String html;
-        html = "<p> <form name=" + formElement("input");
-        html += " method=" + formElement("get");
-        html += "<p> Add user name: <input type=" + formElement("text") + " name=" + formElement("addname") + '>';
-        html += "<input type=" + formElement("submit") + "value=" + formElement("Add user") + '>';
-        html += "</form>";
-        return html;
-    }*/
 
     /**
      * Checks if a username corresponds to the requirements for user names.
