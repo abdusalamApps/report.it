@@ -52,7 +52,7 @@ insert into Users (username, name, password, email)
 values ('User One', 'user1', '1234', 'user1@domain.com');
 
 insert into Users (username, name, password, email)
-values ('User Two', 'user2', '1234', 'user2@domain.com');
+values ('User Two', 'user2', '1234', 'user2@domain.com');;
 
 insert into Users (username, name, password, email)
 values ('User Three', 'user3', '1234', 'user3@domain.com');

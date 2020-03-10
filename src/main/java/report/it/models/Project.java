@@ -11,15 +11,18 @@ public class Project {
 
     public Project(String name) {
         this.name = name;
-      //  this.administrator = administrator;
+        //  this.administrator = administrator;
     }
 
-    public Project(int id,String name, String administrator){
-        this.id=id;
+    public Project(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public int getId(){ return id;}
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
