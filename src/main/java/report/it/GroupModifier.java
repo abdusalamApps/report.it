@@ -15,9 +15,11 @@ This class is for modifying project groups.
  */
 public class GroupModifier extends ServletBase {
 
+    private int projectId;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       // super.doGet(request, response);
+        // super.doGet(request, response);
         PrintWriter out = response.getWriter();
         out.println(getPageIntro());
 
@@ -27,16 +29,18 @@ public class GroupModifier extends ServletBase {
         Object nameObj = session.getAttribute("username");
         if (nameObj != null)
             currentUsername = (String) nameObj;  // if the name exists typecast the name to a string
-            request.setAttribute("user",currentUsername);
+        request.setAttribute("user", currentUsername);
 
         // check that the user is logged in
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            projectId = Integer.parseInt(request.getParameter("projectId"));
             request.getRequestDispatcher("GroupModifier.jsp").include(request, response);
 
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -45,18 +49,18 @@ public class GroupModifier extends ServletBase {
                 String username = request.getParameter("Member");
                 String role = request.getParameter("role");
                 System.out.println("User to update: " + username);
-                changeMemberRole(username,"1" ,role);
+                changeMemberRole(username, projectId, role);
                 break;
             case "delete":
                 username = request.getParameter("Member");
                 System.out.println("User to delete: " + username);
-                removeUserFromProject(username,"1" );
+                removeUserFromProject(username, projectId);
                 break;
             case "addMember":
                 username = request.getParameter("Member");
                 role = request.getParameter("role");
                 System.out.println("User to add: " + username);
-                changeMemberRole(username, "1",role);
+                changeMemberRole(username, projectId, role);
                 break;
             default:
                 System.out.println("no action selected");
@@ -84,22 +88,22 @@ public class GroupModifier extends ServletBase {
 
     // removes a member from a certain project
 
-    public boolean removeUserFromProject(String username, String project) {
+    public boolean removeUserFromProject(String username, int projectId) {
 
-        boolean ok = true;
+        boolean removed = true;
         try {
-            String query = "DELETE FROM ProjectMembers WHERE username = ? and  project_name=?";
+            String query = "DELETE FROM ProjectMembers WHERE username = ? and  projectId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, project);
+            preparedStatement.setInt(2, projectId);
 
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            ok = false;
+            removed = false;
             e.printStackTrace();
         }
-        return ok;
+        return removed;
     }
 
     public boolean addMemberToProject(String username, String project, String role) {
@@ -121,14 +125,16 @@ public class GroupModifier extends ServletBase {
         return added;
     }
 
-    public boolean changeMemberRole(String username,String project, String role) {
+    public boolean changeMemberRole(String username, int projectId, String role) {
 
         boolean changed = true;
         try {
-            String query = "ALTER TABLE ProjectMembers WHERE username = ? and  project_name=? and role=?";
+            String query = "SELECT * FROM ProjectMembers\n" +
+                    "JOIN Projects P ON ProjectMembers.projectId = P.id\n" +
+                    "WHERE username = ? AND projectId = ? AND role = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, project);
+            preparedStatement.setInt(2, projectId);
             preparedStatement.setString(3, role);
 
 
