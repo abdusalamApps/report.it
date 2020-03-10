@@ -147,8 +147,7 @@ public class TimeReporting extends ServletBase {
             while(rs.next()) {
                 int id=rs.getInt("Projects.id");
                 String name=rs.getString("Projects.name");
-                String administrator=rs.getString("Projects.administrator");
-                projects.add(new Project(id,name,administrator));
+                projects.add(new Project(id,name));
             }
             ps.close();
         } catch (SQLException ex) {

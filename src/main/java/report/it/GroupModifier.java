@@ -1,6 +1,9 @@
 package report.it;
 
+import report.it.models.Project;
+
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,9 +16,11 @@ import java.sql.SQLException;
 /*
 This class is for modifying project groups.
  */
+@WebServlet("/GroupModifier")
+
 public class GroupModifier extends ServletBase {
 
-    private int projectId;
+    public static Project currentProject;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,8 +40,11 @@ public class GroupModifier extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
-            projectId = Integer.parseInt(request.getParameter("projectId"));
-            request.getRequestDispatcher("GroupModifier.jsp").include(request, response);
+
+            System.out.println("currentProjectId: " + currentProject.getId());
+            System.out.println("currentProjectName: " + currentProject.getName());
+
+            request.getRequestDispatcher("modify-project.jsp").include(request, response);
 
         }
     }
@@ -49,18 +57,18 @@ public class GroupModifier extends ServletBase {
                 String username = request.getParameter("Member");
                 String role = request.getParameter("role");
                 System.out.println("User to update: " + username);
-                changeMemberRole(username, projectId, role);
+                changeMemberRole(username, currentProject.getId(), role);
                 break;
             case "delete":
                 username = request.getParameter("Member");
                 System.out.println("User to delete: " + username);
-                removeUserFromProject(username, projectId);
+                removeUserFromProject(username, currentProject.getId());
                 break;
             case "addMember":
                 username = request.getParameter("Member");
                 role = request.getParameter("role");
                 System.out.println("User to add: " + username);
-                changeMemberRole(username, projectId, role);
+                changeMemberRole(username, currentProject.getId(), role);
                 break;
             default:
                 System.out.println("no action selected");

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="reportit@35.228.254.209" uuid="280cce27-89ee-47a8-90d6-2f418a9209b5">
+    <data-source source="LOCAL" name="@35.228.254.209" uuid="280cce27-89ee-47a8-90d6-2f418a9209b5">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://35.228.254.209:3306/reportit</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="@puccini.cs.lth.se" uuid="643d064a-817f-4730-8447-10d581f31dbd">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://puccini.cs.lth.se:3306</jdbc-url>
     </data-source>
   </component>
 </project>

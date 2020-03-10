@@ -9,8 +9,8 @@
 <div class="projHeader">
       <h3>Projects</h3>
           <form action="Administration" method="post">
-              <input type="text" name="name" placeholder="name"/>
-              <input type="hidden" name="action" value="${project.getName()}">
+              <input type="text" name="project-name" placeholder="name"/>
+              <input type="hidden" name="action" value="addProject">
                   <button>Create project</button>
           </form>
 </div>

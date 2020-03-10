@@ -38,6 +38,7 @@ public class Administration extends ServletBase {
     private static final long serialVersionUID = 1L;
     private static final int PASSWORD_LENGTH = 6;
 
+    private String newUserPassword;
 
     /**
      * @see ServletBase#ServletBase()
@@ -70,7 +71,6 @@ public class Administration extends ServletBase {
             currentUsername = (String) nameObj;  // if the name exists typecast the name to a string
 
 
-
         // check that the user is logged in
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
@@ -81,6 +81,8 @@ public class Administration extends ServletBase {
 
 
             List<User> users = getUsers();
+            List<Project> projects= getProjects();
+            request.setAttribute("projects", projects);
 
             request.setAttribute("users", users);
 
@@ -88,7 +90,6 @@ public class Administration extends ServletBase {
 
             request.getRequestDispatcher("add-project-form.jsp").include(request, response);
             request.getRequestDispatcher("all-projects-table.jsp").include(request, response);
-
             request.getRequestDispatcher("add-user-form.jsp").include(request, response);
 
             out.println("</div>");
@@ -122,22 +123,33 @@ public class Administration extends ServletBase {
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
-                if (checkNewName(user.getName())) {
-                    addUser(user);
+                assert user != null;
+                if (checkNewName(user.getUsername())) {
+                    if (addUser(user)) {
+                        System.out.println("User added successfully");
+                        request.setAttribute("password", newUserPassword);
+                    } else {
+                        System.out.println("Adding user failed!");
+                    }
                 } else {
                     System.out.println("invalied name");
                 }
+
                 break;
             case "addProject":
                 System.out.println("action addProject");
-                System.out.println("project to add: " + request.getParameter("projectname"));
-                Project project = new Project(request.getParameter("projectname"));
+                System.out.println("project to add: " + request.getParameter("project-name"));
+                Project project = new Project(request.getParameter("project-name"));
                 addProject(project);
                 break;
             case "editProject":
                 System.out.println("action editProject");
-                System.out.println("project to add: " + request.getParameter("projectname"));
-                response.sendRedirect("modify-project.jsp");
+                System.out.println("project to edit: " + request.getParameter("edit-project-name"));
+                GroupModifier.currentProject = new Project(
+                        Integer.parseInt(request.getParameter("edit-project-id")),
+                        request.getParameter("edit-project-name")
+                );
+                response.sendRedirect("GroupModifier");
                 break;
             default:
                 System.out.println("no action selected");
@@ -193,12 +205,14 @@ public class Administration extends ServletBase {
         Random r = new Random();
         for (int i = 0; i < PASSWORD_LENGTH; i++)
             result += (char) (r.nextInt(26) + 97); // 122-97+1=26
+
+       newUserPassword = result;
         // TODO: encrypt password after creation
 
         return encryptPassword(result, "SHA-256");
     }
 
-    private String encryptPassword(String password, String algorithm) throws NoSuchAlgorithmException {
+    public String encryptPassword(String password, String algorithm) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
         digest.reset();
         byte[] hash = digest.digest(password.getBytes());
@@ -228,8 +242,9 @@ public class Administration extends ServletBase {
         boolean resultOk = true;
         try {
             Statement stmt = connection.createStatement();
-            String statement = "insert into Users (username, name, password,email) values('" + user.getUsername() + "', '" + user.getName() + "', '" +
+            String statement = "insert into Users (username, name, password, email) values('" + user.getUsername() + "', '" + user.getName() + "', '" +
                     createPassword() + "', '" + user.getEmail() + "')";
+
             System.out.println(statement);
             stmt.executeUpdate(statement);
             stmt.close();
@@ -364,29 +379,6 @@ public class Administration extends ServletBase {
         return ok;
     }
 
-
-    /**
-     * Deletes a user from the database.
-     * If the user does not exist in the database nothing happens.
-     *
-     * @param name name of user to be deleted.
-     */
-    /*
-    private void deleteUser(String name) {
-        try {
-            Statement stmt = conn.createStatement();
-            String statement = "delete from users where name='" + name + "'";
-            System.out.println(statement);
-            stmt.executeUpdate(statement);
-            stmt.close();
-
-        } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
-    }
-*/
     private String getFullName(String username) {
         String fullName = "";
         try {

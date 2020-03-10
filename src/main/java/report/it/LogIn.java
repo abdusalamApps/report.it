@@ -1,8 +1,11 @@
 package report.it;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.*;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,12 +34,15 @@ import javax.servlet.http.HttpServletResponse;
 public class LogIn extends ServletBase {
     private static final long serialVersionUID = 1L;
 
+    private Administration administration;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public LogIn() {
         super();
         // TODO Auto-generated constructor stub
+        administration = new Administration();
     }
 
     /**
@@ -70,20 +76,24 @@ public class LogIn extends ServletBase {
         password = request.getParameter("password"); // get the entered password
 
         if (username != null && password != null) {
-            if (checkUser(username, password)) {
-                state = LOGIN_TRUE;
-                session.setAttribute("state", state);  // save the state in the session
-                session.setAttribute("username", username);  // save the username in the session
-                response.sendRedirect("TimeReporting");
-            } else if (checkAdmin(username, password)) {
-                state = LOGIN_TRUE;
-                session.setAttribute("state", state);  // save the state in the session
-                session.setAttribute("username", username);  // save the username in the session
-				response.sendRedirect("Administration");
-            } else {
-                out.println("<p>That was not a valid user username / password. </p>");
-//                out.println(loginRequestForm());
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+            try {
+                if (checkUser(username, administration.encryptPassword(password, "SHA-256"))) {
+                    state = LOGIN_TRUE;
+                    session.setAttribute("state", state);  // save the state in the session
+                    session.setAttribute("username", username);  // save the username in the session
+                    response.sendRedirect("TimeReporting");
+                } else if (checkAdmin(username, password)) {
+                    state = LOGIN_TRUE;
+                    session.setAttribute("state", state);  // save the state in the session
+                    session.setAttribute("username", username);  // save the username in the session
+                    response.sendRedirect("Administration");
+                } else {
+                    out.println("<p>That was not a valid user username / password. </p>");
+    //                out.println(loginRequestForm());
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
             }
         } else { // username was null, probably because no form has been filled out yet. Display form.
 //            out.println(loginRequestForm());

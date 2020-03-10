@@ -16,7 +16,7 @@ create table Users
 (
     username varchar(30) primary key,
     name     varchar(30),
-    password varchar(30),
+    password varchar(200),
     email    varchar(100)
 );
 
@@ -49,13 +49,13 @@ insert into Administrators (username, name, password, email)
 VALUES ('abdo', 'abdo', '123434', 'ab4700ya-s@student.lu.se');
 
 insert into Users (username, name, password, email)
-values ('User One', 'user1', '1234', 'user1@domain.com');
+values ('user1', 'User One', '1234', 'user1@domain.com');
 
 insert into Users (username, name, password, email)
-values ('User Two', 'user2', '1234', 'user2@domain.com');;
+values ('user2', 'User Two', '1234', 'user2@domain.com');;
 
 insert into Users (username, name, password, email)
-values ('User Three', 'user3', '1234', 'user3@domain.com');
+values ('user3', 'User Three',  '1234', 'user3@domain.com');
 
 insert into Projects (name)
 values ('Report It');

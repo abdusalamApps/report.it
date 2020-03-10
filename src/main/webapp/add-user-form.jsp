@@ -14,4 +14,5 @@
 
     <input type="hidden" name="action" value="add">
     <button>Add</button>
+    <p>${password}</p>
 </form>
