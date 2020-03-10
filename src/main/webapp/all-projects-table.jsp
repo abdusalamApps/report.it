@@ -12,16 +12,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-<div class="projHeader">
-      <h3>Projects</h3>
-          <form action="Administration" method="post">
-                  <input type="text" name="projectname" placeholder="Project name"/>
-
-
-                  <input type="hidden" name="action" value="addProject">
-                  <button>Create project</button>
-          </form>
-</div>
 
 <div class="Project">
 
@@ -42,7 +32,7 @@
                  <td class="button-col">
                     <form action="Administration" method="post">
                         <input type="hidden" name="projectname" value="$project.getName()}"/>
-                        <input type="hidden" name="action" value="edit">
+                        <input type="hidden" name="action" value="editProject">
                         <button id="edit-button">
                             <i class="material-icons">edit</i>
                         </button>
