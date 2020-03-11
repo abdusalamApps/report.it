@@ -26,7 +26,6 @@ public class GroupModifier extends ServletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // super.doGet(request, response);
         PrintWriter out = response.getWriter();
-        out.println(getPageIntro());
 
         String currentUsername = "";
 
@@ -40,6 +39,7 @@ public class GroupModifier extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            request.getRequestDispatcher("navbar.jsp").include(request, response);
 
             System.out.println("currentProjectId: " + currentProject.getId());
             System.out.println("currentProjectName: " + currentProject.getName());
