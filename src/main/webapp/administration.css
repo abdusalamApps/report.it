@@ -1,353 +1,104 @@
-body, html {
-    width: 100%;
-    height: 100%;
-    font-family: ABeeZee, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: block;
-}
-h3{
-  font-size: 2vw;
-}
-.projheader {
-float:left;
-width:100%;
-    height:14vh;
-    display:flex;
-        align-items: center;
+@charset "UTF-8";
 
-}
-.projheader h3{
-float:left;
-}
-.projheader form {
-    float: right;
-    margin: 0;
-    width: 55%;
-    margin-inline-start: auto;
-
-}
-.projheader form input[type = text]{
-  width:65%;
-      margin-bottom:0;
-
-}
-.projheader form button{
-     width: 14vw;
-    margin-right: 0;
-    text-align: center;
-    float: right;
-}
-
-
-
-.Project{
-width:100%;
-
-height:auto;
-
-
-}
 .container {
-    margin-left:12.5%;
-    margin-top: 0;
-    width:75%;
-
-
+    padding: 0 20% 0 20%;
 }
-.navbar{
-  width: 100%;
-  height:10vh;
-  background-color: #535353;
-  margin-top:0;
-  color: white;
-  display: inline-table;
 
-
-}
-.navbar ul{
- float:right;
- display:flex;
- list-style: none;
- margin:0;
- padding:0;
- height:100%;
-align-items: center;
-}
-.navbar li {
-    width: 10vw;
-    text-align: center;
-    height: 100%;
-    align-items: center;
+.cards-container {
     display: grid;
-}
-.navbar h1{
-  text-align: left;
-  float:left;
-  margin-left:1em;
-}
-.navbar a {
-    text-decoration: none;
-    color: white;
-    align-items: center;
-    display: inline-grid;
-    height: 100%;
-}
-.navbar a:hover{
-  transition-duration: 0.5s;
-  background-color:white;
-  color:#535353;
-}
-table {
-    width: 100%;
-    margin: auto;
-    border: 0.5px solid #c2c2c2;
-    border-spacing: 0;
-    border-radius: 4px;
-}
-
-th {
-    text-align: start;
-}
-
-th {
-    border-bottom: 0.5px solid #c2c2c2;
-    padding: 16px;
-}
-
-.info-col {
-    color: #444444;
-    padding-left: 16px;
-    text-align: start;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-gap: 1em;
+    margin: 2em 0;
 
 }
 
-.button-col {
-    text-align: center;
-
+.cards-container .card {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
 }
 
-#delete-button {
-    margin-top: 15px;
+.cards-container .card .card-main-content {
+    border-radius: 4px 4px 0 0;
+    background-color: #f5f5f5;
+    padding: 12px;
+}
+
+.cards-container .card .card-main-content h4 {
+    margin: 0;
+}
+
+.cards-container .card .card-main-content p {
+    margin: 0.5em 0 0.53em 0;
+}
+
+.cards-container .card .card-bottom {
+    background-color: #535353;
+    border-radius: 0 0 4px 4px;
+    display: grid;
+    justify-content: end;
+}
+
+.cards-container .card .card-bottom button {
+    padding: 0.5em;
     background: transparent;
+    border: none;
+    cursor: pointer;
+    justify-self: end;
+}
+
+.cards-container .card .card-bottom i {
+    color: white;
+}
+
+.cards-container .card .card-bottom form {
+    padding: 0;
+    margin: 0;
+}
+
+.cards-container .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+#title-form-container {
+    margin-bottom: 1em;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 1em;
+}
+
+#title-form-container form {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-gap: 1em;
+}
+
+.title {
+    cursor: context-menu;
+    font-size: large;
+    font-weight: bold;
+}
+
+#edit-button {
     border: none;
     border-radius: 4px;
     font-family: ABeeZee, sans-serif;
     cursor: pointer;
     padding: 4px;
-}
-
-
-
-
-
-
-
-
-
-
-body, html {
-    width: 100%;
-    height: 100%;
-    font-family: ABeeZee, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: block;
-}
-h3{
-  font-size: 2vw;
-}
-.projheader {
-float:left;
-width:100%;
-    height:14vh;
-    display:flex;
-        align-items: center;
-
-}
-.projheader h3{
-float:left;
-}
-.projheader form {
-    float: right;
-    margin: 0;
-    width: 55%;
-    margin-inline-start: auto;
-
-}
-.projheader form input[type = text]{
-  width:65%;
-      margin-bottom:0;
-
-}
-.projheader form button{
-     width: 14vw;
-    margin-right: 0;
-    text-align: center;
-    float: right;
-}
-
-
-
-.Project{
-width:100%;
-
-height:auto;
-
-
-}
-.Project button{
-width:auto;
-background-color:white;
-margin-top: 15px;
-    background: transparent;
-    border-radius: 4px;
-    padding: 4px;
-
-}
-.Project button:hover{
-  background-color:white;
-}
-.container {
-    margin-left:12.5%;
-    margin-top: 0;
-    width:75%;
-
-
-}
-.navbar{
-  width: 100%;
-  height:10vh;
-  background-color: #535353;
-  margin-top:0;
-  color: white;
-  display: inline-table;
-
-
-}
-.navbar ul{
- float:right;
- display:flex;
- list-style: none;
- margin:0;
- padding:0;
- height:100%;
-align-items: center;
-}
-.navbar li {
-    width: 10vw;
-    text-align: center;
-    height: 100%;
-    align-items: center;
-    display: grid;
-}
-.navbar h1{
-  text-align: left;
-  float:left;
-  margin-left:1em;
-}
-.navbar a {
-    text-decoration: none;
-    color: white;
-    align-items: center;
-    display: inline-grid;
-    height: 100%;
-}
-.navbar a:hover{
-  transition-duration: 0.5s;
-  background-color:white;
-  color:#535353;
-}
-table {
-    width: 100%;
-    margin: auto;
-    border: 0.5px solid #c2c2c2;
-    border-spacing: 0;
-    border-radius: 4px;
-}
-
-th {
-    text-align: start;
-}
-
-th {
-    border-bottom: 0.5px solid #c2c2c2;
-    padding: 16px;
-}
-
-.info-col {
-    color: #444444;
-    padding-left: 16px;
-    text-align: start;
-
-}
-
-.button-col {
-    text-align: center;
-    width:15vh;
-
-}
-
-#delete-button{
-    margin-top: 15px;
-    background: transparent;
-    border: none;
-    border-radius: 4px;
-    font-family: ABeeZee, sans-serif;
-    cursor: pointer;
-    padding: 4px;
-}
-
-
-
-
-
-
-
-
-
-
-input[type = text], select {
-    width: 100%;
-    margin-bottom: 2%;
-    padding: 16px;
-    font-size: large;
-    border: 0.5px solid #707070;
-    border-radius: 5px;
-    font-family: ABeeZee, sans-serif;
-    display: inline-block;
-}
-
-input[type = password] {
-    width: 100%;
-    margin-bottom: 2%;
-    padding: 16px;
-    font-size: large;
-    border: 0.5px solid #707070;
-    border-radius: 5px;
-    font-family: ABeeZee, sans-serif;
-    display: inline-block;
-}
-
-button {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 4px;
     background-color: #535353;
     color: white;
-    font-size: large;
-    font-family: ABeeZee, sans-serif;
-    cursor: pointer;
-}
-button i{
-  color:black; /*papperskorgen (icon)*/
 }
 
-button:hover {
-    background-color: #464646;
+#edit-button i {
+    font-size: medium;
 }
 
-h1 {
-    text-align: center;
+#new-user-title {
+    margin-top: 2em;
+}
+
+.new-user-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    grid-gap: 1em;
+    margin-bottom: 2em;
 }

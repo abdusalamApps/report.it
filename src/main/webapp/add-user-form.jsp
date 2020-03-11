@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<h3>Add new user</h3>
+<%--<h3>Add new user</h3>
 <form action="Administration" method="post">
     <input type="text" name="username" placeholder="Username"/>
     <input type="text" name="name" placeholder="Full Name"/>
@@ -14,5 +14,16 @@
 
     <input type="hidden" name="action" value="add">
     <button>Add</button>
+    <p> New User Password: ${password}</p>
+</form>--%>
+
+<h3 id="new-user-title">New User</h3>
+
+<form class="new-user-form" action="Administration" method="POST">
+    <input type="text" name="username" placeholder="Username">
+    <input type="text" name="name" placeholder="Full Name">
+    <input type="text" name="email" placeholder="Email">
+    <input type="hidden" name="action" value="add">
+    <button  class="text-button">Create User</button>
     <p> New User Password: ${password}</p>
 </form>

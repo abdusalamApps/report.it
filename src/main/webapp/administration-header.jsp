@@ -8,21 +8,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Administration </title>
-    <link rel='stylesheet' type='text/css' href='administration.css'>
-    <link href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap" rel="stylesheet">
+
+    <title>Report It - Administration</title>
+
+    <link rel="stylesheet" href="administration.css">
+    <link rel="stylesheet" href="global.css">
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap" rel="stylesheet">
 
 </head>
 <body>
-<div class="navbar">
+<%--<div class="navbar">
     <h1> Welcome ${fullName} </h1>
     <ul>
         <li><a href="">Home</a></li>
         <li><a href="">Profile</a></li>
         <li><a href="">Log out</a></li>
       </ul>
-</div>
-<div class="container">
+</div>--%>
 
 
