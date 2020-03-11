@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="navbar-container">
     <div class="topnav">
-        <a href="">Welcome ${fullName}</a>
+        <a href="">${navbarTitle}</a>
         <div class="topnav-right">
             <a href="">Home</a>
             <a href="">Profile</a>

@@ -14,6 +14,8 @@ plugins {
     id 'application'
     id 'war'
     id 'org.gretty' version '3.0.1'
+
+    id "org.kravemir.gradle.sass" version "1.2.4"
 }
 
 repositories {
@@ -44,4 +46,9 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClassName = 'report.it.App'
+}
+
+sass {
+    main{
+    }
 }

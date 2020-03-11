@@ -53,7 +53,7 @@
     <c:forEach items="${projects}" var="project">
     <div class="card">
         <div class="card-main-content">
-            <h4><b>Project Nam</b></h4>
+            <h4><b>${project.getName()}</b></h4>
 <%--            <p>${project.getMembers()}</p>--%>
         </div>
         <div class="card-bottom">

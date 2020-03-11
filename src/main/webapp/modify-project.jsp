@@ -7,14 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<html>
-<head>
-    <link rel="stylesheet" href="global.css">
-
-    <title>Modify Project</title>
-</head>
-<body>
+<div class="container">
 <h2>Members</h2>
 
 <table>
@@ -25,19 +18,19 @@
         <th>Role</th>
     </tr>
 
-    <c:forEach items="${ProjectMember}" var="Member">
+    <c:forEach items="${ProjectMember}" var="member">
         <tr>
             <td>
-                    ${Member.getUsername()}
+                    ${member.getUsername()}
             </td>
             <td>
-                    ${Member.getProjectName()}
+                    ${member.getProjectName()}
             </td>
             <td>
-                    ${Member.getEmail()}
+                    ${member.getEmail()}
             </td>
             <td>
-                    ${Member.getRole()}
+                    ${member.getRole()}
             </td>
 
             <td>
@@ -69,7 +62,7 @@
 
 </form>
 
-<h2 style="color: aquamarine">New Member</h2>
+<h2>New Member</h2>
 
 
 <form action="addMember" method="post">
@@ -81,6 +74,4 @@
 </form>
 <br>
 
-</body>
-</html>
 

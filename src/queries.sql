@@ -48,14 +48,15 @@ create table TimeReports
 insert into Administrators (username, name, password, email)
 VALUES ('abdo', 'abdo', '123434', 'ab4700ya-s@student.lu.se');
 
+# Password for user1, user2 and user3 is 1234
 insert into Users (username, name, password, email)
-values ('user1', 'User One', '1234', 'user1@domain.com');
+values ('user1', 'User One', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user1@domain.com');
 
 insert into Users (username, name, password, email)
-values ('user2', 'User Two', '1234', 'user2@domain.com');;
+values ('user2', 'User Two', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user2@domain.com');;
 
 insert into Users (username, name, password, email)
-values ('user3', 'User Three',  '1234', 'user3@domain.com');
+values ('user3', 'User Three',  '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user3@domain.com');
 
 insert into Projects (name)
 values ('Report It');
@@ -65,3 +66,4 @@ from Users;
 
 select *
 from Administrators;
+

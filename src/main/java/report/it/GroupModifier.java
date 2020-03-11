@@ -39,6 +39,9 @@ public class GroupModifier extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            request.setAttribute("navbarTitle", currentProject.getName());
+
+            request.getRequestDispatcher("modfiy-project-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
 
             System.out.println("currentProjectId: " + currentProject.getId());
@@ -46,6 +49,7 @@ public class GroupModifier extends ServletBase {
 
             request.getRequestDispatcher("modify-project.jsp").include(request, response);
 
+            out.print("</div></body></html>");
         }
     }
 
