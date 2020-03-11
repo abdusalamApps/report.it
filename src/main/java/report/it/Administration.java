@@ -61,7 +61,6 @@ public class Administration extends ServletBase {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        out.println(getPageIntro());
 
         String currentUsername = "";
 
@@ -77,8 +76,8 @@ public class Administration extends ServletBase {
         } else {
             request.setAttribute("fullName", getFullName(currentUsername));
 
-            request.getRequestDispatcher("administration.jsp").include(request, response);
-
+            request.getRequestDispatcher("administration-header.jsp").include(request, response);
+            request.getRequestDispatcher("navbar.jsp").include(request, response);
 
             List<User> users = getUsers();
             List<Project> projects= getProjects();
@@ -187,15 +186,15 @@ public class Administration extends ServletBase {
      * @return a randomly chosen password
      */
     private String createPassword() throws NoSuchAlgorithmException {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         Random r = new Random();
         for (int i = 0; i < PASSWORD_LENGTH; i++)
-            result += (char) (r.nextInt(26) + 97); // 122-97+1=26
+            result.append((char) (r.nextInt(26) + 97)); // 122-97+1=26
 
-       newUserPassword = result;
+       newUserPassword = result.toString();
         // TODO: encrypt password after creation
 
-        return encryptPassword(result, "SHA-256");
+        return encryptPassword(result.toString(), "SHA-256");
     }
 
     public String encryptPassword(String password, String algorithm) throws NoSuchAlgorithmException {
@@ -365,20 +364,4 @@ public class Administration extends ServletBase {
         return ok;
     }
 
-    private String getFullName(String username) {
-        String fullName = "";
-        try {
-            PreparedStatement statement = connection.prepareStatement("select * from Administrators where username = ?");
-            statement.setString(1, username);
-            ResultSet set = statement.executeQuery();
-
-            while (set.next()) {
-                fullName = set.getString("name");
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return fullName;
-    }
 }
