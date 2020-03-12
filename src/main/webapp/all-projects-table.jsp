@@ -12,7 +12,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-
+<%--
 <div class="Project">
 
     <h4>Registered Projects</h4>
@@ -30,10 +30,10 @@
 
                 </td>
                 <td class="info-col">
-                    ${user.getName()}
+                        ${user.getName()}
                 </td>
 
-                 <td class="button-col">
+                <td class="button-col">
                     <form action="Administration" method="post">
                         <input type="hidden" name="edit-project-name" value="${project.getName()}"/>
                         <input type="hidden" name="edit-project-id" value="${project.getId()}"/>
@@ -46,4 +46,26 @@
             </tr>
         </c:forEach>
     </table>
+</div>
+--%>
+
+<div class="cards-container">
+    <c:forEach items="${projects}" var="project">
+    <div class="card">
+        <div class="card-main-content">
+            <h4><b>${project.getName()}</b></h4>
+<%--            <p>${project.getMembers()}</p>--%>
+        </div>
+        <div class="card-bottom">
+            <form action="Administration" method="post">
+                <input type="hidden" name="edit-project-name" value="${project.getName()}"/>
+                <input type="hidden" name="edit-project-id" value="${project.getId()}"/>
+                <input type="hidden" name="action" value="editProject">
+                <button id="delete-button">
+                    <i class="material-icons">edit</i>
+                </button>
+            </form>
+        </div>
+    </div>
+    </c:forEach>
 </div>

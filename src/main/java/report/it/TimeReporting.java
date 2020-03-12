@@ -34,35 +34,35 @@ public class TimeReporting extends ServletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         PrintWriter out = response.getWriter();
-        out.println(getPageIntro());
 
-        String myName = "";
+        String currentUsername = "";
         HttpSession session = request.getSession(true);
         Object nameObj = session.getAttribute("username");
         if (nameObj != null) {
-            myName = (String) nameObj;  // if the name exists typecast the name to a string
-            request.setAttribute("user",myName);
+            currentUsername = (String) nameObj;  // if the name exists typecast the name to a string
+            request.setAttribute("user",currentUsername);
         }
 
         // check that the user is logged in
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            request.setAttribute("navbar-title", "Welcome" + getFullName(currentUsername));
 
             request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
 
-            List<TimeReport> timeReports = getTimeReports(myName);
+            List<TimeReport> timeReports = getTimeReports(currentUsername);
             request.setAttribute("timeReports", timeReports);
 
-            List<String> projects= getProjectName(myName);
-            request.setAttribute("projects",projects);
+            List<String> projects= getProjectName(currentUsername);
+            request.setAttribute("projects", projects);
             request.getRequestDispatcher("timereports-table.jsp").include(request, response);
 
-            if (isLeader(myName)) {
-                List<TimeReport> groupReports= getGroupTimeReport(myName);
+            if (isLeader(currentUsername)) {
+                List<TimeReport> groupReports= getGroupTimeReport(currentUsername);
                 request.setAttribute("groupReports",groupReports);
 
-                List<Project> myGroups=getProject(myName);
+                List<Project> myGroups=getProject(currentUsername);
                 request.setAttribute("myGroups",myGroups);
                 request.getRequestDispatcher("leadr-groups-table.jsp").include(request, response);
             }
@@ -98,7 +98,6 @@ public class TimeReporting extends ServletBase {
                 System.out.println("action submit time report");
                 boolean isSubmitted= submitReport(request, myName);
                 if(!isSubmitted){
-                    out.println(getPageIntro());
                     out.print("Please check if you choose a project or input invalid text");
                 }
                 break;

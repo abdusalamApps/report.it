@@ -1,0 +1,62 @@
+Body, html {
+    height: 100vh;
+    font-family: ABeeZee, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+Body input, html input {
+    padding: 12px;
+    border-radius: 4px;
+    font-family: ABeeZee, sans-serif;
+    border: none;
+    background-color: #EDEDED;
+}
+
+Body .text-button, html .text-button {
+    border: none;
+    border-radius: 4px;
+    background-color: #535353;
+    color: white;
+    font-family: ABeeZee, sans-serif;
+    cursor: pointer;
+    padding: 12px;
+}
+
+/* navigation bar style */
+.navbar-container {
+    background-color: #535353;
+    margin-bottom: 1em;
+}
+
+.navbar-container .topnav {
+    padding: 1em 20%;
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+.navbar-container .topnav a {
+    text-decoration: none;
+    color: white;
+    -ms-grid-column-align: start;
+    justify-self: start;
+}
+
+.navbar-container .topnav .topnav-right {
+    -ms-grid-column-align: end;
+    justify-self: end;
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1em;
+}
+
+.navbar-container .topnav .topnav-right a {
+    color: white;
+}
+
+/* End of navigation bar style */
+/*# sourceMappingURL=global.css.map */

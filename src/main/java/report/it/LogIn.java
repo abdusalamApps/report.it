@@ -90,7 +90,7 @@ public class LogIn extends ServletBase {
                 } else {
                     out.println("<p>That was not a valid user username / password. </p>");
     //                out.println(loginRequestForm());
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    request.getRequestDispatcher("index.jsp").include(request, response);
                 }
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

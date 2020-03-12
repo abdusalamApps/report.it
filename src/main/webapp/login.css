@@ -1,0 +1,43 @@
+.container {
+    height: 100vh;
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-rows: 1fr 3fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-areas: "title"
+    "form"
+    "white-space";
+}
+
+.container h1 {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+    grid-area: title;
+    -ms-flex-item-align: center;
+    -ms-grid-row-align: center;
+    align-self: center;
+    -ms-grid-column-align: center;
+    justify-self: center;
+}
+
+.container .login-form {
+    width: 60%;
+    -ms-grid-row: 2;
+    -ms-grid-column: 1;
+    grid-area: form;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    justify-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+}
+
+.container .login-form input {
+    margin-bottom: 18px;
+}
+/*# sourceMappingURL=login.css.map */

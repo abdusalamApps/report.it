@@ -9,6 +9,7 @@
 <%@ page isELIgnored="false"%>
 <html>
 <head>
+    <link rel="stylesheet" href="global.css">
     <title>TimeReporting</title>
     <style>
         table, th, td {
@@ -24,4 +25,3 @@
     </style>
 </head>
 <body>
-<h1>Hello ${user}</h1>

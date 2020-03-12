@@ -63,18 +63,5 @@ values ('Report It');
 select *
 from Users;
 
-select * from Projects;
 select *
 from Administrators;
-
-select * from ProjectMembers
-join Projects P on ProjectMembers.projectId = P.id
-where username = 'user1' and projectId = 1;
-
-select * from Projects join ProjectMembers on ProjectMembers.projectId=projects.id
-where name=? and id=?;
-SELECT * FROM Users JOIN ProjectMembers ON
-    Users.username = ProjectMembers.username JOIN Projects
-    ON Users.name WHERE Users.name=? AND Projects.name=? AND role=?
-
-

@@ -76,12 +76,24 @@ public class ServletBase extends HttpServlet {
      *
      * @return String with html code for the header.
      */
-    protected String getPageIntro() {
-        String intro = "<html>" +
-                "<head><title> The Base Block System </title></head>" +
-                "<body>";
-        return intro;
+
+    protected String getFullName(String username) {
+        String fullName = "";
+        try {
+            PreparedStatement statement = connection.prepareStatement("select * from Administrators where username = ?");
+            statement.setString(1, username);
+            ResultSet set = statement.executeQuery();
+
+            while (set.next()) {
+                fullName = set.getString("name");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fullName;
     }
+
 
 
 }
