@@ -2,6 +2,7 @@ package report.it;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.awt.*;
 import java.io.*;
 
 import java.io.IOException;
@@ -109,6 +110,15 @@ public class LogIn extends ServletBase {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getParameter("button") != null) {
+            String button = request.getParameter("button");
+            if (button.equals("logout")){
+                System.out.println("if-case in post");
+                logOut(request, response);
+            }
+        }
+
+
         doGet(request, response);
     }
 
@@ -193,13 +203,13 @@ public class LogIn extends ServletBase {
         return fails;
     }
 
-    private void autoLogOut(){
+    public void autoLogOut(){
 
     }
 
-    private boolean logOut(){
+    private void logOut(HttpServletRequest request, HttpServletResponse response){
 
-        return false;
+
     }
 
 }

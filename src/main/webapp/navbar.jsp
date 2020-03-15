@@ -12,7 +12,9 @@
         <div class="topnav-right">
             <a href="">Home</a>
             <a href="">Profile</a>
-            <a href="">Log Out</a>
+            <form class="login-form" action="LogIn" method="post">
+<button type="submit" name="button" value="logout">Log out</button>
+            </form>
         </div>
 
     </div>
