@@ -44,7 +44,7 @@
                     <form action="TimeReporting" method="post">
                         <input type="hidden" name="timeReportId" value="${timeReport.getId()}"/>
                         <input type="hidden" name="action" value="editTimeReport">
-                        <button>Edit</button>
+                        <button><i class="material-icons">edit</i></button>
                     </form>
                 </c:if>
             </td>
@@ -69,10 +69,11 @@
     <input type="hidden" name="action" value="submit">
     <button>Submit Report</button>
 </form>
-    <c:set var = "isSubmitted" scope = "session" value = "${isSubmitted}"/>
-    <c:if test = "${isSubmitted}">
-        <p>Please check if you choose a project or input invalid text</p>
-    </c:if>
+</c:if>
+
+<c:set var = "invalidText" scope = "session" value = "${invalidText}"/>
+<c:if test = "${invalidText}">
+    <p>Please check if you choose a project or input invalid text</p>
 </c:if>
 
 <c:set var = "editable" scope = "session" value = "${editable}"/>
@@ -89,12 +90,12 @@
         </select>
         <input type="hidden" name="reportId" value="${editReport.getId()}">
         <input type="hidden" name="action" value="update">
-        <button>Update</button>
+        <button><i class="material-icons">update</i></button>
     </form>
     <form action="TimeReporting" method="post">
         <input type="hidden" name="reportId" value="${editReport.getId()}">
         <input type="hidden" name="action" value="delete">
-        <button>Delete</button>
+        <button><i class="material-icons">delete</i></button>
     </form>
 </c:if>
 
