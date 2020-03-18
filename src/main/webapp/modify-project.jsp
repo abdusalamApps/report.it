@@ -31,8 +31,9 @@
                     </form>
 
                     <form action="GroupModifier" method="post">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="username" value="${member.getUsername()}">
+                        <input type="hidden" name="action" value="removeMember">
+
+                        <input type="hidden" name="memberUsername" value="${member.getUsername()}">
 
                         <button class="delete-button">
                             <i class="material-icons">delete</i>
