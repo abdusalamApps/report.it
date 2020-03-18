@@ -40,7 +40,13 @@ public class Profile extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            request.getRequestDispatcher("profile-header.jsp").include(request, response);
+
             request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
+            System.out.println("Current full name: " + getFullName(currentUsername));
+            System.out.println("Current username: " + currentUsername);
+
+            request.getRequestDispatcher("navbar.jsp").include(request, response);
 
             request.getRequestDispatcher("profile.jsp").include(request, response);
 
