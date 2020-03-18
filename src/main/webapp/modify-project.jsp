@@ -20,16 +20,20 @@
                     <p>${member.getRole()}</p>
                 </div>
                 <div class="card-bottom">
-                    <form action="">
+
+                    <form action="GroupModifier" method="get">
                         <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="username" value="${member.getUsername()}">
+                        <input type="hidden" name="memberUsername" value="${member.getUsername()}">
+                        <input type="hidden" name="role" value="${member.getRole()}">
                         <button id="edit-button">
                             <i class="material-icons">edit</i>
                         </button>
                     </form>
-                    <form action="">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="username" value="${member.getUsername()}">
+
+                    <form action="GroupModifier" method="post">
+                        <input type="hidden" name="action" value="removeMember">
+
+                        <input type="hidden" name="memberUsername" value="${member.getUsername()}">
 
                         <button class="delete-button">
                             <i class="material-icons">delete</i>
@@ -41,3 +45,16 @@
         </c:forEach>
 
     </div>
+
+    <a class="title">New Member</a>
+    <form class="new-member-form" action="GroupModifier" method="post">
+        <div class="role-radio-buttons-wrapper">
+            <input type="radio" class="stv-radio-button" name="member-role" value="1" id="button1" />
+            <label for="button1">Leader</label>
+            <input type="radio" class="stv-radio-button" name="member-role" value="2" id="button2" />
+            <label for="button2">Member</label>
+        </div>
+        <input type="text" placeholder="Username" name="newMemberUserName">
+        <input type="hidden" name="action" value="addMember">
+        <button class="text-button">Add Member</button>
+    </form>

@@ -21,7 +21,8 @@
 <div id="title-form-container">
     <a class="title">Projects</a>
     <form action="Administration" method="post" id="new-project-form">
-        <input type="text" placeholder="Project Name">
+        <input type="text" placeholder="Project Name" name="project-name">
+        <input type="hidden" name="action" value="addProject">
         <button class="text-button">Create</button>
     </form>
 </div>

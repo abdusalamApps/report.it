@@ -50,6 +50,7 @@ public class TimeReporting extends ServletBase {
             request.setAttribute("navbar-title", "Welcome" + getFullName(currentUsername));
 
             request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
+            request.getRequestDispatcher("navbar.jsp").include(request, response);
 
             List<TimeReport> timeReports = getTimeReports(currentUsername);
             request.setAttribute("timeReports", timeReports);
