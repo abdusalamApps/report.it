@@ -76,16 +76,15 @@ public class LogIn extends ServletBase {
         password = request.getParameter("password"); // get the entered password
 
         if (username != null && password != null) {
-            if (checkUser(username, administration.encryptPassword(password))) {
+            if (checkUser(username, encryptPassword(password))) {
                 state = LOGIN_TRUE;
                 session.setAttribute("state", state);  // save the state in the session
                 session.setAttribute("username", username);  // save the username in the session
-                response.sendRedirect("TimeReporting");
-            } else if (checkAdmin(username, password)) {
-                state = LOGIN_TRUE;
-                session.setAttribute("state", state);  // save the state in the session
-                session.setAttribute("username", username);  // save the username in the session
-                response.sendRedirect("Administration");
+                if (username.equals("admin")) {
+                    response.sendRedirect("Administration");
+                } else {
+                    response.sendRedirect("TimeReporting");
+                }
             } else {
                 out.println("<p>That was not a valid user username / password. </p>");
                 //                out.println(loginRequestForm());
