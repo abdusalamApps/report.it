@@ -100,7 +100,10 @@ public class Profile extends ServletBase {
     private String changePassword(String newPassword1, String newPassword2) {
         if (!newPassword1.equals(newPassword2)) {
             return "The new password doesn't match";
-        } else {
+        } else if(newPassword1.length()<6){
+            return "The new password is less than 6 letters";
+        }
+        else {
             try {
                 PreparedStatement stm =
                         connection.prepareStatement("update Users set password = ? where username = ?");
