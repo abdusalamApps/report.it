@@ -41,3 +41,17 @@
         </c:forEach>
 
     </div>
+
+    <a class="title">New Member</a>
+    <form class="new-member-form" action="" method="doPost">
+        <div class="role-radio-buttons-wrapper">
+            <input type="radio" class="stv-radio-button" name="member-role" value="1" id="button1" />
+            <label for="button1">Leader</label>
+            <input type="radio" class="stv-radio-button" name="member-role" value="2" id="button2" />
+            <label for="button2">Member</label>
+        </div>
+        <input type="text" placeholder="Username">
+        <input type="hidden" name="action" value="addNewMember">
+        <button class="text-button">Add Member</button>
+    </form>
+</div>
