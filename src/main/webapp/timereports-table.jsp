@@ -61,7 +61,6 @@
 <form action="TimeReporting" method="post">
     <input type="text" name="week" placeholder="Week Number"/>
     <input type="text" name="time" placeholder="Total Minutes"/>
-
     <select name="projectName">
         <c:forEach items="${projects}" var="project">
             <option  value="${project}">${project}</option>
@@ -70,23 +69,29 @@
     <input type="hidden" name="action" value="submit">
     <button>Submit Report</button>
 </form>
+    <c:set var = "isSubmitted" scope = "session" value = "${isSubmitted}"/>
+    <c:if test = "${isSubmitted}">
+        <p>Please check if you choose a project or input invalid text</p>
+    </c:if>
 </c:if>
 
+<c:set var = "editable" scope = "session" value = "${editable}"/>
 <c:if test = "${editable}">
     <h2 >Edit Your Time Report</h2>
     <form action="TimeReporting" method="post">
-        <input type="text" name="week" placeholder="${editReport.getWeek()}"/>
-        <input type="text" name="time" placeholder="${editReport.getMinutes_sum()}"/>
+        <input type="text" name="week" value="${editReport.getWeek()}"/>
+        <input type="text" name="time" value="${editReport.getMinutes_sum()}"/>
 
-    <select placeholder="${editReport.getProjectName()}">
-    <c:forEach items="${projects}" var="project">
-        <option  value="${project}">${project}</option>
-    </c:forEach>
-    </select>
+        <select name="projectName">
+            <c:forEach items="${projects}" var="project">
+            <option  value="${project}">${project}</option>
+            </c:forEach>
+        </select>
         <input type="hidden" name="reportId" value="${editReport.getId()}">
         <input type="hidden" name="action" value="update">
-        <button>Uppdate</button>
-
+        <button>Update</button>
+    </form>
+    <form action="TimeReporting" method="post">
         <input type="hidden" name="reportId" value="${editReport.getId()}">
         <input type="hidden" name="action" value="delete">
         <button>Delete</button>
