@@ -12,6 +12,7 @@ public class TimeReport {
     private String projectName;
     private String username;
     private int week;
+    private String userFullName;
 
 
     public TimeReport() {
@@ -48,7 +49,10 @@ public class TimeReport {
         return username;
     }
     public int getProjectID(){return projectID;}
-
     public int getWeek(){ return week; }
+    public String getUserFullName(){return userFullName;}
+    public void setUserFullName(String fullName){
+        this.userFullName=fullName;
+    }
 
 }

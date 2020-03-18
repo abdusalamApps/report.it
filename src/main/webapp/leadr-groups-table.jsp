@@ -26,7 +26,7 @@
                     ${groupReport.getProjectName()}
             </td>
             <td>
-                    ${groupReport.getUsername()}
+                    ${groupReport.getUserFullName()}
             </td>
             <td>
                     ${groupReport.getSubmitted()}
