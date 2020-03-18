@@ -47,7 +47,7 @@ public class TimeReporting extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
-            request.setAttribute("navbarTitle", "Welcome " + getUserFullName(currentUsername));
+            request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
 
             request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
@@ -295,7 +295,7 @@ public class TimeReporting extends ServletBase {
             System.out.println("VendorError: " + ex.getErrorCode());
         }
         for(TimeReport t:groupReports){
-            t.setUserFullName(getUserFullName(t.getUsername()));
+            t.setUserFullName(getFullName(t.getUsername()));
         }
         return groupReports;
     }
