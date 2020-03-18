@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Member;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,18 +51,21 @@ public class GroupModifier extends ServletBase {
             request.getRequestDispatcher("modfiy-project-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
 
-            List<ProjectMember> members = getMembers(currentProject.getName());
-            System.out.println("Members size " + members.size());
-            request.setAttribute("members", members);
-
-            for (ProjectMember member: members) {
-                System.out.println("Name: " + member.getName());
-                System.out.println("Username: " + member.getUsername());
-                System.out.println("Role: "  + member.getRole());
-            }
+            request.setAttribute("members", getMembers(currentProject.getName()));
 
             request.setAttribute("test", "test");
             request.getRequestDispatcher("modify-project.jsp").include(request, response);
+
+            String action = request.getParameter("action");
+
+            if (action != null) {
+                if (action.equals("update")) {
+                    System.out.println("update member");
+                    request.setAttribute("memberUsername", request.getParameter("memberUsername"));
+                    System.out.println("MemberUserName: " + request.getParameter("memberUsername"));
+                    request.getRequestDispatcher("edit-member.jsp").include(request, response);
+                }
+            }
 
             out.print("</div></body></html>");
         }
@@ -73,23 +75,33 @@ public class GroupModifier extends ServletBase {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         switch (request.getParameter("action")) {
-            case "update":
-                String username = request.getParameter("Member");
-                String role = request.getParameter("role");
-                System.out.println("User to update: " + username);
-                changeMemberRole(username, currentProject.getId(), role);
+            case "confirmUpdate":
+                String username = request.getParameter("memberUsername");
+                String role = request.getParameter("member-role");
+
+                System.out.println("Member to edit: ");
+                System.out.println("Role: " + role);
+                System.out.println("Username: " + username);
+
+                changeMemberRole(username, currentProject.getId(), Integer.parseInt(role));
+
                 break;
             case "delete":
                 username = request.getParameter("Member");
                 System.out.println("User to delete: " + username);
-                removeUserFromProject(username, currentProject.getId());
+                removeMemberFromProject(username, currentProject.getId());
                 break;
+
             case "addMember":
-                username = request.getParameter("Member");
-                role = request.getParameter("role");
-                System.out.println("User to add: " + username);
-                changeMemberRole(username, currentProject.getId(), role);
+
+                addMemberToProject(
+                       request.getParameter("newMemberUserName"),
+                       currentProject.getId(),
+                       Integer.parseInt(request.getParameter("member-role"))
+                );
+
                 break;
+
             default:
                 System.out.println("no action selected");
                 break;
@@ -122,13 +134,13 @@ public class GroupModifier extends ServletBase {
         return members;
     }
 
-    public boolean addMemberToProject(String username, String project, int role) {
+    public boolean addMemberToProject(String username, int projectId, int role) {
         boolean added = true;
         try {
             String query = "INSERT INTO ProjectMembers (username, projectId, role) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, project);
+            preparedStatement.setInt(2, projectId);
             preparedStatement.setInt(3, role);
 
             preparedStatement.executeUpdate();
@@ -142,7 +154,7 @@ public class GroupModifier extends ServletBase {
 
     // removes a member from a certain project
 
-    public boolean removeUserFromProject(String username, int projectId) {
+    public boolean removeMemberFromProject(String username, int projectId) {
 
         boolean removed = true;
         try {
@@ -161,17 +173,19 @@ public class GroupModifier extends ServletBase {
     }
 
 
-    public boolean changeMemberRole(String username, int projectId, String role) {
+    public boolean changeMemberRole(String username, int projectId, int role) {
 
         boolean changed = true;
         try {
-            String query = "SELECT * FROM ProjectMembers\n" +
-                    "JOIN Projects P ON ProjectMembers.projectId = P.id\n" +
-                    "WHERE username = ? AND projectId = ? AND role = ?";
+            String query = "update ProjectMembers\n" +
+                    "set role = ? \n" +
+                    "where username = ? and projectId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            preparedStatement.setInt(2, projectId);
-            preparedStatement.setString(3, role);
+
+            preparedStatement.setInt(1, role);
+
+            preparedStatement.setString(2, username);
+            preparedStatement.setInt(3, projectId);
 
 
             preparedStatement.executeUpdate();
