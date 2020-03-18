@@ -61,7 +61,7 @@
                 <input type="hidden" name="edit-project-name" value="${project.getName()}"/>
                 <input type="hidden" name="edit-project-id" value="${project.getId()}"/>
                 <input type="hidden" name="action" value="editProject">
-                <button id="delete-button">
+                <button id="edit-button">
                     <i class="material-icons">edit</i>
                 </button>
             </form>

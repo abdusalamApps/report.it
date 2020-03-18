@@ -76,25 +76,22 @@ public class LogIn extends ServletBase {
         password = request.getParameter("password"); // get the entered password
 
         if (username != null && password != null) {
-            try {
-                if (checkUser(username, administration.encryptPassword(password, "SHA-256"))) {
-                    state = LOGIN_TRUE;
-                    session.setAttribute("state", state);  // save the state in the session
-                    session.setAttribute("username", username);  // save the username in the session
-                    response.sendRedirect("TimeReporting");
-                } else if (checkAdmin(username, password)) {
-                    state = LOGIN_TRUE;
-                    session.setAttribute("state", state);  // save the state in the session
-                    session.setAttribute("username", username);  // save the username in the session
-                    response.sendRedirect("Administration");
-                } else {
-                    out.println("<p>That was not a valid user username / password. </p>");
-    //                out.println(loginRequestForm());
-                    request.getRequestDispatcher("index.jsp").include(request, response);
-                }
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+            if (checkUser(username, administration.encryptPassword(password))) {
+                state = LOGIN_TRUE;
+                session.setAttribute("state", state);  // save the state in the session
+                session.setAttribute("username", username);  // save the username in the session
+                response.sendRedirect("TimeReporting");
+            } else if (checkAdmin(username, password)) {
+                state = LOGIN_TRUE;
+                session.setAttribute("state", state);  // save the state in the session
+                session.setAttribute("username", username);  // save the username in the session
+                response.sendRedirect("Administration");
+            } else {
+                out.println("<p>That was not a valid user username / password. </p>");
+                //                out.println(loginRequestForm());
+                request.getRequestDispatcher("index.jsp").include(request, response);
             }
+
         } else { // username was null, probably because no form has been filled out yet. Display form.
 //            out.println(loginRequestForm());
             request.getRequestDispatcher("index.jsp").forward(request, response);
