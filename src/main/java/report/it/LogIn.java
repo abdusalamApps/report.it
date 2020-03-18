@@ -34,15 +34,13 @@ import javax.servlet.http.HttpServletResponse;
 public class LogIn extends ServletBase {
     private static final long serialVersionUID = 1L;
 
-    private Administration administration;
-
     /**
      * @see HttpServlet#HttpServlet()
      */
     public LogIn() {
         super();
         // TODO Auto-generated constructor stub
-        administration = new Administration();
+
     }
 
     /**
@@ -76,7 +74,7 @@ public class LogIn extends ServletBase {
         password = request.getParameter("password"); // get the entered password
 
         if (username != null && password != null) {
-            if (checkUser(username, administration.encryptPassword(password))) {
+            if (checkUser(username, encryptPassword(password))) {
                 state = LOGIN_TRUE;
                 session.setAttribute("state", state);  // save the state in the session
                 session.setAttribute("username", username);  // save the username in the session

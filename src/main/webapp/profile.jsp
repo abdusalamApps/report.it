@@ -6,6 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div class="container">
+<a class="title">Your Profile</a>
+
+    <p>${user.getName()}</p>
+    <p>${user.getUsername()}</p>
+    <p>${user.getEmail()}</p>
+
 <a class="title">Edit Profile</a>
 
 
@@ -18,3 +25,4 @@
     <button  class="text-button">Change Password</button>
     <p>${newPasswordMessage}</p>
 </form>
+</div>
