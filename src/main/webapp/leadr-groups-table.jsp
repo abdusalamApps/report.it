@@ -70,7 +70,7 @@
                 <form action="TimeReporting" method="post">
                     <input type="hidden" name="myProject" value="${group.getId()}"/>
                     <input type="hidden" name="action" value="editProject">
-                    <button>Edit</button>
+                    <button><i class="material-icons">edit</i></button>
                 </form>
             </td>
         </tr>
