@@ -19,13 +19,4 @@
 
 </head>
 <body>
-<%--<div class="navbar">
-    <h1> Welcome ${fullName} </h1>
-    <ul>
-        <li><a href="">Home</a></li>
-        <li><a href="">Profile</a></li>
-        <li><a href="">Log out</a></li>
-      </ul>
-</div>--%>
-
-
+    <% response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); %>

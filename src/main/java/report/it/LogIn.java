@@ -107,23 +107,6 @@ public class LogIn extends ServletBase {
     }
 
     /**
-     * Generates a form for login.
-     *
-     * @return HTML code for the form
-     */
-/*
-	protected String loginRequestForm() {
-		String html = "<p>Please enter your name and password in order to log in:</p>";
-		html += "<p> <form name=" + formElement("input");
-		html += " method=" + formElement("post");
-		html += "<p> Name: <input type=" + formElement("text") + " name=" + formElement("user") + '>';
-		html += "<p> Password: <input type=" + formElement("password") + " name=" + formElement("password") + '>';
-		html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Submit") + '>';
-		return html;
-	}
-*/
-
-    /**
      * Checks with the database if the user should be accepted
      *
      * @param name     The name of the user
