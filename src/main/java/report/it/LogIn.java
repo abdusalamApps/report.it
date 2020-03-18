@@ -78,12 +78,11 @@ public class LogIn extends ServletBase {
                 state = LOGIN_TRUE;
                 session.setAttribute("state", state);  // save the state in the session
                 session.setAttribute("username", username);  // save the username in the session
-                response.sendRedirect("TimeReporting");
-            } else if (checkAdmin(username, password)) {
-                state = LOGIN_TRUE;
-                session.setAttribute("state", state);  // save the state in the session
-                session.setAttribute("username", username);  // save the username in the session
-                response.sendRedirect("Administration");
+                if (username.equals("admin")) {
+                    response.sendRedirect("Administration");
+                } else {
+                    response.sendRedirect("TimeReporting");
+                }
             } else {
                 out.println("<p>That was not a valid user username / password. </p>");
                 //                out.println(loginRequestForm());
