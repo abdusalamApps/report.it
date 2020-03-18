@@ -300,8 +300,10 @@ public class Administration extends ServletBase {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String name = rs.getString("name");
-                projects.add(new Project(name));
+                projects.add(new Project(
+                        rs.getInt("id"),
+                        rs.getString("name")
+                ));
             }
             stmt.close();
         } catch (SQLException ex) {
