@@ -228,7 +228,7 @@ public class TimeReporting extends ServletBase {
         List<Project> projects= new ArrayList<>();
         PreparedStatement ps =null;
         try {
-            String query = "select * from Projects inner join ProjectMembers on Projects.id= ProjectMembers.projectId where username=?";
+            String query = "select * from Projects inner join ProjectMembers on Projects.id= ProjectMembers.projectId where username=? and role='1' ";
             ps = connection.prepareStatement(query);
             ps.setString(1, user);
             ResultSet rs = ps.executeQuery();
