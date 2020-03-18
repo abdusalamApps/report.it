@@ -8,8 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+
     <link rel="stylesheet" href="global.css">
     <link rel="stylesheet" href="modify-project.css">
+
     <title>Modify Project</title>
 </head>
 <body>

@@ -1,41 +1,40 @@
 package report.it.models;
 
+import report.it.Constants;
+
 public class ProjectMember {
+
     private String username;
     private String name;
-    private String projectName;
-    private String email;
-    private int role;
+    private String role;
 
-
-    public ProjectMember(){
-
-    }
-    public ProjectMember(String username, String name, String projectName, String email,int role){
-
-        this.username=username;
-        this.name=name;
-        this.projectName=projectName;
-        this.email=email;
-        this.role=role;
-
-
+    public ProjectMember(String username, String name, int role) {
+        this.username = username;
+        this.name = name;
+        this.role = Constants.rolesMap.get(role);
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
-    public String getName(){ return name; }
 
-    public String getProjectName(){
-        return projectName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getEmail(){ return email; }
+    public String getName() {
+        return name;
+    }
 
-    public int getRole(){
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
         return role;
     }
 
-
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

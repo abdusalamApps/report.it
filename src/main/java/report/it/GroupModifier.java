@@ -1,6 +1,7 @@
 package report.it;
 
 import report.it.models.Project;
+import report.it.models.ProjectMember;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,9 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Member;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 This class is for modifying project groups.
@@ -26,7 +30,6 @@ public class GroupModifier extends ServletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // super.doGet(request, response);
         PrintWriter out = response.getWriter();
-        out.println(getPageIntro());
 
         String currentUsername = "";
 
@@ -41,11 +44,28 @@ public class GroupModifier extends ServletBase {
             response.sendRedirect("LogIn");
         } else {
 
+
             System.out.println("currentProjectId: " + currentProject.getId());
             System.out.println("currentProjectName: " + currentProject.getName());
 
+            request.setAttribute("navbarTitle", currentProject.getName());
+            request.getRequestDispatcher("modfiy-project-header.jsp").include(request, response);
+            request.getRequestDispatcher("navbar.jsp").include(request, response);
+
+            List<ProjectMember> members = getMembers(currentProject.getName());
+            System.out.println("Members size " + members.size());
+            request.setAttribute("members", members);
+
+            for (ProjectMember member: members) {
+                System.out.println("Name: " + member.getName());
+                System.out.println("Username: " + member.getUsername());
+                System.out.println("Role: "  + member.getRole());
+            }
+
+            request.setAttribute("test", "test");
             request.getRequestDispatcher("modify-project.jsp").include(request, response);
 
+            out.print("</div></body></html>");
         }
     }
 
@@ -77,13 +97,39 @@ public class GroupModifier extends ServletBase {
         doGet(request, response);
     }
 
-    public boolean addUserToGroup(String username, String project) {
+
+    private List<ProjectMember> getMembers(String projectName) {
+        ArrayList<ProjectMember> members = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select U.name, U.username, ProjectMembers.role\n" +
+                    "from ProjectMembers join Users U on ProjectMembers.username = U.username\n" +
+                    "join Projects P on ProjectMembers.projectId = P.id\n" +
+                    "where P.name = ?;");
+            preparedStatement.setString(1, projectName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                members.add(new ProjectMember(
+                        resultSet.getString("username"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("role")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return members;
+    }
+
+    public boolean addMemberToProject(String username, String project, int role) {
         boolean added = true;
         try {
-            String query = "SELECT * FROM projectMembers WHERE username = ? and  project_name=?";
+            String query = "INSERT INTO ProjectMembers (username, projectId, role) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, project);
+            preparedStatement.setInt(3, role);
 
             preparedStatement.executeUpdate();
 
@@ -114,26 +160,6 @@ public class GroupModifier extends ServletBase {
         return removed;
     }
 
-    public boolean addMemberToProject(String username, String project, String role) {
-        boolean added = true;
-        try {
-            String query = "SELECT * FROM Users JOIN ProjectMembers ON \n" +
-                          "Users.username = ProjectMembers.username JOIN Projects\n" +
-                         " ON Users.name WHERE Users.name=? AND Projects.name=? AND role=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, project);
-            preparedStatement.setString(3, role);
-
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            added = false;
-            e.printStackTrace();
-        }
-        return added;
-    }
 
     public boolean changeMemberRole(String username, int projectId, String role) {
 
@@ -162,7 +188,7 @@ public class GroupModifier extends ServletBase {
         boolean changed = true;
         try {
             String query = "SELECT * FROM Projects JOIN ProjectMembers ON " +
-                         " ProjectMembers.projectId=projects.id\nWHERE name=? AND id=?";
+                    " ProjectMembers.projectId = Projects.id\nWHERE name=? AND id=?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, newName);
             preparedStatement.setInt(2, id);
