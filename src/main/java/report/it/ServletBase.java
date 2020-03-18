@@ -82,7 +82,7 @@ public class ServletBase extends HttpServlet {
     protected String getFullName(String username) {
         String fullName = "";
         try {
-            PreparedStatement statement = connection.prepareStatement("select * from Administrators where username = ?");
+            PreparedStatement statement = connection.prepareStatement("select * from Users where username = ?");
             statement.setString(1, username);
             ResultSet set = statement.executeQuery();
 
