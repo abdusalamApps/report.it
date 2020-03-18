@@ -58,16 +58,12 @@
 <table>
     <tr>
         <th>Project Name</th>
-        <th>Project Administrator</th>
         <th></th>
     </tr>
     <c:forEach items="${myGroups}" var="group">
         <tr>
             <td>
                     ${group.getName()}
-            </td>
-            <td>
-                    ${group.getAdministrator()}
             </td>
 
             <td>

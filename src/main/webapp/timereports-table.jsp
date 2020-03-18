@@ -53,6 +53,8 @@
 </table>
 <br>
 
+<c:set var = "editable" scope = "session" value = "${editable}"/>
+<c:if test = "${!editable}">
 <h2 style="color: aquamarine">New Report</h2>
 
 
@@ -68,7 +70,28 @@
     <input type="hidden" name="action" value="submit">
     <button>Submit Report</button>
 </form>
+</c:if>
 
+<c:if test = "${editable}">
+    <h2 >Edit Your Time Report</h2>
+    <form action="TimeReporting" method="post">
+        <input type="text" name="week" placeholder="${editReport.getWeek()}"/>
+        <input type="text" name="time" placeholder="${editReport.getMinutes_sum()}"/>
+
+    <select placeholder="${editReport.getProjectName()}">
+    <c:forEach items="${projects}" var="project">
+        <option  value="${project}">${project}</option>
+    </c:forEach>
+    </select>
+        <input type="hidden" name="reportId" value="${editReport.getId()}">
+        <input type="hidden" name="action" value="update">
+        <button>Uppdate</button>
+
+        <input type="hidden" name="reportId" value="${editReport.getId()}">
+        <input type="hidden" name="action" value="delete">
+        <button>Delete</button>
+    </form>
+</c:if>
 
 <br>
 <br>
