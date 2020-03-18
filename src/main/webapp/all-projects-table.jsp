@@ -65,6 +65,15 @@
                     <i class="material-icons">edit</i>
                 </button>
             </form>
+            <form action="Administration" method="post">
+                <input type="hidden" name="action" value="removeProject">
+                <input type="hidden" name="edit-project-name" value="${project.getName()}"/>
+                <input type="hidden" name="edit-project-id" value="${project.getId()}"/>
+                <button class="delete-button">
+                    <i class="material-icons">delete</i>
+                </button>
+            </form>
+
         </div>
     </div>
     </c:forEach>

@@ -150,6 +150,12 @@ public class Administration extends ServletBase {
                 );
                 response.sendRedirect("GroupModifier");
                 break;
+            case "removeProject":
+                System.out.println("action removeProject");
+                System.out.println("project to remove: " + request.getParameter("project-name"));
+                deleteProject(request.getParameter("edit-project-name"),
+                        request.getParameter("edit-project-id"));
+                break;
             default:
                 System.out.println("no action selected");
                 break;
@@ -332,13 +338,31 @@ public class Administration extends ServletBase {
         return ok;
     }
 
-    private boolean deleteProject(String projectname) {
+    private boolean deleteProject(String projectname ,String projectId ) {
+        deleteAssociationProject(projectId);
         boolean ok = true;
 
         try {
             String query = "delete from Projects where name = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, projectname);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            ok = false;
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
+    // project's association with any user has to be deleted as well
+    private boolean deleteAssociationProject(String projectId) {
+        boolean ok = true;
+        try {
+            String query = "delete from ProjectMembers where projectId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, projectId);
 
             preparedStatement.executeUpdate();
 
