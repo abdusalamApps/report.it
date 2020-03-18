@@ -10,7 +10,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<h2 style="color: aquamarine">Your Time Reports</h2>
+<h2 >Your Time Reports</h2>
 
 <table>
     <tr>
@@ -55,7 +55,7 @@
 
 <c:set var = "editable" scope = "session" value = "${editable}"/>
 <c:if test = "${!editable}">
-<h2 style="color: aquamarine">New Report</h2>
+<h2 >New Report</h2>
 
 
 <form action="TimeReporting" method="post">
