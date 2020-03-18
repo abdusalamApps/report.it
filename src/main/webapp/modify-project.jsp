@@ -1,77 +1,43 @@
-<%@ page import="report.it.models.Administrator" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
-  User: abdusalamyabrak
-  Date: 2020-02-24
-  Time: 11:28
+  User: abdo
+  Date: 3/18/2020
+  Time: 9:11 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="container">
-<h2>Members</h2>
 
-<table>
-    <tr>
-        <th>Username</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-    </tr>
+    <a class="title">Members</a>
+    <div class="cards-container">
 
-    <c:forEach items="${ProjectMember}" var="member">
-        <tr>
-            <td>
-                    ${member.getUsername()}
-            </td>
-            <td>
-                    ${member.getProjectName()}
-            </td>
-            <td>
-                    ${member.getEmail()}
-            </td>
-            <td>
-                    ${member.getRole()}
-            </td>
+        <c:forEach items="${members}" var="member">
+            <div class="card">
+                <div class="card-main-content">
+                    <h4>${member.getName()}</h4>
+                    <p>${member.getUsername()}</p>
+                    <p>${member.getRole()}</p>
+                </div>
+                <div class="card-bottom">
+                    <form action="">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="username" value="${member.getUsername()}">
+                        <button id="edit-button">
+                            <i class="material-icons">edit</i>
+                        </button>
+                    </form>
+                    <form action="">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="username" value="${member.getUsername()}">
 
-            <td>
-            <td class="button-col">
-                <form action="GroupModifier" method="post">
-                    <input type="hidden" name="Member" value="${Member.getUsername()}"/>
-                    <input type="hidden" name="action" value="--">
-                    <button id="delete-button">
-                        <i class="material-icons">--</i>
-                    </button>
-                </form>
-            </td>
-        </tr>
-    </c:forEach>
-</table>
-<br>
+                        <button class="delete-button">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </form>
 
+                </div>
+            </div>
+        </c:forEach>
 
-<h2>Edit Member</h2>
-
-
-<form action="editMember" method="post">
-    <input type="text" name="Member" placeholder="Member Name"/>
-    <input type="text" name="role" placeholder="Role"/>
-    <input type="hidden" name="action" value="update">
-    <button>Add</button>
-    <input type="hidden" name="action" value="delete">
-    <button>Delete</button>
-
-</form>
-
-<h2>New Member</h2>
-
-
-<form action="addMember" method="post">
-    <input type="text" name="Member" placeholder="Member Name"/>
-    <input type="text" name="role" placeholder="Role"/>
-    <input type="hidden" name="action" value="addMember">
-    <button>Add</button>
-
-</form>
-<br>
-
-
+    </div>
