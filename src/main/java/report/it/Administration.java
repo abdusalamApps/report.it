@@ -206,26 +206,7 @@ public class Administration extends ServletBase {
        newUserPassword = result.toString();
         // TODO: encrypt password after creation
 
-        return encryptPassword(result.toString(), "SHA-256");
-    }
-
-    public String encryptPassword(String password, String algorithm) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance(algorithm);
-        digest.reset();
-        byte[] hash = digest.digest(password.getBytes());
-        return bytesToStringHex(hash);
-    }
-
-    private final char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    private String bytesToStringHex(byte[] bytes) {
-        char[] hexChar = new char[bytes.length * 2];
-        for (int i = 0; i < bytes.length; i++) {
-            int v = bytes[i] & 0xFF;
-            hexChar[i * 2] = hexArray[v >>> 4];
-            hexChar[i * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChar);
+        return encryptPassword(result.toString());
     }
 
     /**
