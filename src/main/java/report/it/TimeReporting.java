@@ -47,7 +47,7 @@ public class TimeReporting extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
-            request.setAttribute("navbar-title", "Welcome" + getUserFullName(currentUsername));
+            request.setAttribute("navbarTitle", "Welcome " + getUserFullName(currentUsername));
 
             request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
