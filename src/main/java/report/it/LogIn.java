@@ -34,15 +34,13 @@ import javax.servlet.http.HttpServletResponse;
 public class LogIn extends ServletBase {
     private static final long serialVersionUID = 1L;
 
-    private Administration administration;
-
     /**
      * @see HttpServlet#HttpServlet()
      */
     public LogIn() {
         super();
         // TODO Auto-generated constructor stub
-        administration = new Administration();
+
     }
 
     /**
