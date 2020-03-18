@@ -47,7 +47,7 @@ public class TimeReporting extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
-            request.setAttribute("navbarTitle", "Welcome " + getUserFullName(currentUsername));
+            request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
 
             request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
@@ -228,7 +228,7 @@ public class TimeReporting extends ServletBase {
         List<Project> projects= new ArrayList<>();
         PreparedStatement ps =null;
         try {
-            String query = "select * from Projects inner join ProjectMembers on Projects.id= ProjectMembers.projectId where username=?";
+            String query = "select * from Projects inner join ProjectMembers on Projects.id= ProjectMembers.projectId where username=? and role='1' ";
             ps = connection.prepareStatement(query);
             ps.setString(1, user);
             ResultSet rs = ps.executeQuery();
@@ -295,7 +295,7 @@ public class TimeReporting extends ServletBase {
             System.out.println("VendorError: " + ex.getErrorCode());
         }
         for(TimeReport t:groupReports){
-            t.setUserFullName(getUserFullName(t.getUsername()));
+            t.setUserFullName(getFullName(t.getUsername()));
         }
         return groupReports;
     }
