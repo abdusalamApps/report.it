@@ -95,6 +95,24 @@ public class TimeReporting extends ServletBase {
 
                 break;
             case "editProject":
+                int projectId= Integer.parseInt(request.getParameter("myProject"));
+                String projectName="";
+                PreparedStatement ps;
+                try {
+                    String query = "select * from Projects where id=?";
+                    ps = connection.prepareStatement(query);
+                    ps.setInt(1,projectId);
+                    ResultSet rs=ps.executeQuery();
+                    while(rs.next()){
+                        projectName=rs.getString("name");}
+
+                }catch (SQLException ex) {
+
+                    System.out.println("SQLException: " + ex.getMessage());
+                    System.out.println("SQLState: " + ex.getSQLState());
+                    System.out.println("VendorError: " + ex.getErrorCode());
+                }
+                GroupModifier.currentProject= new Project(projectId,projectName);
                 response.sendRedirect("GroupModifier");
                 break;
 
