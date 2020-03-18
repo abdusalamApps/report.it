@@ -16,5 +16,5 @@
     <input type="hidden" name="username" value="${user.getUsername()}"/>
     <input type="hidden" name="action" value="changePassword">
     <button  class="text-button">Change Password</button>
-    <p> Password: ${yourPassword}</p>
+    <p>${newPasswordMessage}</p>
 </form>
