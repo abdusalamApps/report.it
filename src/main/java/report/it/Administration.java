@@ -136,10 +136,16 @@ public class Administration extends ServletBase {
 
                 break;
             case "addProject":
+
                 System.out.println("action addProject");
                 System.out.println("project to add: " + request.getParameter("project-name"));
                 Project project = new Project(request.getParameter("project-name"));
-                addProject(project);
+                if (request.getParameter("project-name")!=null) {
+                    addProject(project);
+                } else {
+                    System.out.println("invalied project name");
+                }
+
                 break;
             case "editProject":
                 System.out.println("action editProject");

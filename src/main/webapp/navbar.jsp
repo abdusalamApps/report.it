@@ -11,7 +11,8 @@
         <a href="">${navbarTitle}</a>
         <div class="topnav-right">
             <a href="">Home</a>
-            <a href="">Profile</a>
+            <a href="Profile">Profile</a>
+
             <a href="">Log Out</a>
         </div>
 
