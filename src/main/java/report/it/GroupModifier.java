@@ -86,10 +86,12 @@ public class GroupModifier extends ServletBase {
                 changeMemberRole(username, currentProject.getId(), Integer.parseInt(role));
 
                 break;
-            case "delete":
-                username = request.getParameter("Member");
-                System.out.println("User to delete: " + username);
-                removeMemberFromProject(username, currentProject.getId());
+            case "removeMember":
+
+                removeMemberFromProject(
+                        request.getParameter("memberUsername"),
+                        currentProject.getId()
+                );
                 break;
 
             case "addMember":
