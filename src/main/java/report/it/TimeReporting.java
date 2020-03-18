@@ -77,18 +77,25 @@ public class TimeReporting extends ServletBase {
         String myName = "";
         HttpSession session = request.getSession(true);
         Object nameObj = session.getAttribute("username");
+
         if (nameObj != null) {
             myName = (String) nameObj;  // if the name exists typecast the name to a string
             request.setAttribute("user",myName);
         }
 
-
         switch (request.getParameter("action")) {
             case "editTimeReport":
-                System.out.println("action edit");
+                int reportId=Integer.parseInt(request.getParameter("timeReportId"));
+                System.out.println("edit report id "+reportId);
+
+                request.setAttribute("reportId",reportId);
+                TimeReport editReport= getTimeReport(reportId);
+                request.setAttribute("editReport",editReport);
+                request.setAttribute("editable",true);
+
                 break;
             case "editProject":
-
+                response.sendRedirect("GroupModifier");
                 break;
 
             case "sign":
@@ -98,14 +105,24 @@ public class TimeReporting extends ServletBase {
             case "submit":
                 System.out.println("action submit time report");
                 boolean isSubmitted= submitReport(request, myName);
-                if(!isSubmitted){
-                    out.print("Please check if you choose a project or input invalid text");
-                }
-                break;
 
-            case "update":
+                //request.setAttribute("isSubmitted", isSubmitted);// out.print("Please check if you choose a project or input invalid text");
 
                 break;
+
+            case "update"://funkar inte
+                int updateReportId=Integer.parseInt(request.getParameter("reportId"));
+                boolean idUpdated=updateReport(request,updateReportId);
+                System.out.println(idUpdated);
+                request.setAttribute("editable",false);
+                break;
+
+            case "delete":
+                int deleteReportId=Integer.parseInt(request.getParameter("reportId"));
+                boolean isDeleted=deleteReport(deleteReportId);
+                request.setAttribute("editable",false);
+                break;
+
             default:
                 System.out.println("no action selected");
                 break;
@@ -113,6 +130,64 @@ public class TimeReporting extends ServletBase {
         doGet(request, response);
     }
 
+    private boolean updateReport(HttpServletRequest request,int reportId){
+        boolean idUpdated=true;
+        try{int minutes=Integer.parseInt(request.getParameter("time"));
+        int week=Integer.parseInt(request.getParameter("week"));
+        String projectName=request.getParameter("projectName");
+        int projectId=0;
+        PreparedStatement ps;
+        try {
+            String query = "select * from Projects where name=?";
+            ps = connection.prepareStatement(query);
+            ps.setString(1,projectName);
+            ResultSet rs=ps.executeQuery();
+            while(rs.next()){
+                projectId=rs.getInt("id");}
+
+        }catch (SQLException ex) {
+            idUpdated=false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+         try{   String query = "update TimeReports set minutes_sum= ?, week=?, projectId=? where id=?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,minutes);
+            ps.setInt(2,week);
+            ps.setInt(3,projectId);
+            ps.setInt(4, reportId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            idUpdated=false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        }catch(Exception e) {
+            idUpdated=false;
+        }
+        return idUpdated;
+    }
+
+    private boolean deleteReport(int reportId){
+        boolean isdeleted=true;
+        PreparedStatement ps;
+        try {
+            String query = "delete from TimeReports where id=?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, reportId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ex) {
+            isdeleted=false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return isdeleted;
+    }
     /**
      * check if current user is a project leader
      * @param user current users username
@@ -327,4 +402,32 @@ public class TimeReporting extends ServletBase {
                 new java.text.SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(dt);
     }
+
+    private TimeReport getTimeReport(int timeReportId){
+        TimeReport timeReport=null;
+        PreparedStatement ps =null;
+        try {
+            String query = "select * from TimeReports inner join Projects on Projects.id=TimeReports.projectId where TimeReports.id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, timeReportId);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                String submitted=rs.getString("submitted");
+                int minutes_sum= rs.getInt("minutes_sum");
+                boolean signed=rs.getBoolean("signed");
+                int projectId=rs.getInt("projectId");
+                String projectName=rs.getString("Projects.name");
+                String user=rs.getString("username");
+                int week=rs.getInt("week");
+                timeReport=new TimeReport(timeReportId, submitted,minutes_sum, signed, projectId, projectName, user, week);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return timeReport;
+    }
+
 }
