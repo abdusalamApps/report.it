@@ -47,7 +47,6 @@ public class GroupModifier extends ServletBase {
             response.sendRedirect("LogIn");
         } else {
 
-
             System.out.println("currentProjectId: " + currentProject.getId());
             System.out.println("currentProjectName: " + currentProject.getName());
 
@@ -86,6 +85,7 @@ public class GroupModifier extends ServletBase {
 
         switch (request.getParameter("action")) {
             case "confirmUpdate":
+                try{
                 String username = request.getParameter("memberUsername");
                 String role = request.getParameter("member-role");
 
@@ -94,6 +94,9 @@ public class GroupModifier extends ServletBase {
                 System.out.println("Username: " + username);
 
                 changeMemberRole(username, currentProject.getId(), Integer.parseInt(role));
+                }catch(Exception e){
+                    System.out.println("invalid");
+                }
 
                 break;
             case "removeMember":
@@ -106,12 +109,15 @@ public class GroupModifier extends ServletBase {
 
             case "addMember":
 
+                try{
                 addMemberToProject(
                        request.getParameter("newMemberUserName"),
                        currentProject.getId(),
                        Integer.parseInt(request.getParameter("member-role"))
                 );
-
+                }catch(Exception e){
+                    System.out.println("invalid username or not choose group role");
+                }
                 break;
 
             case "changeProjectName":
