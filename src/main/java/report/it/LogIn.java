@@ -35,15 +35,13 @@ import javax.servlet.http.HttpServletResponse;
 public class LogIn extends ServletBase {
     private static final long serialVersionUID = 1L;
 
-    private Administration administration;
-
     /**
      * @see HttpServlet#HttpServlet()
      */
     public LogIn() {
         super();
         // TODO Auto-generated constructor stub
-        administration = new Administration();
+
     }
 
     /**
@@ -77,25 +75,21 @@ public class LogIn extends ServletBase {
         password = request.getParameter("password"); // get the entered password
 
         if (username != null && password != null) {
-            try {
-                if (checkUser(username, administration.encryptPassword(password, "SHA-256"))) {
-                    state = LOGIN_TRUE;
-                    session.setAttribute("state", state);  // save the state in the session
-                    session.setAttribute("username", username);  // save the username in the session
-                    response.sendRedirect("TimeReporting");
-                } else if (checkAdmin(username, password)) {
-                    state = LOGIN_TRUE;
-                    session.setAttribute("state", state);  // save the state in the session
-                    session.setAttribute("username", username);  // save the username in the session
+            if (checkUser(username, encryptPassword(password))) {
+                state = LOGIN_TRUE;
+                session.setAttribute("state", state);  // save the state in the session
+                session.setAttribute("username", username);  // save the username in the session
+                if (username.equals("admin")) {
                     response.sendRedirect("Administration");
                 } else {
-                    out.println("<p>That was not a valid user username / password. </p>");
-    //                out.println(loginRequestForm());
-                    request.getRequestDispatcher("index.jsp").include(request, response);
+                    response.sendRedirect("TimeReporting");
                 }
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+            } else {
+                out.println("<p>That was not a valid user username / password. </p>");
+                //                out.println(loginRequestForm());
+                request.getRequestDispatcher("index.jsp").include(request, response);
             }
+
         } else { // username was null, probably because no form has been filled out yet. Display form.
 //            out.println(loginRequestForm());
             request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -121,23 +115,6 @@ public class LogIn extends ServletBase {
 
         doGet(request, response);
     }
-
-    /**
-     * Generates a form for login.
-     *
-     * @return HTML code for the form
-     */
-/*
-	protected String loginRequestForm() {
-		String html = "<p>Please enter your name and password in order to log in:</p>";
-		html += "<p> <form name=" + formElement("input");
-		html += " method=" + formElement("post");
-		html += "<p> Name: <input type=" + formElement("text") + " name=" + formElement("user") + '>';
-		html += "<p> Password: <input type=" + formElement("password") + " name=" + formElement("password") + '>';
-		html += "<p> <input type=" + formElement("submit") + "value=" + formElement("Submit") + '>';
-		return html;
-	}
-*/
 
     /**
      * Checks with the database if the user should be accepted

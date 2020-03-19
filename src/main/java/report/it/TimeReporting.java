@@ -38,6 +38,11 @@ public class TimeReporting extends ServletBase {
         String currentUsername = "";
         HttpSession session = request.getSession(true);
         Object nameObj = session.getAttribute("username");
+
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setHeader("Expires", "0"); // Proxies.
+
         if (nameObj != null) {
             currentUsername = (String) nameObj;  // if the name exists typecast the name to a string
             request.setAttribute("user",currentUsername);
@@ -47,7 +52,7 @@ public class TimeReporting extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
-            request.setAttribute("navbar-title", "Welcome" + getFullName(currentUsername));
+            request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
 
             request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
@@ -86,14 +91,12 @@ public class TimeReporting extends ServletBase {
         switch (request.getParameter("action")) {
             case "editTimeReport":
                 int reportId=Integer.parseInt(request.getParameter("timeReportId"));
-                System.out.println("edit report id "+reportId);
-
                 request.setAttribute("reportId",reportId);
                 TimeReport editReport= getTimeReport(reportId);
                 request.setAttribute("editReport",editReport);
                 request.setAttribute("editable",true);
-
                 break;
+
             case "editProject":
                 int projectId= Integer.parseInt(request.getParameter("myProject"));
                 String projectName="";
@@ -105,7 +108,6 @@ public class TimeReporting extends ServletBase {
                     ResultSet rs=ps.executeQuery();
                     while(rs.next()){
                         projectName=rs.getString("name");}
-
                 }catch (SQLException ex) {
 
                     System.out.println("SQLException: " + ex.getMessage());
@@ -120,18 +122,16 @@ public class TimeReporting extends ServletBase {
                 int groupReportId=Integer.parseInt(request.getParameter("groupReportId"));
                 signReport(groupReportId);
                 break;
+
             case "submit":
-                System.out.println("action submit time report");
                 boolean isSubmitted= submitReport(request, myName);
-
-                //request.setAttribute("isSubmitted", isSubmitted);// out.print("Please check if you choose a project or input invalid text");
-
+                System.out.println(isSubmitted);
+                request.setAttribute("invalidText", !isSubmitted);
                 break;
 
-            case "update"://funkar inte
+            case "update":
                 int updateReportId=Integer.parseInt(request.getParameter("reportId"));
                 boolean idUpdated=updateReport(request,updateReportId);
-                System.out.println(idUpdated);
                 request.setAttribute("editable",false);
                 break;
 
@@ -233,7 +233,7 @@ public class TimeReporting extends ServletBase {
         List<Project> projects= new ArrayList<>();
         PreparedStatement ps =null;
         try {
-            String query = "select * from Projects inner join ProjectMembers on Projects.id= ProjectMembers.projectId where username=?";
+            String query = "select * from Projects inner join ProjectMembers on Projects.id= ProjectMembers.projectId where username=? and role='1' ";
             ps = connection.prepareStatement(query);
             ps.setString(1, user);
             ResultSet rs = ps.executeQuery();
@@ -279,8 +279,6 @@ public class TimeReporting extends ServletBase {
         List<TimeReport> groupReports = new ArrayList<>();
         PreparedStatement ps =null;
         try {
-            //String query = "select distinct p1.username AS member from ProjectMembers p1, ProjectMembers p2 where p1.projectId=p2.projectId " +
-            //        "and p2.username = ? and p2.role = 1";
             String query = "select distinct p1.username, p2.projectId from ProjectMembers p1 inner join ProjectMembers p2 on p1.projectId=p2.projectId " +
                     "where p2.username = ? and p2.role = '1'";
             ps = connection.prepareStatement(query);
@@ -294,22 +292,15 @@ public class TimeReporting extends ServletBase {
                     // add time report only with projectID of groupLeader as leader
                     if(t.getProjectID()==projectID)
                         groupReports.add(t);}
-               // if(!groupMember.equals(groupLeader)){
-                  // groupReports.addAll(getTimeReports(groupMember));
-                   /* // add only unsigned time reports
-                   List<TimeReport> memberReports=getTimeReports(groupMember);
-                    for (TimeReport t:memberReports) {
-                        // add unsigned time report only
-                        if(!t.getSigned())
-                            groupReports.add(t);
-                    }*/
-              //  }
             }
             ps.close();
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        for(TimeReport t:groupReports){
+            t.setUserFullName(getFullName(t.getUsername()));
         }
         return groupReports;
     }

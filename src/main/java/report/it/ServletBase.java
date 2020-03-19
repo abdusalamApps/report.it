@@ -1,5 +1,7 @@
 package report.it;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 import javax.servlet.http.HttpServlet;
@@ -80,7 +82,7 @@ public class ServletBase extends HttpServlet {
     protected String getFullName(String username) {
         String fullName = "";
         try {
-            PreparedStatement statement = connection.prepareStatement("select * from Administrators where username = ?");
+            PreparedStatement statement = connection.prepareStatement("select * from Users where username = ?");
             statement.setString(1, username);
             ResultSet set = statement.executeQuery();
 
@@ -92,6 +94,35 @@ public class ServletBase extends HttpServlet {
             e.printStackTrace();
         }
         return fullName;
+    }
+
+
+    protected String encryptPassword(String password) {
+        try {
+            return encryptPassword(password, "SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    private String encryptPassword(String password, String algorithm) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance(algorithm);
+        digest.reset();
+        byte[] hash = digest.digest(password.getBytes());
+        return bytesToStringHex(hash);
+    }
+
+    private final char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+    private String bytesToStringHex(byte[] bytes) {
+        char[] hexChar = new char[bytes.length * 2];
+        for (int i = 0; i < bytes.length; i++) {
+            int v = bytes[i] & 0xFF;
+            hexChar[i * 2] = hexArray[v >>> 4];
+            hexChar[i * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChar);
     }
 
 

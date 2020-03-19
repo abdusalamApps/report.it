@@ -11,10 +11,9 @@
         <a href="">${navbarTitle}</a>
         <div class="topnav-right">
             <a href="">Home</a>
-            <a href="">Profile</a>
-            <form class="login-form" action="LogIn" method="post">
-<button type="submit" name="button" value="logout">Log out</button>
-            </form>
+            <a href="Profile">Profile</a>
+
+            <a href="Logout">Log Out</a>
         </div>
 
     </div>
