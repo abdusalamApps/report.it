@@ -38,6 +38,11 @@ public class TimeReporting extends ServletBase {
         String currentUsername = "";
         HttpSession session = request.getSession(true);
         Object nameObj = session.getAttribute("username");
+
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setHeader("Expires", "0"); // Proxies.
+
         if (nameObj != null) {
             currentUsername = (String) nameObj;  // if the name exists typecast the name to a string
             request.setAttribute("user",currentUsername);
@@ -47,7 +52,7 @@ public class TimeReporting extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
-            request.setAttribute("navbarTitle", "Welcome " + getUserFullName(currentUsername));
+            request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
 
             request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
@@ -295,7 +300,7 @@ public class TimeReporting extends ServletBase {
             System.out.println("VendorError: " + ex.getErrorCode());
         }
         for(TimeReport t:groupReports){
-            t.setUserFullName(getUserFullName(t.getUsername()));
+            t.setUserFullName(getFullName(t.getUsername()));
         }
         return groupReports;
     }
