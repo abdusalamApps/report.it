@@ -7,11 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://35.228.254.209:3306/reportit</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="@puccini.cs.lth.se" uuid="643d064a-817f-4730-8447-10d581f31dbd">
+    <data-source source="LOCAL" name="reportit@localhost" uuid="b635b083-4b84-4a52-9431-99a1599c2c82">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://puccini.cs.lth.se:3306</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/reportit</jdbc-url>
     </data-source>
   </component>
 </project>

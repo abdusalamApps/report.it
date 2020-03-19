@@ -52,6 +52,7 @@ public class TimeReporting extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            request.setAttribute("isAdmin",false);
             request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
 
             request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
@@ -150,8 +151,8 @@ public class TimeReporting extends ServletBase {
 
     private boolean updateReport(HttpServletRequest request,int reportId){
         boolean idUpdated=true;
-        try{int minutes=Integer.parseInt(request.getParameter("time"));
-        int week=Integer.parseInt(request.getParameter("week"));
+        try{int minutes=Integer.parseInt(request.getParameter("time").replaceAll("\\s",""));
+        int week=Integer.parseInt(request.getParameter("week").replaceAll("\\s",""));
         String projectName=request.getParameter("projectName");
         int projectId=0;
         PreparedStatement ps;
@@ -368,8 +369,8 @@ public class TimeReporting extends ServletBase {
         boolean isSubmitted = true;
         PreparedStatement ps =null;
         //try catch is used to check if input is valid data
-        try { int minutes=Integer.parseInt(request.getParameter("time"));
-            int week=Integer.parseInt(request.getParameter("week"));
+        try { int minutes=Integer.parseInt(request.getParameter("time").replaceAll("\\s",""));
+            int week=Integer.parseInt(request.getParameter("week").replaceAll("\\s",""));
             String projectName=request.getParameter("projectName");
             //submit and update database
             try{
