@@ -315,6 +315,8 @@ public class Administration extends ServletBase {
         return projects;
     }
 
+
+
     private boolean deleteUser(String username) {
         boolean ok = true;
         deleteAssociation(username);

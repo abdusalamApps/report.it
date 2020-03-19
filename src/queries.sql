@@ -37,14 +37,6 @@ create table TimeReports
     foreign key (username) references Users (username)
 );
 
-create table userAttempts
-(
-    username        varchar(30),
-    attempts        integer,
-    lastModified    long,
-    foreign key (username) references Users (username)
-);
-
 # Password for user1, user2 and user3 is 1234
 
 insert into Users (username, name, password, email)
@@ -67,6 +59,7 @@ values ('Krusty Cookies');
 
 select * from Users;
 
+select * from Administrators;
 
 insert into ProjectMembers (username, projectId, role)
 values ('user1', 1, 1);
@@ -80,7 +73,8 @@ values ('user2', 1, 2);
 insert into ProjectMembers (username, projectId, role)
 values ('user3', 2, 1);
 
-select * from ProjectMembers
+select ProjectMembers.username, ProjectMembers.projectId, name
+from ProjectMembers
 join Projects P on ProjectMembers.projectId = P.id;
 
 select U.name, U.username, ProjectMembers.role
@@ -96,3 +90,5 @@ insert into TimeReports (submitted, minutes_sum, signed, projectId, username, we
 values ('2020-03-03', 390, false, 1, 'user1', 9);
 
 select * from TimeReports;
+
+select * from Projects;

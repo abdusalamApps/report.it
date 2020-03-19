@@ -47,14 +47,12 @@ public class GroupModifier extends ServletBase {
             response.sendRedirect("LogIn");
         } else {
 
-            System.out.println("currentProjectId: " + currentProject.getId());
-            System.out.println("currentProjectName: " + currentProject.getName());
+            request.setAttribute("navbarTitle", getProjectName(currentProject.getId()));
 
-            request.setAttribute("navbarTitle", currentProject.getName());
             request.getRequestDispatcher("modfiy-project-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
 
-            request.setAttribute("members", getMembers(currentProject.getName()));
+            request.setAttribute("members", getMembers(currentProject.getId()));
 
             request.setAttribute("test", "test");
             request.getRequestDispatcher("modify-project.jsp").include(request, response);
@@ -68,12 +66,6 @@ public class GroupModifier extends ServletBase {
                     System.out.println("MemberUserName: " + request.getParameter("memberUsername"));
                     request.getRequestDispatcher("edit-member.jsp").include(request, response);
                 }
-                if( action.equals("update-project-name")){
-                    System.out.println("update projectName");
-                    request.setAttribute("projectName", request.getParameter("projectName"));
-                    System.out.println("ProjectName: " + request.getParameter("projectName"));
-                    request.getRequestDispatcher("edit-project-name.jsp").include(request, response);
-                }
             }
 
             out.print("</div></body></html>");
@@ -85,16 +77,16 @@ public class GroupModifier extends ServletBase {
 
         switch (request.getParameter("action")) {
             case "confirmUpdate":
-                try{
-                String username = request.getParameter("memberUsername");
-                String role = request.getParameter("member-role");
+                try {
+                    String username = request.getParameter("memberUsername");
+                    String role = request.getParameter("member-role");
 
-                System.out.println("Member to edit: ");
-                System.out.println("Role: " + role);
-                System.out.println("Username: " + username);
+                    System.out.println("Member to edit: ");
+                    System.out.println("Role: " + role);
+                    System.out.println("Username: " + username);
 
-                changeMemberRole(username, currentProject.getId(), Integer.parseInt(role));
-                }catch(Exception e){
+                    changeMemberRole(username, currentProject.getId(), Integer.parseInt(role));
+                } catch (Exception e) {
                     System.out.println("invalid");
                 }
 
@@ -109,21 +101,21 @@ public class GroupModifier extends ServletBase {
 
             case "addMember":
 
-                try{
-                addMemberToProject(
-                       request.getParameter("newMemberUserName"),
-                       currentProject.getId(),
-                       Integer.parseInt(request.getParameter("member-role"))
-                );
-                }catch(Exception e){
+                try {
+                    addMemberToProject(
+                            request.getParameter("newMemberUserName"),
+                            currentProject.getId(),
+                            Integer.parseInt(request.getParameter("member-role"))
+                    );
+                } catch (Exception e) {
                     System.out.println("invalid username or not choose group role");
                 }
                 break;
 
             case "changeProjectName":
-                String projectName = request.getParameter("project");
+                String projectName = request.getParameter("new-project-name");
                 System.out.println("project to update: " + projectName);
-                changeProjectName(projectName,currentProject.getId());
+                changeProjectName(projectName);
                 break;
 
             case "changeMemberRole":
@@ -133,7 +125,7 @@ public class GroupModifier extends ServletBase {
                         Integer.parseInt(request.getParameter("member-role"))
                 );
 
-
+                break;
             default:
                 System.out.println("no action selected");
                 break;
@@ -142,18 +134,33 @@ public class GroupModifier extends ServletBase {
     }
 
 
-    private List<ProjectMember> getMembers(String projectName) {
+    private String getProjectName(int projectId) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("select name from Projects where id = ?");
+            preparedStatement.setInt(1, projectId);
+            ResultSet set = preparedStatement.executeQuery();
+            if (set.next()) {
+                return set.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    private List<ProjectMember> getMembers(int projectId) {
         ArrayList<ProjectMember> members = new ArrayList<>();
 
         try {
-            String query="select U.name, U.username," +
+            String query = "select U.name, U.username," +
                     " ProjectMembers.role\n" +
                     " from ProjectMembers join Users U " +
                     " on ProjectMembers.username = U.username\n" +
                     "join Projects P on ProjectMembers.projectId = P.id\n" +
-                    "where P.name = ?";
+                    "where P.id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, projectName);
+            preparedStatement.setInt(1, projectId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 members.add(new ProjectMember(
@@ -233,18 +240,15 @@ public class GroupModifier extends ServletBase {
         return changed;
     }
 
-    public boolean changeProjectName(String newName, int id) {
+    public boolean changeProjectName(String newName) {
         boolean changed = true;
         try {
-            String query = "update Projects, ProjectMembers\n" +
-                    "inner join on Projects.id = ProjectMembers.projectId "+
-                    "set Projects.name = ? \n" +
-                    "where username = ? and id = ?";
+            String query = "update Projects set name = ? where id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, newName);
-            preparedStatement.setString(2, newName);
-            preparedStatement.setInt(3, id);
+            preparedStatement.setInt(2, currentProject.getId());
 
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             changed = false;
             e.printStackTrace();
