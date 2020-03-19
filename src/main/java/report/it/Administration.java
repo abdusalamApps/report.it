@@ -78,6 +78,7 @@ public class Administration extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            request.setAttribute("isAdmin",true);
             request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
 
             request.getRequestDispatcher("administration-header.jsp").include(request, response);
