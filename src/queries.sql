@@ -67,7 +67,6 @@ values ('Krusty Cookies');
 
 select * from Users;
 
-select * from Administrators;
 
 insert into ProjectMembers (username, projectId, role)
 values ('user1', 1, 1);
