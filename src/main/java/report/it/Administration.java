@@ -144,10 +144,14 @@ public class Administration extends ServletBase {
 
                 System.out.println("action addProject");
                 System.out.println("project to add: " + request.getParameter("project-name"));
-                Project project = new Project(request.getParameter("project-name"));
-                if (request.getParameter("project-name")!=null) {
-                    addProject(project);
-                } else {
+                    try {
+                        String projectName = request.getParameter("project-name").trim();
+                        if (!projectName.equals("")) {
+                            Project project = new Project(projectName);
+                            boolean insertable = checkProjectName(project);
+                            if (insertable) addProject(project);
+                        }
+                    }catch(Exception e) {
                     System.out.println("invalied project name");
                 }
 
@@ -164,8 +168,7 @@ public class Administration extends ServletBase {
             case "removeProject":
                 System.out.println("action removeProject");
                 System.out.println("project to remove: " + request.getParameter("project-name"));
-                deleteProject(request.getParameter("edit-project-name"),
-                        request.getParameter("edit-project-id"));
+                deleteProject(Integer.parseInt(request.getParameter("edit-project-id")));
                 break;
             default:
                 System.out.println("no action selected");
@@ -329,14 +332,14 @@ public class Administration extends ServletBase {
         return ok;
     }
 
-    private boolean deleteProject(String projectname ,String projectId ) {
+    private boolean deleteProject(int projectId ) {
         deleteAssociationProject(projectId);
         boolean ok = true;
 
         try {
-            String query = "delete from Projects where name = ?";
+            String query = "delete from Projects where id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, projectname);
+            preparedStatement.setInt(1, projectId);
 
             preparedStatement.executeUpdate();
 
@@ -348,12 +351,12 @@ public class Administration extends ServletBase {
     }
 
     // project's association with any user has to be deleted as well
-    private boolean deleteAssociationProject(String projectId) {
+    private boolean deleteAssociationProject(int projectId) {
         boolean ok = true;
         try {
             String query = "delete from ProjectMembers where projectId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, projectId);
+            preparedStatement.setInt(1, projectId);
 
             preparedStatement.executeUpdate();
 
@@ -381,4 +384,13 @@ public class Administration extends ServletBase {
         return ok;
     }
 
+    private boolean checkProjectName(Project project){
+        boolean hasNoSameName=true;
+        List<Project> projects=getProjects();
+        for(Project p:projects){
+            if(project.getName().equals(p.getName()))
+                return false;
+        }
+        return hasNoSameName;
+    }
 }
