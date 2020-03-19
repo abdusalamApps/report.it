@@ -37,6 +37,14 @@ create table TimeReports
     foreign key (username) references Users (username)
 );
 
+create table userAttempts
+(
+    username        varchar(30),
+    attempts        integer,
+    lastModified    long,
+    foreign key (username) references Users (username)
+);
+
 # Password for user1, user2 and user3 is 1234
 
 insert into Users (username, name, password, email)
