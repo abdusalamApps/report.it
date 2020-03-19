@@ -10,6 +10,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <HR>
+<div class="container">
 <h2 >Your Groups Time Reports</h2>
 <table>
     <tr>
@@ -52,8 +53,9 @@
     </c:forEach>
 </table>
 <br>
-
-<h2 style="color: aquamarine">Your Groups</h2>
+</div>
+    <div class="container">
+<h2 >Your Groups</h2>
 
 <table>
     <tr>
@@ -78,4 +80,4 @@
 
 </table>
 
-
+    </div>

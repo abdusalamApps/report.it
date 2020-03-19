@@ -9,19 +9,10 @@
 <%@ page isELIgnored="false"%>
 <html>
 <head>
+
     <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="timeReport.css">
     <title>TimeReporting</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 15px;
-        }
-        table{
-            width: 80%;
-        }
-    </style>
+
 </head>
 <body>
