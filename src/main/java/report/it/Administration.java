@@ -262,8 +262,7 @@ public class Administration extends ServletBase {
         List<User> users = new ArrayList<>();
         try {
             String query = "select * \n" +
-                    "from Users\n" +
-                    "         left join ProjectMembers PM on Users.username = PM.username;\n";
+                    "from Users";
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
