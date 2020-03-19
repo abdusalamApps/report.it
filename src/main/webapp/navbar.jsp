@@ -13,7 +13,7 @@
             <a href="">Home</a>
             <a href="Profile">Profile</a>
 
-            <a href="index.jsp">Log Out</a>
+            <a href="Logout">Log Out</a>
         </div>
 
     </div>

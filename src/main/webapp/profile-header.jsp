@@ -14,5 +14,3 @@
     <title>Report It - Profile</title>
 </head>
 <body>
-
-    <% response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); %>

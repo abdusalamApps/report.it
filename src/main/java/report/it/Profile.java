@@ -36,11 +36,15 @@ public class Profile extends ServletBase {
 
         HttpSession session = request.getSession(true);
         Object nameObj = session.getAttribute("username");
+
         if (nameObj != null) {
             currentUsername = (String) nameObj;
             currentName= getFullName(currentUsername);
             currentEmail= getEmail();
         }
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setHeader("Expires", "0"); // Proxies.
 
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
