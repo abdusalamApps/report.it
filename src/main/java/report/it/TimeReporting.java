@@ -60,7 +60,7 @@ public class TimeReporting extends ServletBase {
             List<TimeReport> timeReports = getTimeReports(currentUsername);
             request.setAttribute("timeReports", timeReports);
 
-            List<String> projects= getProjectName(currentUsername);
+            List<String> projects= getUsersProjectName(currentUsername);
             request.setAttribute("projects", projects);
             request.getRequestDispatcher("timereporting.jsp").include(request, response);
 
@@ -348,7 +348,7 @@ public class TimeReporting extends ServletBase {
     }
 
 
-    private List<String> getProjectName(String user){
+    private List<String> getUsersProjectName(String user){
         List<String> projects= new ArrayList<>();
         PreparedStatement ps =null;
         try {
