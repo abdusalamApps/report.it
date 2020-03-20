@@ -4,6 +4,7 @@ public class Project {
 
     private int id;
     private String name;
+    private int members;
 
     public Project() {
 
@@ -18,11 +19,24 @@ public class Project {
         this.name = name;
     }
 
+    public Project(String name, int members) {
+        this.name = name;
+        this.members = members;
+    }
+
     public int getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getMembers() {
+        return members;
+    }
+
+    public void setMembers(int members) {
+        this.members = members;
     }
 }

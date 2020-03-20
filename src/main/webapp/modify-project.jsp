@@ -9,23 +9,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="container">
-    <a class="title">ProjectName</a>
-    <div class="cards-container">
-        <form action="GroupModifier" method="get">
-            <input type="hidden" name="action" value="update-project-name">
-            <input type="hidden" name="newProjectName" value="${Project.getName()}">
-            <button id="edit-project-button">
-                <i class="material-icons">edit</i>
-            </button>
-         </form>
-
-        <form action="GroupModifier" method="post">
-             <input type="hidden" name="action" value="changeProjectName">
-             <input type="hidden" name="memberUsername" value="${Project.getName()}">
-        </form>
-</div>
-
-<div class="container">
 
     <a class="title">Members</a>
     <div class="cards-container">
@@ -47,13 +30,9 @@
                             <i class="material-icons">edit</i>
                         </button>
                     </form>
-
-
                     <form action="GroupModifier" method="post">
                         <input type="hidden" name="action" value="removeMember">
-
                         <input type="hidden" name="memberUsername" value="${member.getUsername()}">
-
                         <button class="delete-button">
                             <i class="material-icons">delete</i>
                         </button>
@@ -78,5 +57,13 @@
         <input type="hidden" name="action" value="addMember">
         <button class="text-button">Add Member</button>
     </form>
+
+    <a class="title">Change Project Name</a>
+    <form class="new-member-form" action="GroupModifier" method="post">
+        <input type="text" placeholder="New name" name="new-project-name">
+        <input type="hidden" name="action" value="changeProjectName">
+        <button class="text-button">Change</button>
+    </form>
+
 </div>
 </div>

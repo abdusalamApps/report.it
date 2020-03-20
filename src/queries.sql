@@ -1,3 +1,10 @@
+-- Drop the tables if they already exist.
+drop table if exists ProjectMembers;
+drop table if exists TimeReports;
+drop table if exists Users;
+drop table if exists userAttempts;
+drop table if exists Projects;
+
 create table Projects
 (
     id            integer primary key auto_increment,
@@ -48,13 +55,13 @@ create table userAttempts
 # Password for user1, user2 and user3 is 1234
 
 insert into Users (username, name, password, email)
- VALUES ('admin', 'Admin', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'admin@domain.com');
+VALUES ('admin', 'Admin', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'admin@domain.com');
 
 insert into Users (username, name, password, email)
 values ('user1', 'User One', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user1@domain.com');
 
 insert into Users (username, name, password, email)
-values ('user2', 'User Two', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user2@domain.com');;
+values ('user2', 'User Two', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user2@domain.com');
 
 insert into Users (username, name, password, email)
 values ('user3', 'User Three',  '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user3@domain.com');
@@ -75,17 +82,17 @@ insert into ProjectMembers (username, projectId, role)
 values ('user2', 1, 2);
 
 insert into ProjectMembers (username, projectId, role)
-values ('user2', 1, 2);
+values ('user2', 2, 2);
 
 insert into ProjectMembers (username, projectId, role)
 values ('user3', 2, 1);
 
 select * from ProjectMembers
-join Projects P on ProjectMembers.projectId = P.id;
+                  join Projects P on ProjectMembers.projectId = P.id;
 
 select U.name, U.username, ProjectMembers.role
 from ProjectMembers join Users U on ProjectMembers.username = U.username
-join Projects P on ProjectMembers.projectId = P.id
+                    join Projects P on ProjectMembers.projectId = P.id
 where P.name = 'Report It';
 
 update ProjectMembers
