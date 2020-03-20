@@ -46,7 +46,8 @@ insert into Users (username, name, password, email)
 values ('user1', 'User One', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user1@domain.com');
 
 insert into Users (username, name, password, email)
-values ('user2', 'User Two', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user2@domain.com');;
+values ('user2', 'User Two', '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user2@domain.com
+');
 
 insert into Users (username, name, password, email)
 values ('user3', 'User Three',  '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 'user3@domain.com');
@@ -58,8 +59,6 @@ insert into Projects (name)
 values ('Krusty Cookies');
 
 select * from Users;
-
-select * from Administrators;
 
 insert into ProjectMembers (username, projectId, role)
 values ('user1', 1, 1);

@@ -144,8 +144,9 @@ public class LogIn extends ServletBase {
         String Password = "";
 
         try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from Users");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from Users");
+            ResultSet rs = preparedStatement.executeQuery();
+
             while (rs.next() && !userChecked) {
                 String nameSaved = rs.getString("username");
                 Password = rs.getString("password");
@@ -154,7 +155,6 @@ public class LogIn extends ServletBase {
                     return Password;
                 }
             }
-            stmt.close();
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
