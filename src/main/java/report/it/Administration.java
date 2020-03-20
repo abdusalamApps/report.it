@@ -65,6 +65,9 @@ public class Administration extends ServletBase {
         String currentUsername = "";
 
         HttpSession session = request.getSession(true);
+
+        session.setMaxInactiveInterval(20*60);
+
         Object nameObj = session.getAttribute("username");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.

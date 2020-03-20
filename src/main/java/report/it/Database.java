@@ -4,9 +4,9 @@ import java.sql.*;
 
 public class Database {
 
-    private static String databaseServerAddress = "localhost";
-    private static String databaseUser = "root"; // database login user
-    private static String databasePassword = "rio78asj"; // database login password
+    private static String databaseServerAddress = "35.228.254.209";
+    private static String databaseUser = "abdo"; // database login user
+    private static String databasePassword = ""; // database login password
     private static String database = "reportit"; // the database to use, i.e.
 
     protected Connection conn = null;
