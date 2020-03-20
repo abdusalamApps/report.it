@@ -150,7 +150,7 @@ public class GroupModifier extends ServletBase {
     }
 
     private List<ProjectMember> getMembers(int projectId) {
-        ArrayList<ProjectMember> members = new ArrayList<>();
+        List<ProjectMember> members = new ArrayList<>();
 
         try {
             String query = "select U.name, U.username," +
@@ -223,15 +223,10 @@ public class GroupModifier extends ServletBase {
                     "set role = ? \n" +
                     "where username = ? and projectId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-
             preparedStatement.setInt(1, role);
-
             preparedStatement.setString(2, username);
             preparedStatement.setInt(3, projectId);
-
-
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             changed = false;
             e.printStackTrace();
