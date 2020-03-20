@@ -125,14 +125,29 @@ public class TimeReporting extends ServletBase {
                 break;
 
             case "submit":
-                boolean isSubmitted= submitReport(request, myName);
-                System.out.println(isSubmitted);
+                boolean isSubmitted=true;
+                try { int minutes=Integer.parseInt(request.getParameter("time").replaceAll("\\s",""));
+                    int week=Integer.parseInt(request.getParameter("week").replaceAll("\\s",""));
+                    String newProjectName=request.getParameter("projectName");
+                    TimeReport newTimeReport= new TimeReport(getCurrentDate(), minutes, false, newProjectName,myName, week);
+                    isSubmitted= submitReport(newTimeReport);
+                }catch(Exception e) {
+                    isSubmitted=false;
+                }
                 request.setAttribute("invalidText", !isSubmitted);
+
                 break;
 
             case "update":
                 int updateReportId=Integer.parseInt(request.getParameter("reportId"));
-                boolean idUpdated=updateReport(request,updateReportId);
+                try{int minutes=Integer.parseInt(request.getParameter("time").replaceAll("\\s",""));
+                    int week=Integer.parseInt(request.getParameter("week").replaceAll("\\s",""));
+                    String newProjectName=request.getParameter("projectName");
+                    updateReport(minutes, week,newProjectName,updateReportId);
+                }catch(Exception e) {
+
+                }
+
                 request.setAttribute("editable",false);
                 break;
 
@@ -149,11 +164,8 @@ public class TimeReporting extends ServletBase {
         doGet(request, response);
     }
 
-    private boolean updateReport(HttpServletRequest request,int reportId){
+    private boolean updateReport(int minutes,int week,String projectName,int reportId){
         boolean idUpdated=true;
-        try{int minutes=Integer.parseInt(request.getParameter("time").replaceAll("\\s",""));
-        int week=Integer.parseInt(request.getParameter("week").replaceAll("\\s",""));
-        String projectName=request.getParameter("projectName");
         int projectId=0;
         PreparedStatement ps;
         try {
@@ -170,7 +182,7 @@ public class TimeReporting extends ServletBase {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
-         try{   String query = "update TimeReports set minutes_sum= ?, week=?, projectId=? where id=?";
+        try{   String query = "update TimeReports set minutes_sum= ?, week=?, projectId=? where id=?";
             ps = connection.prepareStatement(query);
             ps.setInt(1,minutes);
             ps.setInt(2,week);
@@ -183,9 +195,6 @@ public class TimeReporting extends ServletBase {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-        }
-        }catch(Exception e) {
-            idUpdated=false;
         }
         return idUpdated;
     }
@@ -339,11 +348,7 @@ public class TimeReporting extends ServletBase {
         return timeReports;
     }
 
-    /**
-     * get current users all project
-     * @param user current users username
-     * @returna a list of this users all project name
-     */
+
     private List<String> getProjectName(String user){
         List<String> projects= new ArrayList<>();
         PreparedStatement ps =null;
@@ -365,47 +370,39 @@ public class TimeReporting extends ServletBase {
     }
 
 
-    private boolean submitReport(HttpServletRequest request, String username){
+    private boolean submitReport(TimeReport timeReport){
         boolean isSubmitted = true;
         PreparedStatement ps =null;
-        //try catch is used to check if input is valid data
-        try { int minutes=Integer.parseInt(request.getParameter("time").replaceAll("\\s",""));
-            int week=Integer.parseInt(request.getParameter("week").replaceAll("\\s",""));
-            String projectName=request.getParameter("projectName");
-            //submit and update database
-            try{
-                String query="select id from Projects where name = '"+ projectName+"'";
-                ps = connection.prepareStatement(query);
-                ResultSet rs=ps.executeQuery();
-                rs.next();
-                int projectId = rs.getInt("id");
+        try{
+            String query="select id from Projects where name = '"+ timeReport.getProjectName()+"'";
+            ps = connection.prepareStatement(query);
+            ResultSet rs=ps.executeQuery();
+            rs.next();
+            int projectId = rs.getInt("id");
 
-                String sql ="insert into TimeReports (submitted, minutes_sum, signed, projectId,username, week) "
-                        +" values(?,?,?,?,?,?)";
-                ps = connection.prepareStatement(sql);
-                ps.setString(1, currentTime());
-                ps.setInt(2,minutes);
-                ps.setBoolean(3,false);
-                ps.setInt(4,projectId);
-                ps.setString(5,username);
-                ps.setInt(6,week);
-                ps.executeUpdate();
+            String sql ="insert into TimeReports (submitted, minutes_sum, signed, projectId,username, week) "
+                    +" values(?,?,?,?,?,?)";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, timeReport.getSubmitted());
+            ps.setInt(2,timeReport.getMinutes_sum());
+            ps.setBoolean(3,timeReport.getSigned());
+            ps.setInt(4,projectId);
+            ps.setString(5,timeReport.getUsername());
+            ps.setInt(6,timeReport.getWeek());
+            ps.executeUpdate();
 
-                ps.close();
+            ps.close();
 
-            } catch (SQLException ex) {
-                isSubmitted=false;
-                System.out.println("SQLException: " + ex.getMessage());
-                System.out.println("SQLState: " + ex.getSQLState());
-                System.out.println("VendorError: " + ex.getErrorCode());
-            }
-        }catch(Exception e) {
+        } catch (SQLException ex) {
             isSubmitted=false;
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
         }
         return isSubmitted;
     }
-
-    private String currentTime() {
+//getCurrentDate
+    private String getCurrentDate() {
         java.util.Date dt = new java.util.Date();
 
         java.text.SimpleDateFormat sdf =
