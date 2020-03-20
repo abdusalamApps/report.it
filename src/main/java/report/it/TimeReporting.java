@@ -55,7 +55,6 @@ public class TimeReporting extends ServletBase {
             request.setAttribute("isAdmin",false);
             request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
 
-            request.getRequestDispatcher("timereporting-header.jsp").include(request, response);
             request.getRequestDispatcher("navbar.jsp").include(request, response);
 
             List<TimeReport> timeReports = getTimeReports(currentUsername);
@@ -63,7 +62,7 @@ public class TimeReporting extends ServletBase {
 
             List<String> projects= getProjectName(currentUsername);
             request.setAttribute("projects", projects);
-            request.getRequestDispatcher("timereports-table.jsp").include(request, response);
+            request.getRequestDispatcher("timereporting.jsp").include(request, response);
 
             if (isLeader(currentUsername)) {
                 List<TimeReport> groupReports= getGroupTimeReport(currentUsername);
