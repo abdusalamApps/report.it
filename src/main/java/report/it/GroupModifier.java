@@ -137,7 +137,7 @@ public class GroupModifier extends ServletBase {
     private String getProjectName(int projectId) {
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement("select name from Projects where id = ?");
+            preparedStatement = connection.prepareStatement("SELECT name FROM Projects WHERE id = ?");
             preparedStatement.setInt(1, projectId);
             ResultSet set = preparedStatement.executeQuery();
             if (set.next()) {
@@ -172,10 +172,15 @@ public class GroupModifier extends ServletBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return members;
     }
 
+    /**
+     * Add a member to a certain project group
+     *
+     * @param username, projectId, role
+     * @return true if member added.
+     */
     public boolean addMemberToProject(String username, int projectId, int role) {
         boolean added = true;
         try {
@@ -194,13 +199,17 @@ public class GroupModifier extends ServletBase {
         return added;
     }
 
-    // removes a member from a certain project
-
+    /**
+     * Removes a member from a certain project
+     *
+     * @param username,projectId
+     * @return true if member removed.
+     */
     public boolean removeMemberFromProject(String username, int projectId) {
 
         boolean removed = true;
         try {
-            String query = "DELETE FROM ProjectMembers WHERE username = ? and  projectId = ?";
+            String query = "DELETE FROM ProjectMembers WHERE username = ? AND  projectId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setInt(2, projectId);
@@ -214,31 +223,40 @@ public class GroupModifier extends ServletBase {
         return removed;
     }
 
-
+    /**
+     * Modify role of a member in a certain project
+     *
+     * @param username, projectId, role
+     * @return true if the change has succeed.
+     */
     public boolean changeMemberRole(String username, int projectId, int role) {
 
         boolean changed = true;
         try {
-            String query = "update ProjectMembers\n" +
-                    "set role = ? \n" +
-                    "where username = ? and projectId = ?";
+            String query = "UPDATE ProjectMembers SET role = ? WHERE username = ? AND projectId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, role);
             preparedStatement.setString(2, username);
             preparedStatement.setInt(3, projectId);
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             changed = false;
             e.printStackTrace();
         }
-
         return changed;
     }
 
+    /**
+     * Modify the name of a project
+     *
+     * @param newName name of project
+     * @return true if the change has succeed.
+     */
     public boolean changeProjectName(String newName) {
         boolean changed = true;
         try {
-            String query = "update Projects set name = ? where id = ?";
+            String query = "UPDATE Projects SET name = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, newName);
             preparedStatement.setInt(2, currentProject.getId());
