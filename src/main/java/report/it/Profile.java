@@ -138,13 +138,13 @@ public class Profile extends ServletBase {
         if(sCharacters>0){
             return "The new password contains special characters that is not allowed";
         }
-        else if (digits<=2)
+        else if (digits<2)
         {
             return "The new password should contain atleast two digits";
         }
-        else if (uppercase<=1)
+        else if (uppercase<1)
         {
-            return "The new password should contain atleast two digits";
+            return "The new password should contain atleast one capital letter";
         }
         else if (!newPassword1.equals(newPassword2))
         {
