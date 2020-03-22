@@ -37,7 +37,6 @@ public class ServletBase extends HttpServlet {
 
     protected Connection connection;
 
-
     /**
      * Constructs a servlet and makes a connection to the database.
      * It also writes all user names on the console for test purpose.

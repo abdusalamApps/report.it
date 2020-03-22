@@ -4,6 +4,7 @@ public class Project {
 
     private int id;
     private String name;
+    private int members;
 
     public Project() {
 
@@ -11,12 +12,16 @@ public class Project {
 
     public Project(String name) {
         this.name = name;
-        //  this.administrator = administrator;
     }
 
     public Project(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Project(String name, int members) {
+        this.name = name;
+        this.members = members;
     }
 
     public int getId() {
@@ -25,5 +30,13 @@ public class Project {
 
     public String getName() {
         return name;
+    }
+
+    public int getMembers() {
+        return members;
+    }
+
+    public void setMembers(int members) {
+        this.members = members;
     }
 }

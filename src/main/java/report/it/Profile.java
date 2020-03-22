@@ -122,11 +122,41 @@ public class Profile extends ServletBase {
     }
 
     private String changePassword(String newPassword1, String newPassword2) {
-        if (!newPassword1.equals(newPassword2)) {
-            return "The new password doesn't match";
-        } else if(newPassword1.length()<6){
-            return "The new password is less than 6 letters";
+    int sCharacters = 0;
+    int uppercase = 0;
+    int digits = 0;
+        for(char c : newPassword1.toCharArray())
+        {
+            if(Character.isUpperCase(c)) uppercase++;
+            if(Character.isDigit(c)) digits++;
+            if (!((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122)))
+            {
+                sCharacters++;
+            }
         }
+        
+        if(sCharacters>0){
+            return "The new password contains special characters that is not allowed";
+        }
+        else if (digits<2)
+        {
+            return "The new password should contain atleast two digits";
+        }
+        else if (uppercase<1)
+        {
+            return "The new password should contain atleast one capital letter";
+        }
+        else if (!newPassword1.equals(newPassword2))
+        {
+            return "The new password doesn't match";
+        } 
+        else if(newPassword1.length() < 6 || newPassword1.length() > 12) 
+        {
+            return "The new password should be between 6-12 letters";
+        }
+       
+        
+
         else {
             try {
                 PreparedStatement stm =

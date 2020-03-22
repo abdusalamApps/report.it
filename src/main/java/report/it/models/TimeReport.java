@@ -18,7 +18,15 @@ public class TimeReport {
     public TimeReport() {
 
     }
-
+    public TimeReport(String submitted, int minutes_sum, boolean signed, String projectName, String username,int week) {
+        this.submitted = submitted;
+        this.minutes_sum = minutes_sum;
+        this.signed = signed;
+        this.projectID=projectID;
+        this.projectName = projectName;
+        this.username = username;
+        this.week = week;
+    }
     public TimeReport(int id, String submitted, int minutes_sum, boolean signed,int projectID, String projectName, String username,int week) {
         this.id = id;
         this.submitted = submitted;

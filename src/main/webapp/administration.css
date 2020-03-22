@@ -35,7 +35,7 @@
     background-color: #535353;
     border-radius: 0 0 4px 4px;
     display: grid;
-    justify-content: end;
+    grid-template-columns: repeat(auto-fit, minmax(2rem, 1fr));
 }
 
 .cards-container .card .card-bottom button {
@@ -51,7 +51,8 @@
 }
 
 .cards-container .card .card-bottom form {
-    padding: 0;
+    display: grid;
+    justify-self: center;
     margin: 0;
 }
 

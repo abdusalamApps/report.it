@@ -36,7 +36,6 @@ import java.util.Random;
 public class Administration extends ServletBase {
 
     private static final long serialVersionUID = 1L;
-    private static final int PASSWORD_LENGTH = 6;
 
     private String newUserPassword;
 
@@ -65,6 +64,9 @@ public class Administration extends ServletBase {
         String currentUsername = "";
 
         HttpSession session = request.getSession(true);
+
+        session.setMaxInactiveInterval(20*60);
+
         Object nameObj = session.getAttribute("username");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
@@ -78,6 +80,7 @@ public class Administration extends ServletBase {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
+            request.setAttribute("isAdmin",true);
             request.setAttribute("navbarTitle", "Welcome " + getFullName(currentUsername));
 
             request.getRequestDispatcher("administration-header.jsp").include(request, response);
@@ -143,10 +146,14 @@ public class Administration extends ServletBase {
 
                 System.out.println("action addProject");
                 System.out.println("project to add: " + request.getParameter("project-name"));
-                Project project = new Project(request.getParameter("project-name"));
-                if (request.getParameter("project-name")!=null) {
-                    addProject(project);
-                } else {
+                    try {
+                        String projectName = request.getParameter("project-name").trim();
+                        if (!projectName.equals("")) {
+                            Project project = new Project(projectName);
+                            boolean insertable = checkProjectName(project);
+                            if (insertable) addProject(project);
+                        }
+                    }catch(Exception e) {
                     System.out.println("invalied project name");
                 }
 
@@ -163,8 +170,7 @@ public class Administration extends ServletBase {
             case "removeProject":
                 System.out.println("action removeProject");
                 System.out.println("project to remove: " + request.getParameter("project-name"));
-                deleteProject(request.getParameter("edit-project-name"),
-                        request.getParameter("edit-project-id"));
+                deleteProject(Integer.parseInt(request.getParameter("edit-project-id")));
                 break;
             default:
                 System.out.println("no action selected");
@@ -175,22 +181,20 @@ public class Administration extends ServletBase {
 
 
     /**
-     * Checks if a username corresponds to the requirements for user names.
+     * Checks if a username contains lowercase or uppercase letters or numbers.
      *
      * @param name The investigated username
      * @return True if the username corresponds to the requirements
      */
     private boolean checkNewName(String name) {
         int length = name.length();
-        boolean ok = (length >= 5 && length <= 10);
-        if (ok)
+        boolean ok = true;
+
             for (int i = 0; i < length; i++) {
                 int ci = (int) name.charAt(i);
                 boolean thisOk = ((ci >= 48 && ci <= 57) ||
                         (ci >= 65 && ci <= 90) ||
                         (ci >= 97 && ci <= 122));
-                //String extra = (thisOk ? "OK" : "notOK");
-                //System.out.println("bokst:" + name.charAt(i) + " " + (int)name.charAt(i) + " " + extra);
                 ok = ok && thisOk;
             }
         return ok;
@@ -204,11 +208,14 @@ public class Administration extends ServletBase {
     private String createPassword() throws NoSuchAlgorithmException {
         StringBuilder result = new StringBuilder();
         Random r = new Random();
-        for (int i = 0; i < PASSWORD_LENGTH; i++)
-            result.append((char) (r.nextInt(26) + 97)); // 122-97+1=26
-
-       newUserPassword = result.toString();
-        // TODO: encrypt password after creation
+        for (int i = 0; i < 8; i++){
+            result.append((char) (r.nextInt(26) + 97)); // 7 små bokstäver
+        }
+        result.append((char) (r.nextInt(26) + 65));    // en stor bokstav
+        for(int i = 0; i < 2; i++){
+            result.append((char) (r.nextInt(10) + 48)); // tvåsiffror
+        }
+        newUserPassword = result.toString();
 
         return encryptPassword(result.toString());
     }
@@ -223,13 +230,10 @@ public class Administration extends ServletBase {
     private boolean addUser(User user) {
         boolean resultOk = true;
         try {
-            Statement stmt = connection.createStatement();
-            String statement = "insert into Users (username, name, password, email) values('" + user.getUsername() + "', '" + user.getName() + "', '" +
+            String sql = "insert into Users (username, name, password, email) values('" + user.getUsername() + "', '" + user.getName() + "', '" +
                     createPassword() + "', '" + user.getEmail() + "')";
-
-            System.out.println(statement);
-            stmt.executeUpdate(statement);
-            stmt.close();
+            PreparedStatement stm= connection.prepareStatement(sql);
+            stm.executeUpdate();
 
         } catch (SQLException | NoSuchAlgorithmException ex) {
             resultOk = false;
@@ -242,11 +246,9 @@ public class Administration extends ServletBase {
     private boolean addProject(Project project) {
         boolean resultOk = true;
         try {
-            Statement stmt = connection.createStatement();
-            String statement = "insert into Projects (name) values('" + project.getName() + "')";
-            System.out.println(statement);
-            stmt.executeUpdate(statement);
-            stmt.close();
+            String sql = "insert into Projects (name) values('" + project.getName() + "')";
+            PreparedStatement stm= connection.prepareStatement(sql);
+            stm.executeUpdate();
 
         } catch (SQLException ex) {
             resultOk = false;
@@ -261,8 +263,7 @@ public class Administration extends ServletBase {
         List<User> users = new ArrayList<>();
         try {
             String query = "select * \n" +
-                    "from Users\n" +
-                    "         left join ProjectMembers PM on Users.username = PM.username;\n";
+                    "from Users";
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
@@ -312,6 +313,8 @@ public class Administration extends ServletBase {
         return projects;
     }
 
+
+
     private boolean deleteUser(String username) {
         boolean ok = true;
         deleteAssociation(username);
@@ -329,14 +332,14 @@ public class Administration extends ServletBase {
         return ok;
     }
 
-    private boolean deleteProject(String projectname ,String projectId ) {
+    private boolean deleteProject(int projectId ) {
         deleteAssociationProject(projectId);
         boolean ok = true;
 
         try {
-            String query = "delete from Projects where name = ?";
+            String query = "delete from Projects where id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, projectname);
+            preparedStatement.setInt(1, projectId);
 
             preparedStatement.executeUpdate();
 
@@ -348,12 +351,12 @@ public class Administration extends ServletBase {
     }
 
     // project's association with any user has to be deleted as well
-    private boolean deleteAssociationProject(String projectId) {
+    private boolean deleteAssociationProject(int projectId) {
         boolean ok = true;
         try {
             String query = "delete from ProjectMembers where projectId = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, projectId);
+            preparedStatement.setInt(1, projectId);
 
             preparedStatement.executeUpdate();
 
@@ -381,4 +384,13 @@ public class Administration extends ServletBase {
         return ok;
     }
 
+    private boolean checkProjectName(Project project){
+        boolean hasNoSameName=true;
+        List<Project> projects=getProjects();
+        for(Project p:projects){
+            if(project.getName().equals(p.getName()))
+                return false;
+        }
+        return hasNoSameName;
+    }
 }

@@ -9,7 +9,17 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
 
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="timeReport.css">
+    <title>TimeReporting</title>
+
+</head>
+<body>
+
+<div class="container">
 <h2 >Your Time Reports</h2>
 
 <table>
@@ -52,7 +62,9 @@
     </c:forEach>
 </table>
 <br>
+</div>
 
+<div class="container">
 <c:set var = "editable" scope = "session" value = "${editable}"/>
 <c:if test = "${!editable}">
 <h2 >New Report</h2>
@@ -98,6 +110,6 @@
         <button><i class="material-icons">delete</i></button>
     </form>
 </c:if>
-
+</div>
 <br>
 <br>

@@ -4,10 +4,10 @@ import java.sql.*;
 
 public class Database {
 
-    private static String databaseServerAddress = "puccini.cs.lth.se";
-    private static String databaseUser = "hbg20"; // database login user
-    private static String databasePassword = "ynm704yj"; // database login password
-    private static String database = "hbg20"; // the database to use, i.e.
+    private static String databaseServerAddress = "35.228.254.209";
+    private static String databaseUser = "abdo"; // database login user
+    private static String databasePassword = ""; // database login password
+    private static String database = "reportit"; // the database to use, i.e.
 
     protected Connection conn = null;
 
