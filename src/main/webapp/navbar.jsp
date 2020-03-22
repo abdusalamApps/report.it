@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   Created by IntelliJ IDEA.
   User: abdo
@@ -45,7 +46,15 @@ setupTimers();
     <div class="topnav">
         <a href="">${navbarTitle}</a>
         <div class="topnav-right">
-            <a href="">Home</a>
+            <c:set var = "isAdmin" scope = "session" value = "${isAdmin}"/>
+            <c:choose>
+                <c:when test="${isAdmin}">
+                    <a href="Administration">Home</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="TimeReporting">Home</a>
+                </c:otherwise>
+            </c:choose>
             <a href="Profile">Profile</a>
 <a href="javascript:logOut()">Log out</a>
 
