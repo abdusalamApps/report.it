@@ -1,11 +1,16 @@
 package report.it;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.*;
+
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,9 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/LogIn")
 public class LogIn extends ServletBase {
     private static final long serialVersionUID = 1L;
-    private int fails = 0;
-    long startTime = System.currentTimeMillis()/1000;
-    long diff;
+    private static int attempts = 0;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -54,7 +57,6 @@ public class LogIn extends ServletBase {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        diff = System.currentTimeMillis()/1000;
         // Get the session
         HttpSession session = request.getSession(true);
 
@@ -73,39 +75,52 @@ public class LogIn extends ServletBase {
         username = request.getParameter("user"); // get the string that the user entered in the form
         password = request.getParameter("password"); // get the entered password
 
-        System.out.println("Fails: " + fails + "tid: " + (diff - startTime));
-        if (fails >=3){
-            diff = System.currentTimeMillis()/1000;
-            System.out.println("timeout: " + (diff - startTime));
-        }
-        if (username != null && password != null && (fails == 4 || (diff - startTime)>120)){
-            if (checkUser(username, encryptPassword(password))) {
-                this.fails = 0;
-                startTime = System.currentTimeMillis()/1000;
-                state = LOGIN_TRUE;
-                session.setAttribute("state", state);  // save the state in the session
-                session.setAttribute("username", username);  // save the username in the session
-                if (username.equals("admin")) {
-                    response.sendRedirect("Administration");
-                } else {
-                    response.sendRedirect("TimeReporting");
-                }
-            } else {
-                out.println("<p>That was not a valid user username / password. </p>");
-                //                out.println(loginRequestForm());
-                checkLoginAttempts();
+        if (username != null && password != null) {
+            if (getLoginAttempts(username) > 2) {
+                setLogInAttempteDate(username);
+                out.println("<p>you are locked for 10 minutes. </p>");
                 request.getRequestDispatcher("index.jsp").include(request, response);
-            }
-        }
 
-         else { // username was null, probably because no form has been filled out yet. Display form.
+            } else {
+                if (!checkUser(username).equals("")) {
+                    long unixTimeLogIn =  System.currentTimeMillis() / 1000;
+                    if (unixTimeLogIn< getLogInAttemptDate(username)){
+                        out.println("<p>you are locked for 10 minutes. </p>");
+                        request.getRequestDispatcher("index.jsp").include(request, response);
+
+                    }
+                    if (unixTimeLogIn> getLogInAttemptDate(username)) {
+                        if (checkUser(username).equals(encryptPassword(password))) {
+                            state = LOGIN_TRUE;
+                            session.setAttribute("state", state);  // save the state in the session
+                            session.setAttribute("username", username);  // save the username in the session
+                            if (username.equals("admin")) {
+                                response.sendRedirect("Administration");
+                            } else {
+                                response.sendRedirect("TimeReporting");
+                            }
+                            attempts = 0;
+                        } else {
+                            attempts++;
+                            out.println("<p>You tried: " + attempts + "That was not a valid password. </p>");
+                            request.getRequestDispatcher("index.jsp").include(request, response);
+                        }
+                    }
+
+                } else {
+                    out.println("<p>That was not a valid username </p>");
+                    request.getRequestDispatcher("index.jsp").include(request, response);
+                }
+                setAttempts(username);
+            }
+        } else { // username was null, probably because no form has been filled out yet. Display form.
 //            out.println(loginRequestForm());
-            checkLoginAttempts();
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").include(request, response);
         }
 
         out.println("</body></html>");
     }
+
 
     /**
      * All requests are forwarded to the doGet method.
@@ -119,34 +134,37 @@ public class LogIn extends ServletBase {
     /**
      * Checks with the database if the user should be accepted
      *
-     * @param name     The name of the user
-     * @param password The password of the user
+     * @param name The name of the user
      * @return true if the user should be accepted
      */
-    private boolean checkUser(String name, String password) {
+    private String checkUser(String name) {
 
         boolean userOk = false;
         boolean userChecked = false;
+        String Password = "";
 
         try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from Users");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from Users where username = ?");
+            preparedStatement.setString(1, name);
+            ResultSet rs = preparedStatement.executeQuery();
+
             while (rs.next() && !userChecked) {
                 String nameSaved = rs.getString("username");
-                String passwordSaved = rs.getString("password");
+                Password = rs.getString("password");
                 if (name.equals(nameSaved)) {
                     userChecked = true;
-                    userOk = password.equals(passwordSaved);
+                    return Password;
                 }
             }
-            stmt.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
-        return userOk;
+        return "";
     }
+
 
     private boolean checkAdmin(String username, String password) {
         boolean usernameExists = false;
@@ -172,11 +190,104 @@ public class LogIn extends ServletBase {
 
         return passCorrect;
     }
-    private int checkLoginAttempts() {
-        fails %= 4;
-        fails++;
-        System.out.println("Fails: " + fails);
-        return fails;
+
+
+    private int getLoginAttempts(String username) {
+
+        try {
+            String sql = "select attempts from userAttempts where username='" + username + "'";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                attempts = rs.getInt("attempts");
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return attempts;
     }
 
+    private void setAttempts(String username) {
+        try {
+            String sql = "select username from userAttempts";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                if (rs.getString("username").equals(username)) {
+                    updateAttempts(username);
+                    return;
+                }
+            }
+            sql = "insert into userAttempts (username, attempts) values('" + username + "','" + attempts + "')";
+            stm = connection.prepareStatement(sql);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
+
+    private void updateAttempts(String username) {
+        try {
+
+            String sql = "update userAttempts set attempts='" + attempts + "' where username='" + username + "'";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
+
+    private void setLogInAttempteDate(String username) {
+        resetAttempts(username);
+        try {
+            long unixTime = System.currentTimeMillis() / 1000;
+            unixTime =unixTime+ 600;
+
+            String sql = "update userAttempts set lastModified = '" + unixTime + "' where username='" + username + "'";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
+
+    private void resetAttempts(String username) {
+        try {
+
+            String sql = "update userAttempts set attempts=" + 0 + " where username='" + username + "'";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
+
+    private long getLogInAttemptDate(String username) {
+        try {
+            String sql = "select lastModified from userAttempts where username ='" + username + "'";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getLong("lastModified");
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return -1;
+    }
 }
