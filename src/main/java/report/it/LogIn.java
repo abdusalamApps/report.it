@@ -41,8 +41,6 @@ public class LogIn extends ServletBase {
      */
     public LogIn() {
         super();
-        // TODO Auto-generated constructor stub
-
     }
 
     /**
@@ -164,33 +162,6 @@ public class LogIn extends ServletBase {
         }
         return "";
     }
-
-
-    private boolean checkAdmin(String username, String password) {
-        boolean usernameExists = false;
-        boolean passCorrect = false;
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from Administrators where username = ?");
-            preparedStatement.setString(1, username);
-            ResultSet set = preparedStatement.executeQuery();
-            while (set.next() && !usernameExists) {
-                if (username.equals(set.getString("username"))) {
-                    usernameExists = true;
-                    passCorrect = set.getString("password").equals(password);
-                }
-            }
-            preparedStatement.close();
-
-        } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
-
-        return passCorrect;
-    }
-
 
     private int getLoginAttempts(String username) {
 
