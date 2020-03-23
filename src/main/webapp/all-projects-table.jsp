@@ -4,7 +4,7 @@
 
 <%--
   Created by IntelliJ IDEA.
-  User: Dell
+  User: Aml Abbas
   Date: 2020-03-05
   Time: 18:35
   To change this template use File | Settings | File Templates.
@@ -19,7 +19,6 @@
         <div class="card-main-content">
             <h4><b>${project.getName()}</b></h4>
 
-<%--            <p>${project.getMembers()}</p>--%>
         </div>
         <div class="card-bottom">
             <form action="Administration" method="post">
