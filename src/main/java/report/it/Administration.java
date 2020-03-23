@@ -28,8 +28,8 @@ import java.util.Random;
  * Checks first if the user is logged in and then if it is the administrator.
  * If that is OK it displays all users and a form for adding new users.
  *
- * @author Martin Host
- * @version 1.0
+ * @author Aml Abbas & Milad Amini
+ * @version 0.2
  */
 
 @WebServlet("/Administration")

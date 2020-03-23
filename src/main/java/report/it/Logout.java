@@ -6,6 +6,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet implementation class LogOut.
+ * Constructs a page for LogOut purpose.
+ * Log out the user
+ *
+ * @author Aml Abbas
+ * @version 0.1
+ */
+
 @WebServlet("/Logout")
 public class Logout extends ServletBase{
 

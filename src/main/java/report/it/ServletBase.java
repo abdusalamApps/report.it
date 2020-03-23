@@ -24,8 +24,8 @@ import javax.servlet.http.HttpSession;
  * <p>The administrator can be added with:
  * mysql> insert into users (name, password) values('admin', 'adminp');
  *
- * @author Martin Host
- * @version 1.0
+ * @author Aml Abbas & Milad Amini
+ * @version 0.1
  */
 public class ServletBase extends HttpServlet {
 

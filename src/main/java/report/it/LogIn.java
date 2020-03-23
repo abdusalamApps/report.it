@@ -28,8 +28,8 @@ import javax.servlet.http.HttpServletResponse;
  * Then the user is asked for name and password.
  * If the user is logged in he/she is directed to the functionality page.
  *
- * @author Martin Host
- * @version 1.0
+ * @author Aml Abbas & Fredrik Peterson
+ * @version 0.1
  */
 @WebServlet("/LogIn")
 public class LogIn extends ServletBase {

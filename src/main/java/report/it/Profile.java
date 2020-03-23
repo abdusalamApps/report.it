@@ -18,6 +18,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servlet implementation class Profile.
+ * Constructs a page for Profile purpose.
+ * It displays the user information and a form to chang the user's password.
+ *
+ * @author Aml Abbas & Milad Amini
+ * @version 0.2
+ */
+
 @WebServlet("/Profile")
 public class Profile extends ServletBase {
 
