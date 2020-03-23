@@ -150,7 +150,7 @@ public class GroupModifier extends ServletBase {
     }
 
     private List<ProjectMember> getMembers(int projectId) {
-        List<ProjectMember> members = new ArrayList<>();
+        List<ProjectMember> members = new ArrayList<ProjectMember>();
 
         try {
             String query = "select U.name, U.username," +
