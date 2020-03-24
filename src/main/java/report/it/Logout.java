@@ -12,7 +12,7 @@ import java.io.IOException;
  * Log out the user
  *
  * @author Aml Abbas
- * @version 0.1
+ * @version 0.3
  */
 
 @WebServlet("/Logout")
