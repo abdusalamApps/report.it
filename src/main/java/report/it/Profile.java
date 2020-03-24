@@ -24,7 +24,7 @@ import java.util.List;
  * It displays the user information and a form to chang the user's password.
  *
  * @author Aml Abbas & Milad Amini
- * @version 0.2
+ * @version 0.3
  */
 
 @WebServlet("/Profile")
