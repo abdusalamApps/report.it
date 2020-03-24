@@ -1,7 +1,14 @@
 package report.it;
 
 import java.util.HashMap;
+
 import java.util.Map;
+/**
+ * A class to hold some constant values
+ * and present them as static variables.
+ * @author Abdusalam Yabrak
+ * @version 0.3
+ */
 
 public class Constants {
 
