@@ -7,7 +7,7 @@ import java.sql.*;
  * the database and presenting a connection object
  * to other classes.
  * @author Abdusalam Yabrak
- * @version 1.0
+ * @version 0.3
  */
 
 public class Database {
