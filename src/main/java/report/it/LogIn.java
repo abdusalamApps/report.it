@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  * If the user is logged in he/she is directed to the functionality page.
  *
  * @author Aml Abbas & Fredrik Peterson
- * @version 0.1
+ * @version 0.3
  */
 @WebServlet("/LogIn")
 public class LogIn extends ServletBase {
