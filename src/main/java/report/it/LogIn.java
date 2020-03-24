@@ -75,7 +75,7 @@ public class LogIn extends ServletBase {
 
         if (username != null && password != null) {
             if (getLoginAttempts(username) > 2) {
-                setLogInAttempteDate(username);
+                setLogInAttemptsDate(username);
                 out.println("<p>you are locked for 10 minutes. </p>");
                 request.getRequestDispatcher("index.jsp").include(request, response);
 
@@ -215,7 +215,7 @@ public class LogIn extends ServletBase {
         }
     }
 
-    private void setLogInAttempteDate(String username) {
+    private void setLogInAttemptsDate(String username) {
         resetAttempts(username);
         try {
             long unixTime = System.currentTimeMillis() / 1000;
