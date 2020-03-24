@@ -16,8 +16,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-This class is for modifying project groups.
+/**
+ * This class is for modifying project groups.
+ *
+ * @author Ehsanolah Hafezi & Lukas Sundberg
+ * @version 0.3
  */
 @WebServlet("/GroupModifier")
 
