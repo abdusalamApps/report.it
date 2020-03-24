@@ -29,7 +29,7 @@ import java.util.Random;
  * If that is OK it displays all users and a form for adding new users.
  *
  * @author Aml Abbas & Milad Amini
- * @version 0.2
+ * @version 0.3
  */
 
 @WebServlet("/Administration")

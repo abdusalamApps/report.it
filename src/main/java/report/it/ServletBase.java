@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  * mysql> insert into users (name, password) values('admin', 'adminp');
  *
  * @author Aml Abbas & Milad Amini
- * @version 0.1
+ * @version 0.3
  */
 public class ServletBase extends HttpServlet {
 
