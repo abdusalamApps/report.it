@@ -3,9 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   Created by IntelliJ IDEA.
-  User: abdusalamyabrak
+  User: Li Zhu
   Date: 2020-03-05
   Time: 10:43
+  @author Li Zhu, Nils Olen & Fatima Doussi
+  @version: 0.3
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

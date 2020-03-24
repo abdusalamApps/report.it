@@ -21,7 +21,18 @@ import java.sql.Statement;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Servlet implementation class TimeReporting.
+ * Construct a page to submit, sign and edit time report.
+ * Check first if the user is logged in and this page will displays if it is not a administrator.
+ * Then check the current user is a group leader or not
+ * if the user is not a group leader, display the current user's all timereports and a form to submit a new time report.
+ * if the user is a group leader, diaplay the table of the leader's timereports and submitting report form,
+ * and display a table of group members' timereports, and a table of the leader's project name to be modified
+ *
+ * @author Li Zhu, Nils Olen & Fatima Doussi
+ * @version 0.3
+ */
 @WebServlet("/TimeReporting")
 public class TimeReporting extends ServletBase {
 
@@ -316,7 +327,7 @@ public class TimeReporting extends ServletBase {
 
     /**
      * get current users all time reports
-     * @param user current users username
+     * @param user username
      * @return a list of this users time report
      */
     private List<TimeReport> getTimeReports(String user){
@@ -400,7 +411,7 @@ public class TimeReporting extends ServletBase {
         }
         return isSubmitted;
     }
-//getCurrentDate
+
     private String getCurrentDate() {
         java.util.Date dt = new java.util.Date();
 
