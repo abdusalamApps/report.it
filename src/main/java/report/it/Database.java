@@ -2,6 +2,14 @@ package report.it;
 
 import java.sql.*;
 
+/**
+ * A class to handle connecting to
+ * the database and presenting a connection object
+ * to other classes.
+ * @author Abdusalam Yabrak
+ * @version 1.0
+ */
+
 public class Database {
 
     private static String databaseServerAddress = "35.228.254.209";
