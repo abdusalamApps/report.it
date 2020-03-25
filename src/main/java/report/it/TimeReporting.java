@@ -60,7 +60,7 @@ public class TimeReporting extends ServletBase {
         }
 
         // check that the user is logged in
-        if (!loggedIn(request)) {
+        if (!loggedIn(request) || nameObj.equals("admin")) {
             response.sendRedirect("LogIn");
         } else {
             request.setAttribute("isAdmin",false);
