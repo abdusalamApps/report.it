@@ -231,7 +231,7 @@ public class TimeReporting extends ServletBase {
      * @param user current users username
      * @return true if the current user is a project leader, false if not
      */
-    private boolean isLeader(String user) {
+    protected boolean isLeader(String user) {
         int role = -1;
         try {
             String query = "select * from ProjectMembers where username = '"+user+"'";
@@ -295,7 +295,7 @@ public class TimeReporting extends ServletBase {
      * @param groupLeader
      * @return list of all members time reports
      */
-    private List<TimeReport> getGroupTimeReport(String groupLeader){
+    protected List<TimeReport> getGroupTimeReport(String groupLeader){
         List<TimeReport> groupReports = new ArrayList<>();
         PreparedStatement ps =null;
         try {

@@ -14,6 +14,12 @@
 <HR>
 <div class="container">
 <h2 >Your Groups Time Reports</h2>
+
+
+    <button ><a href="export-time-reports" target="_blank">Export Time Reports</a></button>
+
+
+
 <table>
     <tr>
         <th>Project</th>
@@ -43,13 +49,20 @@
 
             <td>
                 <c:set var = "isSigned" scope = "session" value = "${groupReport.getSigned()}"/>
-                <c:if test = "${!isSigned}">
+                <c:choose>
+                    <c:when test="${!isSigned}">
+
                 <form action="TimeReporting" method="post">
                     <input type="hidden" name="groupReportId" value="${groupReport.getId()}"/>
                     <input type="hidden" name="action" value="sign">
                     <button>Sign</button>
+
                 </form>
-                </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        signed
+                    </c:otherwise>
+                </c:choose>
             </td>
         </tr>
     </c:forEach>
