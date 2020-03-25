@@ -70,6 +70,26 @@ public class ExportTimeReports extends TimeReporting {
         } else {
            // if(isleader(currentUsername)) {
                 List<TimeReport> groupReports = getGroupTimeReport(currentUsername);
+            
+                /*
+
+                //Loops through the list, builds a string. Need to open it in new browser window.
+
+                for(int i = 0; i < groupReports.size(); i++){
+
+                    res += "Username, ProjectName, week, minutes\n";
+
+                    res += groupReports.get(i).getUsername() + ", " +
+                            groupReports.get(i).getProjectName() + ", " +
+                            groupReports.get(i).getWeek() + ", " +
+                            groupReports.get(i).getMinutes_sum() + "\n";
+
+
+                }
+            System.out.println(res);
+
+    */    
+            
                 request.setAttribute("groupReports", groupReports);
             request.getRequestDispatcher("export-time-reports.jsp").include(request, response);
                 out.println("</div>");
