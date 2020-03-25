@@ -36,6 +36,7 @@ import java.util.Random;
 public class Administration extends ServletBase {
 
     private static final long serialVersionUID = 1L;
+    private static final int PASSWORD_LENGTH = 6;
 
     private String newUserPassword;
 
@@ -146,14 +147,14 @@ public class Administration extends ServletBase {
 
                 System.out.println("action addProject");
                 System.out.println("project to add: " + request.getParameter("project-name"));
-                    try {
-                        String projectName = request.getParameter("project-name").trim();
-                        if (!projectName.equals("")) {
-                            Project project = new Project(projectName);
-                            boolean insertable = checkProjectName(project);
-                            if (insertable) addProject(project);
-                        }
-                    }catch(Exception e) {
+                try {
+                    String projectName = request.getParameter("project-name").trim();
+                    if (!projectName.equals("")) {
+                        Project project = new Project(projectName);
+                        boolean insertable = checkProjectName(project);
+                        if (insertable) addProject(project);
+                    }
+                }catch(Exception e) {
                     System.out.println("invalied project name");
                 }
 
@@ -181,20 +182,22 @@ public class Administration extends ServletBase {
 
 
     /**
-     * Checks if a username contains lowercase or uppercase letters or numbers.
+     * Checks if a username corresponds to the requirements for user names.
      *
      * @param name The investigated username
      * @return True if the username corresponds to the requirements
      */
     private boolean checkNewName(String name) {
         int length = name.length();
-        boolean ok = true;
-
+        boolean ok = (length >= 5 && length <= 10);
+        if (ok)
             for (int i = 0; i < length; i++) {
                 int ci = (int) name.charAt(i);
                 boolean thisOk = ((ci >= 48 && ci <= 57) ||
                         (ci >= 65 && ci <= 90) ||
                         (ci >= 97 && ci <= 122));
+                //String extra = (thisOk ? "OK" : "notOK");
+                //System.out.println("bokst:" + name.charAt(i) + " " + (int)name.charAt(i) + " " + extra);
                 ok = ok && thisOk;
             }
         return ok;
@@ -208,14 +211,11 @@ public class Administration extends ServletBase {
     private String createPassword() throws NoSuchAlgorithmException {
         StringBuilder result = new StringBuilder();
         Random r = new Random();
-        for (int i = 0; i < 8; i++){
-            result.append((char) (r.nextInt(26) + 97)); // 7 små bokstäver
-        }
-        result.append((char) (r.nextInt(26) + 65));    // en stor bokstav
-        for(int i = 0; i < 2; i++){
-            result.append((char) (r.nextInt(10) + 48)); // tvåsiffror
-        }
+        for (int i = 0; i < PASSWORD_LENGTH; i++)
+            result.append((char) (r.nextInt(26) + 97)); // 122-97+1=26
+
         newUserPassword = result.toString();
+        // TODO: encrypt password after creation
 
         return encryptPassword(result.toString());
     }
@@ -230,10 +230,13 @@ public class Administration extends ServletBase {
     private boolean addUser(User user) {
         boolean resultOk = true;
         try {
-            String sql = "insert into Users (username, name, password, email) values('" + user.getUsername() + "', '" + user.getName() + "', '" +
+            Statement stmt = connection.createStatement();
+            String statement = "insert into Users (username, name, password, email) values('" + user.getUsername() + "', '" + user.getName() + "', '" +
                     createPassword() + "', '" + user.getEmail() + "')";
-            PreparedStatement stm= connection.prepareStatement(sql);
-            stm.executeUpdate();
+
+            System.out.println(statement);
+            stmt.executeUpdate(statement);
+            stmt.close();
 
         } catch (SQLException | NoSuchAlgorithmException ex) {
             resultOk = false;
@@ -246,9 +249,11 @@ public class Administration extends ServletBase {
     private boolean addProject(Project project) {
         boolean resultOk = true;
         try {
-            String sql = "insert into Projects (name) values('" + project.getName() + "')";
-            PreparedStatement stm= connection.prepareStatement(sql);
-            stm.executeUpdate();
+            Statement stmt = connection.createStatement();
+            String statement = "insert into Projects (name) values('" + project.getName() + "')";
+            System.out.println(statement);
+            stmt.executeUpdate(statement);
+            stmt.close();
 
         } catch (SQLException ex) {
             resultOk = false;
