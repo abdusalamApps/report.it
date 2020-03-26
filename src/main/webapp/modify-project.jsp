@@ -52,12 +52,12 @@
             <label for="button1">Leader</label>
             <input type="radio" class="stv-radio-button" name="member-role" value="2" id="button2" />
             <label for="button2">Member</label>
-            <input type="radio" class="stv-radio-button" name="member-role" value="3" id="button5" />
-            <label for="button5">SG</label>
-            <input type="radio" class="stv-radio-button" name="member-role" value="4" id="button6" />
-            <label for="button6">UG</label>
-            <input type="radio" class="stv-radio-button" name="member-role" value="5" id="button7" />
-            <label for="button7">TG</label>
+            <input type="radio" class="stv-radio-button" name="member-role" value="3" id="button3" />
+            <label for="button3">SG</label>
+            <input type="radio" class="stv-radio-button" name="member-role" value="4" id="button4" />
+            <label for="button4">UG</label>
+            <input type="radio" class="stv-radio-button" name="member-role" value="5" id="button5" />
+            <label for="button5">TG</label>
         </div>
 
         <input type="text" placeholder="Username" name="newMemberUserName">
