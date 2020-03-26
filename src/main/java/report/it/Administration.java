@@ -211,13 +211,17 @@ public class Administration extends ServletBase {
     private String createPassword() throws NoSuchAlgorithmException {
         StringBuilder result = new StringBuilder();
         Random r = new Random();
-        for (int i = 0; i < PASSWORD_LENGTH; i++)
-            result.append((char) (r.nextInt(26) + 97)); // 122-97+1=26
-
+        for (int i = 0; i < 8; i++){
+            result.append((char) (r.nextInt(26) + 97)); // 7 små bokstäver
+        }
+        result.append((char) (r.nextInt(26) + 65));    // en stor bokstav
+        for(int i = 0; i < 2; i++){
+            result.append((char) (r.nextInt(10) + 48)); // tvåsiffror
+        }
         newUserPassword = result.toString();
-        // TODO: encrypt password after creation
 
         return encryptPassword(result.toString());
+        
     }
 
     /**
