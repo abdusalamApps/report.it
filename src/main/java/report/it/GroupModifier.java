@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * This class is for modifying project groups.
@@ -44,9 +45,27 @@ public class GroupModifier extends ServletBase {
         if (nameObj != null)
             currentUsername = (String) nameObj;  // if the name exists typecast the name to a string
         request.setAttribute("user", currentUsername);
+        PreparedStatement preparedStatement = null;
+        Vector v = new Vector();
+        try {
+            preparedStatement = connection.prepareStatement("SELECT role FROM ProjectMembers WHERE username = ?");
+            preparedStatement.setString(1, currentUsername);
+            ResultSet set = preparedStatement.executeQuery();
+            set.last();
+            int size = set.getRow();
+            set.first();
+            System.out.println(size);
+            for (int i = 0; i < size; i++){
+                if (set.next()) {
+                    v.add(set.getInt("role"));
+                }
+            }
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
 
-        // check that the user is logged in
-        if (!loggedIn(request)) {
+        // check that the user is logged in and is admin/leader
+        if (!loggedIn(request) || v.contains(2) || v.contains(3) || v.contains(4) || v.contains(5)) {
             response.sendRedirect("LogIn");
         } else {
 
