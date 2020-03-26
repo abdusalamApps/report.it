@@ -23,12 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Servlet implementation class Administration.
- * Constructs a page for administration purpose.
- * Checks first if the user is logged in and then if it is the administrator.
- * If that is OK it displays all users and a form for adding new users.
+ * Servlet implementation export time reports.
  *
- * @author Aml Abbas & Milad Amini
+ * @author Li Zhu & Lukas Sundberg
  * @version 0.3
  */
 
@@ -53,7 +50,7 @@ public class ExportTimeReports extends TimeReporting {
 
         HttpSession session = request.getSession(true);
 
-        session.setMaxInactiveInterval(20*60);
+        session.setMaxInactiveInterval(20 * 60);
 
         Object nameObj = session.getAttribute("username");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
@@ -68,16 +65,20 @@ public class ExportTimeReports extends TimeReporting {
         if (!loggedIn(request)) {
             response.sendRedirect("LogIn");
         } else {
-           // if(isleader(currentUsername)) {
+            // if(isleader(currentUsername)) {
+            try {
                 List<TimeReport> groupReports = getGroupTimeReport(currentUsername);
                 request.setAttribute("groupReports", groupReports);
-            request.getRequestDispatcher("export-time-reports.jsp").include(request, response);
+                request.getRequestDispatcher("export-time-report.jsp").include(request, response);
                 out.println("</div>");
                 out.println("</body></html>");
+            } catch (Exception e) {
+                System.out.println("cannot get groups time reports");
             }
-        //}
-    }
 
+            //}
+        }
+    }
     /**
      *
      */
