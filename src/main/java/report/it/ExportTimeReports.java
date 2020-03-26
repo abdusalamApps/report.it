@@ -91,7 +91,7 @@ public class ExportTimeReports extends TimeReporting {
     */    
             
                 request.setAttribute("groupReports", groupReports);
-            request.getRequestDispatcher("export-time-reports.jsp").include(request, response);
+            request.getRequestDispatcher("export-time-report.jsp").include(request, response);
                 out.println("</div>");
                 out.println("</body></html>");
             }
